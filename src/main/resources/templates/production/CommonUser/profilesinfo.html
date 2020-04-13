@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>个人信息</title>
+
+    <!-- Bootstrap -->
+    <link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link th:href="@{/vendors/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <!-- NProgress -->
+    <link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
+    <!-- iCheck -->
+    <link th:href="@{/vendors/iCheck/skins/flat/green.css}" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link th:href="@{/vendors/bootstrap-daterangepicker/daterangepicker.css}" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+
+        <!-- menu_main -->
+        <div th:replace="~{production/commons/common::menu_main}"></div>
+        <!-- menu_main-->
+
+        <!-- top navigation -->
+        <div th:replace="~{production/commons/common::top_navigation}"></div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <div class="">
+                <div class="page-title">
+                    <div class="title_left">
+                        <h3>用户
+                            <small>更改个人信息信息</small>
+                        </h3>
+                    </div>
+
+                    <div class="title_right">
+                        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search for...">
+                                <span class="input-group-btn">
+                          <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>个人信息<small>(个人详细信息)</small></h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Settings 1</a>
+                                            </li>
+                                            <li><a href="#">Settings 2</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+
+                                <div th:replace="~{production/commons/common::profiles_left}"></div>
+
+
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="x_panel">
+                                                <div class="x_title">
+                                                    <h2>Form Design <small>different form elements</small></h2>
+                                                    <ul class="nav navbar-right panel_toolbox">
+                                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                        </li>
+                                                        <li class="dropdown">
+                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                                            <ul class="dropdown-menu" role="menu">
+                                                                <li><a href="#">Settings 1</a>
+                                                                </li>
+                                                                <li><a href="#">Settings 2</a>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="x_content">
+                                                    <br />
+                                                    <form th:action="@{/users/toUpdateMemberInfo}" class="form-horizontal form-label-left input_mask" id="formID" method="post">
+
+                                                        <input name="uid" type="hidden" class="form-control col-md-7 col-xs-12" th:value="${ProfilesInfo.getId()}">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">姓名: </label>
+                                                            <div class="col-md-9 col-sm-9 col-xs-9">
+                                                                <input type="text" class="form-control has-feedback-left" id="inputSuccess2" name="truename" th:placeholder="${ProfilesInfo.getTruename()}" readonly="readonly">
+                                                                <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                                <div class="d-inline">
+                                                                    <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal">
+                                                                        <i class="fa fa-edit"></i>Edit
+                                                                    </a>
+                                                                </div>
+
+                                                                <!-- 模态框（Modal） -->
+                                                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                                    &times;
+                                                                                </button>
+                                                                                <h4 class="modal-title" id="myModalLabel">
+                                                                                    <i class=""></i>姓名
+                                                                                </h4>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <input type="text" class="form-control has-feedback-left" name="truename" th:placeholder="${ProfilesInfo.getTruename()}">
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-primary" data-dismiss="modal">关闭
+                                                                                </button>
+                                                                                <button type="submit"  class="btn btn-success">提交更改</button>
+                                                                            </div>
+                                                                        </div><!-- /.modal-content -->
+                                                                    </div><!-- /.modal -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">地址: </label>
+                                                            <div class="col-md-9 col-sm-9 col-xs-9">
+                                                                <input type="text" class="form-control has-feedback-left" id="inputSuccess3" name="address" th:placeholder="${ProfilesInfo.getAddress()}" readonly="readonly">
+                                                                <span class="fa  fa-home form-control-feedback left" aria-hidden="true"></span>
+                                                                <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModa2">
+                                                                    <i class="fa fa-edit"></i>Edit
+                                                                </a>
+                                                                <!-- 模态框（Modal） -->
+                                                                <div class="modal fade" id="myModa2" tabindex="-1" role="dialog" aria-labelledby="myModalLabe2" aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                                    &times;
+                                                                                </button>
+                                                                                <h4 class="modal-title" id="myModalLabe2">
+                                                                                    <i class=""></i>地址
+                                                                                </h4>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <input type="text" class="form-control has-feedback-left" name="address" th:placeholder="${ProfilesInfo.getAddress()}">
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-primary" data-dismiss="modal">关闭
+                                                                                </button>
+                                                                                <button type="submit"  class="btn btn-success">提交更改</button>
+                                                                            </div>
+                                                                        </div><!-- /.modal-content -->
+                                                                    </div><!-- /.modal -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">邮箱: </label>
+                                                            <div class="col-md-9 col-sm-9 col-xs-9">
+                                                                <input type="text" class="form-control has-feedback-left" id="inputSuccess4" name="email" th:placeholder="${ProfilesInfo.getEmail()}" readonly="readonly">
+                                                                <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                                                                <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModa3">
+                                                                    <i class="fa fa-edit"></i>Edit
+                                                                </a>
+                                                                <!-- 模态框（Modal） -->
+                                                                <div class="modal fade" id="myModa3" tabindex="-1" role="dialog" aria-labelledby="myModalLabe3" aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                                    &times;
+                                                                                </button>
+                                                                                <h4 class="modal-title" id="myModalLabe3">
+                                                                                    <i class=""></i>邮箱
+                                                                                </h4>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <input type="text" class="form-control has-feedback-left" name="email" th:placeholder="${ProfilesInfo.getEmail()}">
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-primary" data-dismiss="modal">关闭
+                                                                                </button>
+                                                                                <button type="submit"  class="btn btn-success">提交更改</button>
+                                                                            </div>
+                                                                        </div><!-- /.modal-content -->
+                                                                    </div><!-- /.modal -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">手机号: </label>
+                                                            <div class="col-md-9 col-sm-9 col-xs-9">
+                                                                <input type="text" class="form-control has-feedback-left" id="inputSuccess5" name="phone" th:placeholder="${ProfilesInfo.getPhone()}" readonly="readonly">
+                                                                <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
+                                                                <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModa4">
+                                                                    <i class="fa fa-edit"></i>Edit
+                                                                </a>
+                                                                <!-- 模态框（Modal） -->
+                                                            <div class="modal fade" id="myModa4" tabindex="-1" role="dialog" aria-labelledby="myModalLabe4" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                                &times;
+                                                                            </button>
+                                                                            <h4 class="modal-title" id="myModalLabe4">
+                                                                                <i class=""></i>手机号
+                                                                            </h4>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <input type="text" class="form-control has-feedback-left" name="phone" th:placeholder="${ProfilesInfo.getPhone()}">
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-primary" data-dismiss="modal">关闭
+                                                                            </button>
+                                                                            <button type="submit"  class="btn btn-success">提交更改</button>
+                                                                        </div>
+                                                                    </div><!-- /.modal-content -->
+                                                                </div><!-- /.modal -->
+                                                            </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">学校: </label>
+                                                            <div class="col-md-9 col-sm-9 col-xs-9">
+                                                                <input type="text" class="form-control has-feedback-left" id="inputSuccess6" name="school" th:placeholder="${ProfilesInfo.getSchool()}" readonly="readonly">
+                                                                <span class="fa fa-mortar-board (alias) form-control-feedback left" aria-hidden="true"></span>
+                                                                <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModa5">
+                                                                    <i class="fa fa-edit"></i>Edit
+                                                                </a>
+                                                                <!-- 模态框（Modal） -->
+                                                                <div class="modal fade" id="myModa5" tabindex="-1" role="dialog" aria-labelledby="myModalLabe5" aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                                    &times;
+                                                                                </button>
+                                                                                <h4 class="modal-title" id="myModalLabe5">
+                                                                                    <i class=""></i>学校
+                                                                                </h4>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <input type="text" class="form-control has-feedback-left" name="school" th:placeholder="${ProfilesInfo.getSchool()}">
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-primary" data-dismiss="modal">关闭
+                                                                                </button>
+                                                                                <button type="submit"  class="btn btn-success">提交更改</button>
+                                                                            </div>
+                                                                        </div><!-- /.modal-content -->
+                                                                    </div><!-- /.modal -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">出生日期: </label>
+                                                            <div class="col-md-9 col-sm-9 col-xs-9">
+                                                                <input type="text" class="form-control has-feedback-left" data-inputmask="'mask': '9999/99/99'" name="birth" readonly="readonly"  th:placeholder="${ProfilesInfo.getBirth()}">
+                                                                <span class="fa fa-birthday-cake form-control-feedback left" aria-hidden="true"></span>
+                                                                <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModa6">
+                                                                    <i class="fa fa-edit"></i>Edit
+                                                                </a>
+                                                                <!-- 模态框（Modal） -->
+                                                                <div class="modal fade" id="myModa6" tabindex="-1" role="dialog" aria-labelledby="myModalLabe6" aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                                    &times;
+                                                                                </button>
+                                                                                <h4 class="modal-title" id="myModalLabe6">
+                                                                                    <i class=""></i>出生日期
+                                                                                </h4>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <input type="text" class="form-control has-feedback-left" data-inputmask="'mask': '9999/99/99'" name="birth" >
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-primary" data-dismiss="modal">关闭
+                                                                                </button>
+                                                                                <button type="submit"  class="btn btn-success">提交更改</button>
+                                                                            </div>
+                                                                        </div><!-- /.modal-content -->
+                                                                    </div><!-- /.modal -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12 ">性别 :</label>
+                                                            <div class="col-md-9 col-sm-9 col-xs-9">
+                                                                <div id="gender">
+                                                                    <input th:checked="${ProfilesInfo.getGender()==1}" class="flat" type="radio" name="ugender" value="0" > &nbsp; 男 &nbsp;
+                                                                    <input th:checked="${ProfilesInfo.getGender()==0}" class="flat" type="radio" name="ugender" value="1" > &nbsp; 女 &nbsp;
+                                                                </div>
+                                                                <!--<a class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModa7">-->
+                                                                    <!--<i class="fa fa-edit"></i>Edit-->
+                                                                <!--</a>-->
+                                                            </div>
+                                                            <div class="modal fade" id="myModa7" tabindex="-1" role="dialog" aria-labelledby="myModalLabe7" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                                &times;
+                                                                            </button>
+                                                                            <h4 class="modal-title" id="myModalLabe7">
+                                                                                <i class=""></i>性别
+                                                                            </h4>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div id="gender2">
+                                                                                <!--<input th:checked="${ProfilesInfo.getGender()==1}" class="flat" type="radio" name="ugender" value="0" > &nbsp; 男 &nbsp;-->
+                                                                                <!--<input th:checked="${ProfilesInfo.getGender()==0}" class="flat" type="radio" name="ugender" value="1" > &nbsp; 女 &nbsp;-->
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-primary" data-dismiss="modal">关闭
+                                                                            </button>
+                                                                            <button type="submit"  class="btn btn-success">提交更改</button>
+                                                                        </div>
+                                                                    </div><!-- /.modal-content -->
+                                                                </div><!-- /.modal -->
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="ln_solid"></div>
+                                                        <div class="form-group">
+                                                            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                                <button type="button" class="btn btn-primary">取消</button>
+                                                                <button class="btn btn-primary" type="reset">重置</button>
+                                                                <button type="submit" class="btn btn-success">提交</button>
+                                                            </div>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <!--start of user-activity-graph-->
+                                     <!--end of user-activity-graph -->
+
+                                    <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                            <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Recent Activity</a>
+                                            </li>
+                                            <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Projects Worked on</a>
+                                            </li>
+                                            <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Profile</a>
+                                            </li>
+                                        </ul>
+                                        <div id="myTabContent" class="tab-content">
+                                            <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+
+                                                <!-- start recent activity -->
+                                                <ul class="messages">
+                                                    <li>
+                                                        <img src="../../../static/images/img.jpg" class="avatar" alt="Avatar">
+                                                        <div class="message_date">
+                                                            <h3 class="date text-info">24</h3>
+                                                            <p class="month">May</p>
+                                                        </div>
+                                                        <div class="message_wrapper">
+                                                            <h4 class="heading">Desmond Davison</h4>
+                                                            <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                                                            <br />
+                                                            <p class="url">
+                                                                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                                                                <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+                                                            </p>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <img src="../../../static/images/img.jpg" class="avatar" alt="Avatar">
+                                                        <div class="message_date">
+                                                            <h3 class="date text-error">21</h3>
+                                                            <p class="month">May</p>
+                                                        </div>
+                                                        <div class="message_wrapper">
+                                                            <h4 class="heading">Brian Michaels</h4>
+                                                            <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                                                            <br />
+                                                            <p class="url">
+                                                                <span class="fs1" aria-hidden="true" data-icon=""></span>
+                                                                <a href="#" data-original-title="">Download</a>
+                                                            </p>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <img src="../../../static/images/img.jpg" class="avatar" alt="Avatar">
+                                                        <div class="message_date">
+                                                            <h3 class="date text-info">24</h3>
+                                                            <p class="month">May</p>
+                                                        </div>
+                                                        <div class="message_wrapper">
+                                                            <h4 class="heading">Desmond Davison</h4>
+                                                            <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                                                            <br />
+                                                            <p class="url">
+                                                                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                                                                <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+                                                            </p>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <img src="../../../static/images/img.jpg" class="avatar" alt="Avatar">
+                                                        <div class="message_date">
+                                                            <h3 class="date text-error">21</h3>
+                                                            <p class="month">May</p>
+                                                        </div>
+                                                        <div class="message_wrapper">
+                                                            <h4 class="heading">Brian Michaels</h4>
+                                                            <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                                                            <br />
+                                                            <p class="url">
+                                                                <span class="fs1" aria-hidden="true" data-icon=""></span>
+                                                                <a href="#" data-original-title="">Download</a>
+                                                            </p>
+                                                        </div>
+                                                    </li>
+
+                                                </ul>
+                                                <!-- end recent activity -->
+
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+
+                                                <!-- start user projects -->
+                                                <table class="data table table-striped no-margin">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Project Name</th>
+                                                        <th>Client Company</th>
+                                                        <th class="hidden-phone">Hours Spent</th>
+                                                        <th>Contribution</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>New Company Takeover Review</td>
+                                                        <td>Deveint Inc</td>
+                                                        <td class="hidden-phone">18</td>
+                                                        <td class="vertical-align-mid">
+                                                            <div class="progress">
+                                                                <div class="progress-bar progress-bar-success" data-transitiongoal="35"></div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td>New Partner Contracts Consultanci</td>
+                                                        <td>Deveint Inc</td>
+                                                        <td class="hidden-phone">13</td>
+                                                        <td class="vertical-align-mid">
+                                                            <div class="progress">
+                                                                <div class="progress-bar progress-bar-danger" data-transitiongoal="15"></div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>3</td>
+                                                        <td>Partners and Inverstors report</td>
+                                                        <td>Deveint Inc</td>
+                                                        <td class="hidden-phone">30</td>
+                                                        <td class="vertical-align-mid">
+                                                            <div class="progress">
+                                                                <div class="progress-bar progress-bar-success" data-transitiongoal="45"></div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>4</td>
+                                                        <td>New Company Takeover Review</td>
+                                                        <td>Deveint Inc</td>
+                                                        <td class="hidden-phone">28</td>
+                                                        <td class="vertical-align-mid">
+                                                            <div class="progress">
+                                                                <div class="progress-bar progress-bar-success" data-transitiongoal="75"></div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <!-- end user projects -->
+
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                                                <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui
+                                                    photo booth letterpress, commodo enim craft beer mlkshk </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer th:replace="~{production/commons/common::footer_content}"></footer>
+        <!-- /footer content -->
+    </div>
+</div>
+
+<!-- jQuery -->
+<script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+<!-- Bootstrap -->
+<script th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+<!-- FastClick -->
+<script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
+<!-- NProgress -->
+<script th:src="@{/vendors/nprogress/nprogress.js}"></script>
+<!-- iCheck -->
+<script th:src="@{/vendors/iCheck/icheck.min.js}"></script>
+<!-- morris.js -->
+<script th:src="@{/vendors/raphael/raphael.min.js}"></script>
+<!-- bootstrap-progressbar -->
+<script th:src="@{/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js}"></script>
+<!-- bootstrap-daterangepicker -->
+<script th:src="@{/vendors/moment/min/moment.min.js}"></script>
+<script th:src="@{/vendors/bootstrap-daterangepicker/daterangepicker.js}"></script>
+<!-- jquery.inputmask -->
+<script th:src="@{/vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
+
+
+<!-- Custom Theme Scripts -->
+<script th:src="@{/build/js/custom.min.js}"></script>
+
+
+</body>
+</html>

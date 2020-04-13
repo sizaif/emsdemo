@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sizaif.emsdemo.mapper.UserMapper">
+
+
+    <!--一对一(多对一关系) 用association-->
+    <!--映射表-->
+    <resultMap id="MemberUserMap" type="Member">
+        <!--column数据库中的字段，property实体类中的属性-->
+        <id column="id" property="id"/>
+        <result column="memberRank_id" property="memberRankId"/>
+        <result column="address" property="address"/>
+        <result column="birth" property="birth"/>
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+        <result column="phone" property="phone"/>
+        <result column="truename" property="truename"/>
+        <result column="school" property="school"/>
+        <result column="image" property="image"/>
+
+        <!--关联查询 property users对应数据库中表明 javaType对应到实体类名字-->
+        <association property="users" javaType="Users">
+            <id column="id" property="id"/>
+            <result column="createDate" property="createDate"/>
+            <result column="modifyDate" property="modifyDate"/>
+            <result column="isEnabled" property="isEnabled"/>
+            <result column="isLocked" property="isLocked"/>
+            <result column="lastLoginDate" property="lastLoginDate"/>
+            <result column="lastLoginIp" property="lastLogIp"/>
+            <result column="lockDate" property="lockDate"/>
+            <result column="uname" property="name"/>
+            <result column="encodePassword" property="password"/>
+            <result column="role" property="role"/>
+        </association>
+    </resultMap>
+    
+    <!--<resultMap id="UsersRoleMap" type="Users">-->
+        <!--<id column="id" property="id"/>-->
+        <!--<result column="createDate" property="creatDate"/>-->
+        <!--<result column="modifyDate" property="modifyDate"/>-->
+        <!--<result column="isEnabled" property="isEnabled"/>-->
+        <!--<result column="isLocked" property="isLocked"/>-->
+        <!--<result column="lastLoginDate" property="lastLoginDate"/>-->
+        <!--<result column="lastLoginIp" property="lastLogIp"/>-->
+        <!--<result column="lockDate" property="lockDate"/>-->
+        <!--<result column="name" property="name"/>-->
+        <!--<result column="encodePassword" property="password"/>-->
+        <!--<association property="role" javaType="Role">-->
+            <!--<id column="id" property="id"/>-->
+
+        <!--</association>-->
+    <!--</resultMap>-->
+
+    <!--映射表-->
+    <resultMap id="UsersMap" type="Users">
+        <id column="id" property="id" />
+        <!--column数据库中的字段，property实体类中的属性-->
+        <result column="createDate" property="createDate"/>
+        <result column="modifyDate" property="modifyDate"/>
+        <result column="isEnabled" property="isEnabled"/>
+        <result column="isLocked" property="isLocked"/>
+        <result column="lastLoginDate" property="lastLoginDate"/>
+        <result column="lastLoginIp" property="lastLogIp"/>
+        <result column="lockDate" property="lockDate"/>
+        <result column="uname" property="name"/>
+        <result column="encodePassword" property="password"/>
+    </resultMap>
+
+    <!--关联表查询-->
+    <select id="queryAllUserMemberList" resultMap="MemberUserMap">
+        SELECT
+            member.* ,users.*
+         FROM
+            member ,users
+         WHERE
+          member.id = users.id
+    </select>
+
+    
+    <select id="queryAllUserList" resultMap="UsersMap">
+        SELECT
+          saishiguanli.users.*
+        FROM
+          users
+    </select>
+
+    <select id="queryOneUserMemberById" resultMap="MemberUserMap">
+        select
+          member.* ,users.*
+        from
+          member ,users
+        where  member.id = users.id AND users.id = #{uid};
+    </select>
+
+    <select id="queryOneUserById" resultType="Users">
+        SELECT
+          saishiguanli.users.*
+        FROM
+          users
+        WHERE users.id = #{uid}
+    </select>
+
+
+    <select id="queryUserByName" parameterType="map" resultMap="UsersMap">
+        SELECT saishiguanli.users.* FROM saishiguanli.users WHERE users.uname=#{userName};
+    </select>
+
+    <!--动态sql插入-->
+    <!--keyColum-数据库中主键名称, keyProperty-实体类中主键名称,useGeneratedKeys="true" 拿到主键-->
+    <insert id="addUser" parameterType="map" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO saishiguanli.users
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createDate != null">
+                createDate,
+            </if>
+            <if test="modifyDate != null">
+                modifyDate,
+            </if>
+            <if test="isEnabled != null">
+                isEnabled,
+            </if>
+            <if test="isLocked != null">
+                isLocked,
+            </if>
+            <if test="lastLoginDate != null">
+                lastLoginDate,
+            </if>
+            <if test="lastLoginIp != null">
+                lastLoginIp,
+            </if>
+            <if test="lockDate != null">
+                lockDate,
+            </if>
+            <if test="uname != null">
+                uname,
+            </if>
+            <if test="encodePassword != null">
+                encodePassword,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="modifyDate != null">
+                #{modifyDate},
+            </if>
+            <if test="isEnabled != null">
+                #{isEnabled},
+            </if>
+            <if test="isLocked != null">
+                #{isLocked},
+            </if>
+            <if test="lastLoginDate != null">
+                #{lastLoginDate},
+            </if>
+            <if test="lastLoginIp != null">
+                #{lastLoginIp},
+            </if>
+            <if test="lockDate != null">
+                #{lockDate},
+            </if>
+            <if test="uname != null">
+                #{uname},
+            </if>
+            <if test="encodePassword != null">
+                #{encodePassword},
+            </if>
+        </trim>
+    </insert>
+
+
+    <!--动态sql更新User-->
+    <update id="updateUser" parameterType="map" >
+        update saishiguanli.users
+        <trim prefix="set" suffixOverrides=",">
+            <if test="createDate!=null">createDate=#{createDate},</if>
+            <if test="modifyDate!=null">modifyDate=#{modifyDate},</if>
+            <if test="isEnabled!=null">isEnabled=#{isEnabled},</if>
+            <if test="isLocked!=null">isLocked=#{isLocked},</if>
+            <if test="lastLoginDate!=null">lastLoginDate=#{lastLoginDate},</if>
+            <if test="lastLoginIp!=null">lastLoginIp=#{lastLoginIp},</if>
+            <if test="lockDate!=null">lockDate=#{lockDate},</if>
+            <if test="name!=null"> uname=#{name},</if>
+            <if test="encodePassword!=null"> encodePassword=#{encodePassword},</if>
+            <if test="role!=null"> role=#{role},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <!--删除用户By ID-->
+    <delete id="deleteUserById" parameterType="int">
+        delete from saishiguanli.users where id= #{id}
+    </delete>
+
+
+</mapper>
