@@ -1,7 +1,19 @@
-package com.sizaif.emsdemo.pojo;
+package com.sizaif.emsdemo.dto;
 
-public class Contest {
+import com.sizaif.emsdemo.pojo.Member;
+import com.sizaif.emsdemo.pojo.Team;
 
+import java.util.List;
+
+/**
+ * @author ：sizaif
+ * @date ：Created in 2020/4/14 22:58
+ * @description：赛事以及赛事成员表赛事队伍表
+ * @modified By：sizaif
+ * @version: 1.0$
+ */
+
+public class ContestVO {
     private int Cid;
 
     private int CreatorId;
@@ -26,24 +38,9 @@ public class Contest {
 
     private String Type;
 
-    public Contest() {
-    }
+    private List<Member> memberList;
 
-    public String getLength() {
-        return Length;
-    }
-
-    public void setLength(String length) {
-        Length = length;
-    }
-
-    public String getType() {
-        return Type;
-    }
-
-    public void setType(String type) {
-        Type = type;
-    }
+    private List<Team> teamList;
 
     public int getCid() {
         return Cid;
@@ -83,6 +80,14 @@ public class Contest {
 
     public void setMemo(String memo) {
         Memo = memo;
+    }
+
+    public String getLength() {
+        return Length;
+    }
+
+    public void setLength(String length) {
+        Length = length;
     }
 
     public String getCaption() {
@@ -125,9 +130,33 @@ public class Contest {
         EndTime = endTime;
     }
 
+    public String getType() {
+        return Type;
+    }
+
+    public void setType(String type) {
+        Type = type;
+    }
+
+    public List<Member> getMemberList() {
+        return memberList;
+    }
+
+    public void setMemberList(List<Member> memberList) {
+        this.memberList = memberList;
+    }
+
+    public List<Team> getTeamList() {
+        return teamList;
+    }
+
+    public void setTeamList(List<Team> teamList) {
+        this.teamList = teamList;
+    }
+
     @Override
     public String toString() {
-        return "Contest{" +
+        return "ContestVO{" +
                 "Cid=" + Cid +
                 ", CreatorId=" + CreatorId +
                 ", isEnabled=" + isEnabled +
@@ -140,6 +169,8 @@ public class Contest {
                 ", StartTime='" + StartTime + '\'' +
                 ", EndTime='" + EndTime + '\'' +
                 ", Type='" + Type + '\'' +
+                ", memberList=" + memberList +
+                ", teamList=" + teamList +
                 '}';
     }
 }

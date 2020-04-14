@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sizaif.emsdemo.mapper.ContestMemberMapper">
+
+    <!--映射表-->
+    <resultMap id="BaseResultMap" type="com.sizaif.emsdemo.pojo.ContestMemberkey" >
+        <id column="contest_id" property="contestId" jdbcType="INTEGER" />
+        <id column="member_id" property="memberId" jdbcType="INTEGER" />
+        <id column="isEnabled" property="isEnabled" jdbcType="INTEGER" />
+    </resultMap>
+
+    <insert id="insert" parameterType="com.sizaif.emsdemo.pojo.ContestMemberkey" >
+        insert into saishiguanli.contest_member
+          (contest_id, member_id,isEnabled)
+        values
+        (#{contestId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}),#{isEnabled,jdbcType=INTEGER})
+    </insert>
+
+    <!--动态insert-->
+    <insert id="insertSelective" parameterType="com.sizaif.emsdemo.pojo.ContestMemberkey" >
+        insert into saishiguanli.contest_member
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="contestId != null" >
+                contest_id,
+            </if>
+            <if test="memberId != null" >
+                member_id,
+            </if>
+            <if test="isEnabled != null" >
+                isEnabled,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="contestId != null" >
+                #{contestId,jdbcType=INTEGER},
+            </if>
+            <if test="memberId != null" >
+                #{memberId,jdbcType=INTEGER},
+            </if>
+            <if test="isEnabled != null" >
+                #{isEnabled,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findByMember" resultMap="BaseResultMap" parameterType="int">
+        SELECT contest_id,member_id,isEnabled
+        FROM saishiguanli.contest_member
+        WHERE member_id = #{memberId}
+    </select>
+
+    <select id="findByContest" resultMap="BaseResultMap" parameterType="int">
+        SELECT contest_id,member_id,isEnabled
+        FROM saishiguanli.contest_member
+        WHERE contest_id = #{contestId}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.sizaif.emsdemo.pojo.ContestMemberkey" >
+        delete from saishiguanli.contest_member
+        where contest_id = #{contestId,jdbcType=INTEGER}
+        and member_id = #{memberId,jdbcType=INTEGER}
+    </delete>
+</mapper>

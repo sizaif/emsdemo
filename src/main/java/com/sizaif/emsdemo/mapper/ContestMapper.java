@@ -28,4 +28,12 @@ public interface ContestMapper {
      */
     List<Contest> getAllContest();
 
+
+    /**
+     * 通过比赛类别查询
+     * @param type
+     * @return
+     */
+    List<Contest> findByType(String type);
+
 }

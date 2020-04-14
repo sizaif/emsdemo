@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sizaif.emsdemo.mapper.ContestMapper">
+
+    <!--映射表-->
+    <resultMap id="BaseResultMap" type="Contest" >
+        <id column="cid" property="Cid" jdbcType="INTEGER" />
+        <result column="name" property="Name" jdbcType="VARCHAR" />
+        <result column="caption" property="Caption" jdbcType="VARCHAR" />
+        <result column="memo" property="Memo" jdbcType="VARCHAR" />
+        <result column="creatorId" property="CreatorId" jdbcType="INTEGER" />
+        <result column="createDate" property="CreateDate" jdbcType="TIMESTAMP" />
+        <result column="modifyDate" property="ModifyDate" jdbcType="TIMESTAMP" />
+        <result column="startTime" property="StartTime" jdbcType="TIMESTAMP" />
+        <result column="endTime" property="EndTime" jdbcType="TIMESTAMP" />
+        <result column="isEnabled" property="isEnabled" jdbcType="INTEGER" />
+        <result column="length" property="Length" jdbcType="VARCHAR" />
+        <result column="type" property="Type" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        cid, name, caption, memo, creatorId, length, createDate,modifyDate, startTime,endTime,isEnabled,type
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from saishiguanli.contest
+        where cid = #{id,jdbcType=INTEGER}
+    </select>
+    <!--动态插入-->
+    <insert id="insertSelective" parameterType="Contest" >
+        insert into saishiguanli.contest
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="Cid != null" >
+                cid,
+            </if>
+            <if test="Name != null" >
+                name,
+            </if>
+            <if test="Caption != null" >
+                caption,
+            </if>
+            <if test="Memo != null" >
+                memo,
+            </if>
+            <if test="CreatorId != null" >
+                creatorId,
+            </if>
+            <if test="Length != null" >
+                length,
+            </if>
+            <if test="CreateDate != null" >
+                createDate,
+            </if>
+            <if test="ModifyDate != null" >
+                modifyDate,
+            </if>
+            <if test="StartTime != null" >
+                startTime,
+            </if>
+            <if test="EndTime != null" >
+                endTime,
+            </if>
+            <if test="isEnabled != null" >
+                isEnabled,
+            </if>
+            <if test="Type != null" >
+                type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="Cid != null" >
+                #{Cid,jdbcType=INTEGER},
+            </if>
+            <if test="Name != null" >
+                #{Name,jdbcType=VARCHAR},
+            </if>
+            <if test="Caption != null" >
+                #{Caption,jdbcType=VARCHAR},
+            </if>
+            <if test="Memo != null" >
+                #{Memo,jdbcType=VARCHAR},
+            </if>
+            <if test="CreatorId != null" >
+                #{CreatorId},
+            </if>
+            <if test="Length != null" >
+                #{Length},
+            </if>
+            <if test="CreateDate != null" >
+                #{CreateDate},
+            </if>
+            <if test="ModifyDate != null" >
+                #{ModifyDate},
+            </if>
+            <if test="StartTime != null" >
+                #{StartTime},
+            </if>
+            <if test="EndTime != null" >
+                #{EndTime},
+            </if>
+            <if test="isEnabled != null" >
+                #{isEnabled},
+            </if>
+            <if test="Type != null" >
+                #{Type},
+            </if>
+        </trim>
+    </insert>
+
+    <!--动态更新-->
+    <update id="updateByPrimaryKeySelective" parameterType="Contest" >
+        update saishiguanli.contest
+        <set >
+            <if test="Name != null" >
+                name = #{Name},
+            </if>
+            <if test="Caption != null" >
+                caption = #{Caption},
+            </if>
+            <if test="Memo != null" >
+                memo = #{Memo},
+            </if>
+            <if test="CreatorId != null" >
+                creatorId = #{CreatorId},
+            </if>
+            <if test="Length != null" >
+                length = #{Length},
+            </if>
+            <if test="CreateDate != null" >
+                createDate = #{CreateDate},
+            </if>
+            <if test="ModifyDate != null" >
+                modifyDate = #{ModifyDate},
+            </if>
+            <if test="StartTime != null" >
+                startTime = #{StartTime},
+            </if>
+            <if test="EndTime != null" >
+                endTime = #{EndTime},
+            </if>
+            <if test="isEnabled != null" >
+                isEnabled = #{isEnabled},
+            </if>
+            <if test="Type != null" >
+                type = #{Type},
+            </if>
+        </set>
+        where Cid = #{id}
+    </update>
+
+    <!--=Start findAll 查找所有比赛列表-->
+    <select id="getAllContest" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from saishiguanli.contest
+    </select>
+
+    <select id="findByType" resultMap="BaseResultMap">
+        SELECT
+          <include refid="Base_Column_List" />
+        FROM
+          saishiguanli.contest
+        WHERE
+          type = #{Type}
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from saishiguanli.contest
+        where Cid = #{id}
+    </delete>
+
+</mapper>
