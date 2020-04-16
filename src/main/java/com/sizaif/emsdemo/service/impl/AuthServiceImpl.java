@@ -223,16 +223,16 @@ public class AuthServiceImpl implements AuthService{
         return permissionsMapper.findPermsByRole(id);
     }
 
-    /**
-     * 根据用户id获取权限数据
-     *
-     * @param id
-     * @return
-     */
-    @Override
-    public List<PermissionVO> getUserPerms(Integer id) {
-        return null;
-    }
+//    /**
+//     * 根据用户id获取权限数据
+//     *
+//     * @param id
+//     * @return
+//     */
+//    @Override
+//    public List<PermissionVO> getUserPerms(Integer id) {
+//        return null;
+//    }
 
 
 

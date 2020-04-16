@@ -141,7 +141,7 @@
     </resultMap>
 
     <!--=Start getUserPerms 根据用户ID查找权限树列表-->
-    <select id="findTeamInfo" resultType="TeamInfoResultMap">
+    <select id="findTeamInfo" resultMap="TeamInfoResultMap">
         SELECT
         t.*,m.*
         FROM saishiguanli.team t

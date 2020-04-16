@@ -1,5 +1,6 @@
 package com.sizaif.emsdemo.mapper;
 
+import com.sizaif.emsdemo.dto.ContestVO;
 import com.sizaif.emsdemo.pojo.Contest;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -35,5 +36,20 @@ public interface ContestMapper {
      * @return
      */
     List<Contest> findByType(String type);
+
+
+    /**
+     * 通过用户Id 查询自己参加的比赛
+     * @param memberId
+     * @return
+     */
+    List<ContestVO> findContestByMemberId(int memberId);
+
+    /**
+     * 通过组队ID 查询队伍参加的比赛
+     * @param teamId
+     * @return
+     */
+    List<ContestVO> findContestByTeamId(int teamId);
 
 }

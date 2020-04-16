@@ -1,11 +1,14 @@
 package com.sizaif.emsdemo.TestController;
 
+import com.sizaif.emsdemo.dto.ContestVO;
 import com.sizaif.emsdemo.dto.PermissionVO;
+import com.sizaif.emsdemo.mapper.ContestMapper;
 import com.sizaif.emsdemo.mapper.MemberMapper;
 import com.sizaif.emsdemo.mapper.UserMapper;
 import com.sizaif.emsdemo.pojo.Member;
 import com.sizaif.emsdemo.pojo.Users;
 import com.sizaif.emsdemo.service.AuthService;
+import com.sizaif.emsdemo.service.ContestService;
 import com.sizaif.emsdemo.service.MemberService;
 import com.sizaif.emsdemo.service.UsersService;
 import com.sizaif.emsdemo.utils.DateUtils;
@@ -34,6 +37,10 @@ public class TestUserMapper {
     private MemberService memberService;
 
     @Autowired
+    private ContestService contestService;
+    @Autowired
+    private ContestMapper contestMapper;
+    @Autowired
     private AuthService authService;
     @Autowired
     private WebApplicationContext wac;
@@ -45,9 +52,9 @@ public class TestUserMapper {
     @Test
     public void Test3(){
 
-        List<PermissionVO> permissionVOList = authService.findPerms();
-        for (PermissionVO permissionVO : permissionVOList) {
-            System.out.println(permissionVO.toString());
+        List<ContestVO> contestVOList = contestService.getContestByMember(1);
+        for (ContestVO contestVO : contestVOList) {
+            System.out.println(contestVO.toString());
         }
     }
 

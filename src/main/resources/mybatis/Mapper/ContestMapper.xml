@@ -6,18 +6,18 @@
 
     <!--映射表-->
     <resultMap id="BaseResultMap" type="Contest" >
-        <id column="cid" property="Cid" jdbcType="INTEGER" />
-        <result column="name" property="Name" jdbcType="VARCHAR" />
-        <result column="caption" property="Caption" jdbcType="VARCHAR" />
-        <result column="memo" property="Memo" jdbcType="VARCHAR" />
-        <result column="creatorId" property="CreatorId" jdbcType="INTEGER" />
-        <result column="createDate" property="CreateDate" jdbcType="TIMESTAMP" />
-        <result column="modifyDate" property="ModifyDate" jdbcType="TIMESTAMP" />
-        <result column="startTime" property="StartTime" jdbcType="TIMESTAMP" />
-        <result column="endTime" property="EndTime" jdbcType="TIMESTAMP" />
-        <result column="isEnabled" property="isEnabled" jdbcType="INTEGER" />
-        <result column="length" property="Length" jdbcType="VARCHAR" />
-        <result column="type" property="Type" jdbcType="VARCHAR" />
+        <id column="cid" property="Cid" />
+        <result column="name" property="Name"/>
+        <result column="caption" property="Caption"  />
+        <result column="memo" property="Memo"  />
+        <result column="creatorId" property="CreatorId"  />
+        <result column="createDate" property="CreateDate"  />
+        <result column="modifyDate" property="ModifyDate"  />
+        <result column="startTime" property="StartTime"  />
+        <result column="endTime" property="EndTime"  />
+        <result column="isEnabled" property="isEnabled"  />
+        <result column="length" property="Length"  />
+        <result column="type" property="Type"  />
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -174,4 +174,72 @@
         where Cid = #{id}
     </delete>
 
+    <!--单人赛比赛映射表-->
+    <resultMap id="ContestMemberResultMap" type="com.sizaif.emsdemo.dto.ContestVO">
+        <id column="cid" property="Cid"  />
+        <result column="name" property="Name"  />
+        <result column="caption" property="Caption"  />
+        <result column="memo" property="Memo"  />
+        <result column="creatorId" property="CreatorId"  />
+        <result column="createDate" property="CreateDate"  />
+        <result column="modifyDate" property="ModifyDate"  />
+        <result column="startTime" property="StartTime"  />
+        <result column="endTime" property="EndTime"  />
+        <result column="isEnabled" property="isEnabled"  />
+        <result column="length" property="Length"  />
+        <result column="type" property="Type"  />
+        <collection property="memberList" ofType="com.sizaif.emsdemo.pojo.Member">
+            <result column="id" property="id"/>
+            <result column="memberRank_id" property="memberRankId"/>
+            <result column="address" property="address"/>
+            <result column="birth" property="birth"/>
+            <result column="email" property="email"/>
+            <result column="gender" property="gender"/>
+            <result column="phone" property="phone"/>
+            <result column="truename" property="truename"/>
+            <result column="school" property="school"/>
+            <result column="image" property="image"/>
+        </collection>
+    </resultMap>
+
+    <!--组队赛比赛映射表-->
+    <resultMap id="ContestTeamResultMap" type="com.sizaif.emsdemo.dto.ContestVO">
+        <id column="cid" property="Cid"  />
+        <result column="name" property="Name"  />
+        <result column="caption" property="Caption"  />
+        <result column="memo" property="Memo"  />
+        <result column="creatorId" property="CreatorId"  />
+        <result column="createDate" property="CreateDate"  />
+        <result column="modifyDate" property="ModifyDate"  />
+        <result column="startTime" property="StartTime"  />
+        <result column="endTime" property="EndTime"  />
+        <result column="isEnabled" property="isEnabled"  />
+        <result column="length" property="Length"  />
+        <result column="type" property="Type"  />
+        <collection property="memberList" ofType="com.sizaif.emsdemo.pojo.Team">
+            <id column="id" property="id"/>
+            <result column="name" property="name"/>
+            <result column="school" property="school"/>
+            <result column="captain_id" property="captainId"/>
+            <result column="createDate" property="createDate"/>
+            <result column="modifyDate" property="modifyDate"/>
+            <result column="isEnabled" property="isEnabled"/>
+        </collection>
+    </resultMap>
+    
+    <select id="findContestByMemberId" parameterType="int" resultMap="ContestMemberResultMap">
+        SELECT c.*,m.*
+        FROM saishiguanli.contest c
+        LEFT JOIN saishiguanli.contest_member cm ON cm.contest_id = c.cid
+        LEFT JOIN saishiguanli.member m ON m.id = cm.member_id
+        WHERE m.id = #{id}
+    </select>
+
+    <select id="findContestByTeamId" parameterType="int" resultMap="ContestTeamResultMap">
+        SELECT c.*,t.*
+        FROM saishiguanli.contest c
+        LEFT JOIN saishiguanli.contest_team ct ON ct.contest_id = c.cid
+        LEFT JOIN saishiguanli.team t ON t.id = ct.team_id
+        WHERE t.id = #{id}
+    </select>
 </mapper>

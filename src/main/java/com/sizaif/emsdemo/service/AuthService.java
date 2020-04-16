@@ -80,12 +80,12 @@ public interface AuthService {
 	 */
 	List<Permission> findPermsByRoleId(Integer id);
 
-	/**
-	 * 根据用户id获取权限数据
-	 * @param id
-	 * @return
-	 */
-	List<PermissionVO> getUserPerms(Integer id);
+//	/**
+//	 * 根据用户id获取权限数据
+//	 * @param id
+//	 * @return
+//	 */
+//	List<PermissionVO> getUserPerms(Integer id);
 
 
 }

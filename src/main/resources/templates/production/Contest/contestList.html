@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:shiro="http://www.thymeleaf.org/thymeleaf-extras-shiro">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
@@ -8,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>权限表管理</title>
+    <title>赛事列表</title>
 
     <!-- Bootstrap -->
     <link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
@@ -22,6 +21,9 @@
     <link th:href="@{/vendors/layui/css/layui.css}" rel="stylesheet">
     <!-- Switchery -->
     <link th:href="@{/vendors/switchery/dist/switchery.min.css}" rel="stylesheet">
+
+    <!--bootstrap-material-design-dist-->
+    <!--<link th:href="@{/vendors/bootstrap-material-design-dist/css/bootstrap-material-design.css}" rel="stylesheet">-->
 
     <!-- Datatables -->
     <link th:href="@{/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css}" rel="stylesheet">
@@ -52,8 +54,8 @@
             <div class="">
                 <div class="page-title">
                     <div class="title_left">
-                        <h3>Permission
-                            <small>权限表管理</small>
+                        <h3>Users
+                            <small>赛事表</small>
                         </h3>
                     </div>
 
@@ -75,8 +77,8 @@
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>权限表
-                                    <small>Permission</small>
+                                <h2>赛事表
+                                    <small>Contest</small>
                                 </h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -97,138 +99,101 @@
                                 <div class="clearfix"></div>
                             </div>
                             <div class="x_content">
-
-
                                 <p class="text-muted font-13 m-b-30">
-                                    DataTables has most features enabled by default, so all you need to do to use it
-                                    with your own tables is to call the construction function:
-                                    <code>$().DataTable();</code>
+
                                 </p>
                                 <p>
-                                    <!--                    <button id="detailBtn" class="btn btn-info " type="button"><i class="fa fa-trash-o"></i> 查看</button>-->
-                                    <!--                    <button id="submitBtn" class="btn btn-info " type="button"><i class="fa fa-trash-o"></i> 提交</button>-->
-                                <!--  <button id="addBtn" class="btn btn-info " type="button"><i class="fa fa-user"></i>添加</button>-->
-                                    <a  class="btn btn-info " th:onclick="addPerm(0,1)"><i class="fa fa-user"></i> 添加</a>
+
                                     <button id="printBtn" class="btn btn-info " type="button"><i
                                             class="fa fa-print"></i> 打印
                                     </button>
                                                        
                                     <button id="dowloadBtn" class="btn btn-info " type="button"><i
-                                            class="fa fa-file-excel-o"></i> excel下载
+                                            class="fa fa-file-excel-o"></i>excel下载
                                     </button>
                                     <button id="dowloadpdfBtn" class="btn btn-info " type="button"><i
-                                            class="fa fa-file-pdf-o"></i> pdf下载
+                                            class="fa fa-file-pdf-o"></i>pdf下载
                                     </button>
                                                        
                                     <button id="refreshBt" class="btn btn-info " type="button"><i
                                             class="fa fa-refresh"></i> 刷新
                                     </button>
                                 </p>
-                                <table id="datatable" class="table table-striped table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th>序列</th>
-                                        <th>权限名称</th>
-                                        <th>权限类别</th>
-                                        <th>权限代码</th>
-                                        <th>管理页</th>
-                                        <th>创建时间</th>
-                                        <th>修改时间</th>
-                                        <th>描述</th>
-                                        <th>操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="perm:${permList}">
-                                        <td th:text="${perm.getId()}"></td>
-                                        <td th:text="${perm.getName()}"></td>
-                                        <td th:text="((${perm.getIstype()} == 0 ? '菜单': '功能'))"></td>
-                                        <td th:text="${perm.getCode()}"></td>
-                                        <td th:text="${perm.getPage()}"></td>
-                                        <td th:text="${perm.getInsertTime()}"></td>
-                                        <td th:text="${perm.getUpdateTime()}"></td>
-                                        <td th:text="${perm.getDescpt()}"></td>
-                                        <td>
 
-                                            <a class="btn btn-info btn-round btn-xs " th:onclick="edit( [[${perm.getId()}]],0);">
-                                                <i class="fa fa-pencil"> 编辑</i></a>
-                                            <a class="btn btn-info btn-round btn-xs "  th:onclick="addPerm([[${perm.getId()}]],1);">
-                                                <i class="fa fa-plus-circle"> 添加子权限节点</i></a>
-                                            <a class="btn btn-danger btn-round btn-xs" th:onclick="del([[${perm.getId()}]],[[${perm.getName()}]]);">
-                                                <i class="fa fa-trash-o"> 删除</i></a>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                <div >
+                                    <div class="dashboard-widget-content">
+                                        <ul class="">
+                                            <li class="" th:each="item:${pageInfo.list}">
 
+
+                                                <div class="">
+                                                        <h2 class="title" th:text="${item.getCaption()}"></h2>
+
+
+                                                        <span th:text="${item.getStartTime()}"></span>
+
+                                                        <ul>
+                                                            <li th:text="${item.getCid()}"></li>
+                                                            <li th:text="${item.getLength()}"></li>
+                                                            <li th:text="${item.getEndTime()}"></li>
+                                                        </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <ul class="pagination">
+                                        <li class="page-item"><a class="page-link"><span th:text="第+${pageInfo.pageNum}+页"></span></a></li>
+                                        <li class="page-item"><a class="page-link" th:href="@{/contest/testPageHelper}">首页</a></li>
+                                        <li class="page-item"><a class="page-link" th:href="@{/contest/testPageHelper(pageNum=${pageInfo.getPrePage()})}">前一页</a></li>
+
+                                        <li th:each="num:${pageInfo.navigatepageNums}" class="page-item">
+                                            <a class="page-link" th:href="@{/contest/testPageHelper(pageNum=${num})}" th:text="${num}"></a></li>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" th:href="@{/contest/testPageHelper(pageNum=${pageInfo.getNextPage()})}">下一页</a></li>
+                                        <li class="page-item"><a class="page-link" th:href="@{/contest/testPageHelper(pageNum=${pageInfo.pages})}">尾页</a></li>
+                                    </ul>
+
+                                    <!--<button class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-folder"> 查看</i></button>-->
+
+                                    <!--<a class="btn btn-info btn-xs " th:href="@{/users/toUpdateMemberUserInfoPage/}+${jsonuserlist.getUsers().getId()}">-->
+                                        <!--<i class="fa fa-pencil"> 编辑用户详细信息</i></a>-->
+                                    <!--<a class="btn btn-danger btn-xs" th:href="@{/users/toDeleteUser/}+${jsonuserlist.getUsers().getId()}">-->
+                                        <!--<i class="fa fa-trash-o"> 删除</i></a>-->
+
+                                </div>
+
+                                <!-- modals -->
+                                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal1"><span aria-hidden="true">×</span>
+                                                </button>
+                                                <h4 class="modal-title" id="myModalLabel">用户详细信息</h4>
+                                            </div>
+                                            <div class="modal-body">\
+                                                <p>
+                                                    未完待续,
+                                                    此处存放Member 详细信息
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
                     </div>
 
+
                 </div>
             </div>
         </div>
         <!-- /page content -->
-
-        <!--添加或编辑权限-->
-        <div class="layui-layout">
-            <div id="updatePerm" class="layer_self_wrap" style="width:500px;display:none;">
-                <form id="permForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;">
-                    <input id="type" type="hidden" name="type"/>
-                    <input id="pid" type="hidden" name="pid"/>
-                    <input id="id" type="hidden" name="id"/>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">权限名称</label>
-                        <div class="layui-input-inline">
-                            <input name="name" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
-                        </div>
-                    </div>
-                    <div class="layui-form-item" pane="">
-                        <label class="layui-form-label">权限分类</label>
-                        <div class="layui-input-block">
-                            <input name="istype" value="0" title="菜单" checked="" type="radio"/>
-                            <input name="istype" value="1" title="功能" type="radio"/>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">权限路径</label>
-                        <div class="layui-input-inline">
-                            <input name="page" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">权限code</label>
-                        <div class="layui-input-inline">
-                            <input name="code" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
-                        </div>
-                    </div>
-                    <!--<div class="layui-form-item">-->
-                        <!--<label class="layui-form-label">权限优先级</label>-->
-                        <!--<div class="layui-input-inline">-->
-                            <!--<input name="zindex" autocomplete="off" class="layui-input" type="text" onkeyup="this.value=this.value.replace(/\D/g,'')"-->
-                                   <!--onafterpaste="this.value=this.value.replace(/\D/g,'')"/>-->
-                        <!--</div>-->
-                        <!--<div class="layui-form-mid layui-word-aux">请填写大于0的整数数字</div>-->
-                    <!--</div>-->
-
-                    <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">权限描述</label>
-                        <div class="layui-input-block">
-                            <textarea name="descpt" placeholder="请输入内容" class="layui-textarea"></textarea>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <div class="layui-input-block" style="margin-left: 10px;">
-                            <button class="layui-btn"  lay-submit="" lay-filter="permSubmit">提交</button>
-                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
 
         <!-- footer content -->
         <footer th:replace="~{production/Commons/common::footer_content}"></footer>
@@ -251,7 +216,6 @@
 <script th:src="@{/vendors/iCheck/icheck.min.js}"></script>
 <!--layui-->
 <script th:src="@{/vendors/layui/layui.js}"></script>
-
 <!-- Switchery -->
 <script th:src="@{/vendors/switchery/dist/switchery.min.js}"></script>
 
@@ -278,9 +242,6 @@
 
 <!-- Custom Theme Scripts -->
 <script th:src="@{/build/js/custom.min.js}"></script>
-
-<!--permList 的操作-->
-<script th:src="@{/src/js/auth/permList.js}"></script>
 
 <script>
     // $(document).ready(function (){

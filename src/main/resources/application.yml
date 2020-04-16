@@ -54,6 +54,10 @@ spring:
 mybatis:
   typeAliasesPackage: com.sizaif.emsdemo.pojo
   mapperLocations: classpath:mybatis/Mapper/*.xml
-
+#分页pageHelper
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
 
 

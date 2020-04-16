@@ -11,7 +11,7 @@
         <id column="isEnabled" property="isEnabled" jdbcType="INTEGER" />
     </resultMap>
 
-    <insert id="insert" parameterType="com.sizaif.emsdemo.pojo.ContestTeamkey" >
+    <insert id="insert" parameterType="com.sizaif.emsdemo.pojo.ContestTeamKey" >
         insert into saishiguanli.contest_team
           (contest_id, team_id,isEnabled)
         values
@@ -19,7 +19,7 @@
     </insert>
 
     <!--动态insert-->
-    <insert id="insertSelective" parameterType="com.sizaif.emsdemo.pojo.ContestTeamkey" >
+    <insert id="insertSelective" parameterType="com.sizaif.emsdemo.pojo.ContestTeamKey" >
         insert into saishiguanli.contest_team
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="contestId != null" >
@@ -57,7 +57,7 @@
         WHERE contest_id = #{contestId}
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="com.sizaif.emsdemo.pojo.ContestTeamkey" >
+    <delete id="deleteByPrimaryKey" parameterType="com.sizaif.emsdemo.pojo.ContestTeamKey" >
         delete from saishiguanli.contest_team
         where contest_id = #{contestId,jdbcType=INTEGER}
         and team_id = #{teamId,jdbcType=INTEGER}
