@@ -127,7 +127,7 @@
 
 
                                                 <div class="">
-                                                        <h2 class="title" th:text="${item.getCaption()}"></h2>
+                                                        <h2 class="title" th:text="${item.getTitle()}"></h2>
 
 
                                                         <span th:text="${item.getStartTime()}"></span>
@@ -137,26 +137,31 @@
                                                             <li th:text="${item.getLength()}"></li>
                                                             <li th:text="${item.getEndTime()}"></li>
                                                         </ul>
+                                                        <div>
+
+                                                            <a class="btn btn-info btn-xs ">
+                                                                <i class="fa fa-edit (alias)"> 报名</i>
+                                                            </a>
+                                                        </div>
                                                 </div>
                                             </li>
                                         </ul>
                                     </div>
                                     <ul class="pagination">
                                         <li class="page-item"><a class="page-link"><span th:text="第+${pageInfo.pageNum}+页"></span></a></li>
-                                        <li class="page-item"><a class="page-link" th:href="@{/contest/testPageHelper}">首页</a></li>
-                                        <li class="page-item"><a class="page-link" th:href="@{/contest/testPageHelper(pageNum=${pageInfo.getPrePage()})}">前一页</a></li>
+                                        <li class="page-item"><a class="page-link" th:href="@{/contest/toContestList}">首页</a></li>
+                                        <li class="page-item"><a class="page-link" th:href="@{/contest/toContestList(pageNum=${pageInfo.getPrePage()})}">前一页</a></li>
 
                                         <li th:each="num:${pageInfo.navigatepageNums}" class="page-item">
-                                            <a class="page-link" th:href="@{/contest/testPageHelper(pageNum=${num})}" th:text="${num}"></a></li>
+                                            <a class="page-link" th:href="@{/contest/toContestList(pageNum=${num})}" th:text="${num}"></a></li>
                                         </li>
-                                        <li class="page-item"><a class="page-link" th:href="@{/contest/testPageHelper(pageNum=${pageInfo.getNextPage()})}">下一页</a></li>
-                                        <li class="page-item"><a class="page-link" th:href="@{/contest/testPageHelper(pageNum=${pageInfo.pages})}">尾页</a></li>
+                                        <li class="page-item"><a class="page-link" th:href="@{/contest/toContestList(pageNum=${pageInfo.getNextPage()})}">下一页</a></li>
+                                        <li class="page-item"><a class="page-link" th:href="@{/contest/toContestList(pageNum=${pageInfo.pages})}">尾页</a></li>
                                     </ul>
 
                                     <!--<button class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-folder"> 查看</i></button>-->
 
-                                    <!--<a class="btn btn-info btn-xs " th:href="@{/users/toUpdateMemberUserInfoPage/}+${jsonuserlist.getUsers().getId()}">-->
-                                        <!--<i class="fa fa-pencil"> 编辑用户详细信息</i></a>-->
+
                                     <!--<a class="btn btn-danger btn-xs" th:href="@{/users/toDeleteUser/}+${jsonuserlist.getUsers().getId()}">-->
                                         <!--<i class="fa fa-trash-o"> 删除</i></a>-->
 
@@ -243,67 +248,7 @@
 <!-- Custom Theme Scripts -->
 <script th:src="@{/build/js/custom.min.js}"></script>
 
-<script>
-    // $(document).ready(function (){
-    //     $('#datatable1').DataTable( {
-    //         buttons: [
-    //             'copy', 'excel', 'pdf','print'
-    //         ]
-    //     } );
-    // })
-    $(document).ready( function () {
-        $('#datatable2').DataTable({
-            "bProcessing" : true, //DataTables载入数据时，是否显示‘进度’提示
-            "bServerSide" : true, //是否启动服务器端数据导入
-            "bStateSave" : true, //是否打开客户端状态记录功能,此功能在ajax刷新纪录的时候不会将个性化设定回复为初始化状态
-            "bJQueryUI" : true, //是否使用 jQury的UI theme
-            "aLengthMenu" : [5, 10, 60], //更改显示记录数选项
-            "iDisplayLength" : 5, //默认显示的记录数
-            "bAutoWidth" : false, //是否自适应宽度
-            //"bScrollInfinite" : false, //是否启动初始化滚动条
-            "bScrollCollapse" : true, //是否开启DataTables的高度自适应，当数据条数不够分页数据条数的时候，插件高度是否随数据条数而改变
-            "bPaginate" : true, //是否显示（应用）分页器
-            "bInfo" : true, //是否显示页脚信息，DataTables插件左下角显示记录数
-            "sPaginationType" : "full_numbers", //详细分页组，可以支持直接跳转到某页
-            "bSort" : true, //是否启动各个字段的排序功能
 
-            "oLanguage": { //国际化配置
-                "sProcessing": "正在获取数据，请稍后...",
-                "sLengthMenu": "显示 _MENU_ 条",
-                "sZeroRecords": "没有您要搜索的内容",
-                "sInfo": "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
-                "sInfoEmpty": "记录数为0",
-                "sInfoFiltered": "(全部记录数 _MAX_ 条)",
-                "sInfoPostFix": "",
-                "sSearch": "搜索",
-                "sUrl": "",
-                "oPaginate": {
-                    "sFirst": "第一页",
-                    "sPrevious": "上一页",
-                    "sNext": "下一页",
-                    "sLast": "最后一页"
-                }
-            },
-
-            // "sAjaxSource" : "/toUserList",
-            // //服务器端，数据回调处理
-            // "fnServerData" : function(sSource, aoData, fnCallback) {
-            //     $.ajax({
-            //         "dataType" : 'json',
-            //         "type" : "POST",
-            //         "url" : sSource,
-            //         "data" : {
-            //             "aoData":JSON.stringify(aoData)
-            //         },
-            //         "success" : fnCallback
-            //     });
-            // }
-
-        });
-
-    } );
-
-</script>
 
 </body>
 </html>

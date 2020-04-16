@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>赛事添加</title>
+
+    <!-- Bootstrap -->
+    <link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link th:href="@{/vendors/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <!-- NProgress -->
+    <link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
+    <!-- iCheck -->
+    <link th:href="@{/vendors/iCheck/skins/flat/green.css}" rel="stylesheet">
+    <!-- bootstrap-wysiwyg -->
+    <link th:href="@{/vendors/google-code-prettify/bin/prettify.min.css}" rel="stylesheet">
+    <!-- Select2 -->
+    <link th:href="@{/vendors/select2/dist/css/select2.min.css}" rel="stylesheet">
+    <!--layui-->
+    <!--<link th:href="@{/vendors/layui/css/layui.css}" rel="stylesheet">-->
+    <!-- Switchery -->
+    <link th:href="@{/vendors/switchery/dist/switchery.min.css}" rel="stylesheet">
+    <!-- starrr -->
+    <link th:href="@{/vendors/starrr/dist/starrr.css}" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link th:href="@{/vendors/bootstrap-daterangepicker/daterangepicker.css}" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
+
+</head>
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+
+        <!-- menu_main -->
+        <div th:replace="~{production/Commons/common::menu_main}"></div>
+        <!-- menu_main-->
+
+        <!-- top navigation -->
+        <div th:replace="~{production/Commons/common::top_navigation}"></div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <div class="">
+                <div class="page-title">
+                    <div class="title_left">
+                        <h3>赛事
+                            <small>添加赛事</small>
+                        </h3>
+                    </div>
+
+                    <div class="title_right">
+                        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search for...">
+                                <span class="input-group-btn">
+                          <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>添加赛事<small>(添加比赛)</small></h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Settings 1</a>
+                                            </li>
+                                            <li><a href="#">Settings 2</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+
+                                <form class="form-horizontal form-label-left layui-form" novalidate th:action="@{/admin/addContest}" method="post">
+
+                                    <input  type="hidden"  name="CreatorId" th:value="${session.IndexDto.getUid()}">
+
+                                    <span class="section">赛事信息</span>
+
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">赛事标题 <span class="required">*</span>
+                                        </label>
+                                        <div class="col-md-4 col-sm-6 col-xs-12">
+                                            <!--data-validate-length-range="5,20"-->
+                                            <input id="title" class="form-control col-md-7 col-xs-12"  name="Title" placeholder="赛事名称" required="required" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="memo">注释 <span class="required">*</span>
+                                        </label>
+                                        <div class="col-md-4 col-sm-6 col-xs-12">
+                                            <!--data-validate-length-range="5,20"-->
+                                            <input id="memo" class="form-control col-md-7 col-xs-12"  name="Memo"  required="required" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="StartTime1">开始时间 <span class="required">*</span></label>
+                                        <div class="col-md-4 col-sm-6 col-xs-12">
+                                            <input type="text" id="StartTime1" name="StartTime"   class="form-control col-md-7 col-xs-12 layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="EndTime1">结束时间 <span class="required">*</span>
+                                        </label>
+                                        <div class="col-md-4 col-sm-6 col-xs-12">
+                                            <input type="text" id="EndTime1" name="EndTime" required="required" class="form-control col-md-7 col-xs-12 layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12 ">赛事模式 </label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <div id="Type" >
+                                                <input class="flat" type="radio" name="Type" value="单人赛" > &nbsp; 单人赛 &nbsp;
+                                                <input class="flat" type="radio" name="Type" value="组队赛" > &nbsp; 组队赛 &nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >级别 <span class="required">*</span></label>
+                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                            <select name="Level" class="form-control">
+                                                <option value="world">世界级</option>
+                                                <option value="nation">国家级</option>
+                                                <option value="provincial">省级</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="item control-group form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">标签 </label>
+                                        <div class="col-md-4 col-sm-9 col-xs-12">
+                                            <input id="tags_1" type="text"  name="Tag" class="tags form-control" value="ACM" />
+                                            <div id="suggestions-container" style="position: relative; float: left; width: 250px; margin: 10px;"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="ln_solid"></div>
+                                    <div class="form-group">
+                                        <div class="col-md-6 col-md-offset-3">
+                                            <button type="submit" class="btn btn-primary">取消</button>
+                                            <button id="send" type="submit" class="btn btn-success">提交</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer th:replace="~{production/Commons/common::footer_content}"></footer>
+        <!-- /footer content -->
+    </div>
+</div>
+
+<!-- jQuery -->
+<script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+<!-- Bootstrap -->
+<script th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+<!-- FastClick -->
+<script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
+<!-- NProgress -->
+<script th:src="@{/vendors/nprogress/nprogress.js}"></script>
+<!-- validator -->
+<script th:src="@{/vendors/validator/validator.js}"></script>
+<!-- iCheck -->
+<script th:src="@{/vendors/iCheck/icheck.min.js}"></script>
+<!-- bootstrap-progressbar -->
+<script th:src="@{/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js}"></script>
+<!-- bootstrap-daterangepicker -->
+<script th:src="@{/vendors/moment/min/moment.min.js}"></script>
+<script th:src="@{/vendors/bootstrap-daterangepicker/daterangepicker.js}"></script>
+<!-- bootstrap-wysiwyg -->
+<script th:src="@{/vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js}"></script>
+<script th:src="@{/vendors/jquery.hotkeys/jquery.hotkeys.js}"></script>
+<script th:src="@{/vendors/google-code-prettify/src/prettify.js}"></script>
+<!-- jQuery Tags Input -->
+<script th:src="@{/vendors/jquery.tagsinput/src/jquery.tagsinput.js}"></script>
+<!-- Switchery -->
+<script th:src="@{/vendors/switchery/dist/switchery.min.js}"></script>
+<!-- Select2 -->
+<script th:src="@{/vendors/select2/dist/js/select2.full.min.js}"></script>
+<!-- Parsley -->
+<script th:src="@{/vendors/parsleyjs/dist/parsley.min.js}"></script>
+<!-- Autosize -->
+<script th:src="@{/vendors/autosize/dist/autosize.min.js}"></script>
+<!--layui-->
+<script th:src="@{/vendors/layui/layui.js}"></script>
+<!-- jquery.inputmask -->
+<script th:src="@{/vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
+
+<!-- Custom Theme Scripts -->
+<script th:src="@{/build/js/custom.min.js}"></script>
+
+<script>
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#StartTime1', //指定元素
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#EndTime1', //指定元素
+            type: 'datetime'
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,5 +1,8 @@
 package com.sizaif.emsdemo.pojo;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 public class Contest {
 
     private int Cid;
@@ -8,13 +11,13 @@ public class Contest {
 
     private int isEnabled;
 
-    private String Name;
+    private String Title;
 
     private String Memo;
 
     private String Length;
 
-    private String Caption;
+    private String Level;
 
     private String CreateDate;
 
@@ -26,7 +29,17 @@ public class Contest {
 
     private String Type;
 
+    private String Tag;
+
     public Contest() {
+    }
+
+    public String getTag() {
+        return Tag;
+    }
+
+    public void setTag(String tag) {
+        Tag = tag;
     }
 
     public String getLength() {
@@ -69,12 +82,12 @@ public class Contest {
         this.isEnabled = isEnabled;
     }
 
-    public String getName() {
-        return Name;
+    public String getTitle() {
+        return Title;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public void setTitle(String title) {
+        Title = title;
     }
 
     public String getMemo() {
@@ -85,12 +98,12 @@ public class Contest {
         Memo = memo;
     }
 
-    public String getCaption() {
-        return Caption;
+    public String getLevel() {
+        return Level;
     }
 
-    public void setCaption(String caption) {
-        Caption = caption;
+    public void setLevel(String level) {
+        Level = level;
     }
 
     public String getCreateDate() {
@@ -125,21 +138,23 @@ public class Contest {
         EndTime = endTime;
     }
 
+
     @Override
     public String toString() {
         return "Contest{" +
                 "Cid=" + Cid +
                 ", CreatorId=" + CreatorId +
                 ", isEnabled=" + isEnabled +
-                ", Name='" + Name + '\'' +
+                ", Title='" + Title + '\'' +
                 ", Memo='" + Memo + '\'' +
                 ", Length='" + Length + '\'' +
-                ", Caption='" + Caption + '\'' +
+                ", Level='" + Level + '\'' +
                 ", CreateDate='" + CreateDate + '\'' +
                 ", ModifyDate='" + ModifyDate + '\'' +
                 ", StartTime='" + StartTime + '\'' +
                 ", EndTime='" + EndTime + '\'' +
                 ", Type='" + Type + '\'' +
+                ", Tag='" + Tag + '\'' +
                 '}';
     }
 }

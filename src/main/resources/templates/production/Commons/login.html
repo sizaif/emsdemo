@@ -33,23 +33,19 @@
             <form th:action="@{/login}" method="post">
               <h1 th:text="#{login.tip}"></h1>
                 <p th:text="${msg}" style="color:red"></p>
-              <div>
+              <div class="form-item ">
                 <input type="text" class="form-control" name="userName" th:placeholder="#{login.username}" required="" />
               </div>
-              <div>
+              <div class="form-item ">
                 <input type="password" class="form-control" name="passWord"th:placeholder="#{login.password}" required="" />
               </div>
-              <div>
+              <div class="form-item">
                 <label>
                       <input type="submit" class="btn btn-default submit" th:value="#{login.btn}"></input>
                 </label>
-
-                <label>
-                  <input type="checkbox" class="" name="rememberMe" value="rememberme" th:text="#{login.rememberme}">
-                </label>
-                <label>
-                    <a class="reset_pass" href="#" th:text="#{login.lostpwd}"></a>
-                </label>
+                  <label>
+                      <input type="checkbox" class="btn btn-default" name="rememberMe" value="rememberme" th:text="#{login.rememberme}">
+                  </label>
               </div>
 
               <div class="clearfix"></div>
@@ -59,6 +55,8 @@
                   <a href="#signup" class="to_register" th:text="#{login.signup}"></a>
                   <a th:href="@{/usr/login/lang(lang='en_US')}">English</a>
                   <a th:href="@{/usr/login/lang(lang='zh_CN')}">中文</a>
+                  <a href="#" th:text="#{login.lostpwd}"></a>
+
                 </p>
 
                 <div class="clearfix"></div>
@@ -88,13 +86,14 @@
               </div>
               <div>
                 <a class="btn btn-default submit" href="../index.html" th:text="#{login.bt2}"></a>
+                <a href="#signin" class="btn btn-default submit" th:text="#{login.btn}"></a>
               </div>
 
               <div class="clearfix"></div>
 
               <div class="separator">
                 <p class="change_link">Already a member ?
-                  <a href="#signin" class="to_register" th:text="#{login.btn}"></a>
+
                   <a href="#">English</a>
                   <a href="#">中文</a>
                 </p>

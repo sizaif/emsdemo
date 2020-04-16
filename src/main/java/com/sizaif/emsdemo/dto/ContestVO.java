@@ -14,19 +14,20 @@ import java.util.List;
  */
 
 public class ContestVO {
+
     private int Cid;
 
     private int CreatorId;
 
     private int isEnabled;
 
-    private String Name;
+    private String Title;
 
     private String Memo;
 
     private String Length;
 
-    private String Caption;
+    private String Level;
 
     private String CreateDate;
 
@@ -37,6 +38,8 @@ public class ContestVO {
     private String EndTime;
 
     private String Type;
+
+    private String Tag;
 
     private List<Member> memberList;
 
@@ -66,12 +69,12 @@ public class ContestVO {
         this.isEnabled = isEnabled;
     }
 
-    public String getName() {
-        return Name;
+    public String getTitle() {
+        return Title;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public void setTitle(String title) {
+        Title = title;
     }
 
     public String getMemo() {
@@ -90,12 +93,12 @@ public class ContestVO {
         Length = length;
     }
 
-    public String getCaption() {
-        return Caption;
+    public String getLevel() {
+        return Level;
     }
 
-    public void setCaption(String caption) {
-        Caption = caption;
+    public void setLevel(String level) {
+        Level = level;
     }
 
     public String getCreateDate() {
@@ -138,6 +141,14 @@ public class ContestVO {
         Type = type;
     }
 
+    public String getTag() {
+        return Tag;
+    }
+
+    public void setTag(String tag) {
+        Tag = tag;
+    }
+
     public List<Member> getMemberList() {
         return memberList;
     }
@@ -160,15 +171,16 @@ public class ContestVO {
                 "Cid=" + Cid +
                 ", CreatorId=" + CreatorId +
                 ", isEnabled=" + isEnabled +
-                ", Name='" + Name + '\'' +
+                ", Title='" + Title + '\'' +
                 ", Memo='" + Memo + '\'' +
                 ", Length='" + Length + '\'' +
-                ", Caption='" + Caption + '\'' +
+                ", Level='" + Level + '\'' +
                 ", CreateDate='" + CreateDate + '\'' +
                 ", ModifyDate='" + ModifyDate + '\'' +
                 ", StartTime='" + StartTime + '\'' +
                 ", EndTime='" + EndTime + '\'' +
                 ", Type='" + Type + '\'' +
+                ", Tag='" + Tag + '\'' +
                 ", memberList=" + memberList +
                 ", teamList=" + teamList +
                 '}';

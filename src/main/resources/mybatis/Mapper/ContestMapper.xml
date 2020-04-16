@@ -7,8 +7,8 @@
     <!--映射表-->
     <resultMap id="BaseResultMap" type="Contest" >
         <id column="cid" property="Cid" />
-        <result column="name" property="Name"/>
-        <result column="caption" property="Caption"  />
+        <result column="title" property="Title"/>
+        <result column="level" property="Level"  />
         <result column="memo" property="Memo"  />
         <result column="creatorId" property="CreatorId"  />
         <result column="createDate" property="CreateDate"  />
@@ -18,10 +18,11 @@
         <result column="isEnabled" property="isEnabled"  />
         <result column="length" property="Length"  />
         <result column="type" property="Type"  />
+        <result column="tag" property="Tag"  />
     </resultMap>
 
     <sql id="Base_Column_List" >
-        cid, name, caption, memo, creatorId, length, createDate,modifyDate, startTime,endTime,isEnabled,type
+        cid, title, level, memo, creatorId, length, createDate,modifyDate, startTime,endTime,isEnabled,type,tag
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -37,11 +38,11 @@
             <if test="Cid != null" >
                 cid,
             </if>
-            <if test="Name != null" >
-                name,
+            <if test="Title != null" >
+                title,
             </if>
-            <if test="Caption != null" >
-                caption,
+            <if test="Level != null" >
+                level,
             </if>
             <if test="Memo != null" >
                 memo,
@@ -70,16 +71,19 @@
             <if test="Type != null" >
                 type,
             </if>
+            <if test="Tag != null" >
+                tag,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="Cid != null" >
                 #{Cid,jdbcType=INTEGER},
             </if>
-            <if test="Name != null" >
-                #{Name,jdbcType=VARCHAR},
+            <if test="Title != null" >
+                #{Title,jdbcType=VARCHAR},
             </if>
-            <if test="Caption != null" >
-                #{Caption,jdbcType=VARCHAR},
+            <if test="Level != null" >
+                #{Level,jdbcType=VARCHAR},
             </if>
             <if test="Memo != null" >
                 #{Memo,jdbcType=VARCHAR},
@@ -108,6 +112,9 @@
             <if test="Type != null" >
                 #{Type},
             </if>
+            <if test="Tag != null" >
+                #{Tag},
+            </if>
         </trim>
     </insert>
 
@@ -115,11 +122,11 @@
     <update id="updateByPrimaryKeySelective" parameterType="Contest" >
         update saishiguanli.contest
         <set >
-            <if test="Name != null" >
-                name = #{Name},
+            <if test="Title != null" >
+                title = #{Title},
             </if>
-            <if test="Caption != null" >
-                caption = #{Caption},
+            <if test="Level != null" >
+                level = #{Level},
             </if>
             <if test="Memo != null" >
                 memo = #{Memo},
@@ -147,6 +154,9 @@
             </if>
             <if test="Type != null" >
                 type = #{Type},
+            </if>
+            <if test="Tag != null" >
+                tag = #{Tag},
             </if>
         </set>
         where Cid = #{id}
@@ -177,8 +187,8 @@
     <!--单人赛比赛映射表-->
     <resultMap id="ContestMemberResultMap" type="com.sizaif.emsdemo.dto.ContestVO">
         <id column="cid" property="Cid"  />
-        <result column="name" property="Name"  />
-        <result column="caption" property="Caption"  />
+        <result column="title" property="Title"  />
+        <result column="level" property="Level"  />
         <result column="memo" property="Memo"  />
         <result column="creatorId" property="CreatorId"  />
         <result column="createDate" property="CreateDate"  />
@@ -205,8 +215,8 @@
     <!--组队赛比赛映射表-->
     <resultMap id="ContestTeamResultMap" type="com.sizaif.emsdemo.dto.ContestVO">
         <id column="cid" property="Cid"  />
-        <result column="name" property="Name"  />
-        <result column="caption" property="Caption"  />
+        <result column="title" property="Title"  />
+        <result column="level" property="Level"  />
         <result column="memo" property="Memo"  />
         <result column="creatorId" property="CreatorId"  />
         <result column="createDate" property="CreateDate"  />
@@ -216,6 +226,7 @@
         <result column="isEnabled" property="isEnabled"  />
         <result column="length" property="Length"  />
         <result column="type" property="Type"  />
+        <result column="tag" property="Tag"  />
         <collection property="memberList" ofType="com.sizaif.emsdemo.pojo.Team">
             <id column="id" property="id"/>
             <result column="name" property="name"/>
