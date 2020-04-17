@@ -1,12 +1,12 @@
 package com.sizaif.emsdemo.Configurations.Shiro;
 
-import com.sizaif.emsdemo.mapper.PermissionsMapper;
-import com.sizaif.emsdemo.pojo.Permission;
-import com.sizaif.emsdemo.pojo.Role;
-import com.sizaif.emsdemo.pojo.Users;
-import com.sizaif.emsdemo.service.AuthService;
-import com.sizaif.emsdemo.service.UsersService;
-import com.sizaif.emsdemo.service.impl.UsersServiceimpl;
+import com.sizaif.emsdemo.mapper.User.PermissionsMapper;
+import com.sizaif.emsdemo.pojo.User.Permission;
+import com.sizaif.emsdemo.pojo.User.Role;
+import com.sizaif.emsdemo.pojo.User.Users;
+import com.sizaif.emsdemo.service.Auth.AuthService;
+import com.sizaif.emsdemo.service.User.UsersService;
+import com.sizaif.emsdemo.service.User.impl.UsersServiceimpl;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.shiro.SecurityUtils;
@@ -89,7 +89,8 @@ public class MyUserRealm extends AuthorizingRealm{
                 .toString(userToken, ToStringStyle.MULTI_LINE_STYLE));
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("userName",userToken.getUsername());
+        map.put("uname",userToken.getUsername());
+        map.put("password",userToken.getPassword());
         // 连接数据库
         Users users = usersService.queryUserByName(map);
         logger.debug("用户登录认证！用户信息user：" + users);

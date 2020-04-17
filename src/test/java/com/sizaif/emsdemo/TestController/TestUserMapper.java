@@ -1,22 +1,20 @@
 package com.sizaif.emsdemo.TestController;
 
 import com.sizaif.emsdemo.dto.ContestVO;
-import com.sizaif.emsdemo.dto.PermissionVO;
-import com.sizaif.emsdemo.mapper.ContestMapper;
-import com.sizaif.emsdemo.mapper.MemberMapper;
-import com.sizaif.emsdemo.mapper.UserMapper;
-import com.sizaif.emsdemo.pojo.Member;
-import com.sizaif.emsdemo.pojo.Users;
-import com.sizaif.emsdemo.service.AuthService;
-import com.sizaif.emsdemo.service.ContestService;
-import com.sizaif.emsdemo.service.MemberService;
-import com.sizaif.emsdemo.service.UsersService;
+import com.sizaif.emsdemo.mapper.Contest.ContestMapper;
+import com.sizaif.emsdemo.mapper.User.MemberMapper;
+import com.sizaif.emsdemo.mapper.User.UserMapper;
+import com.sizaif.emsdemo.pojo.User.Member;
+import com.sizaif.emsdemo.pojo.User.Users;
+import com.sizaif.emsdemo.service.Auth.AuthService;
+import com.sizaif.emsdemo.service.Contest.ContestService;
+import com.sizaif.emsdemo.service.User.MemberService;
+import com.sizaif.emsdemo.service.User.UsersService;
 import com.sizaif.emsdemo.utils.DateUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Date;
@@ -41,7 +39,7 @@ public class TestUserMapper {
     @Autowired
     private ContestMapper contestMapper;
     @Autowired
-    private AuthService authService;
+    private AuthService authServicee;
     @Autowired
     private WebApplicationContext wac;
 

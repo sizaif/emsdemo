@@ -1,10 +1,11 @@
 package com.sizaif.emsdemo.appoint;
 
 import com.sizaif.emsdemo.dto.IndexDto;
-import com.sizaif.emsdemo.mapper.PermissionsMapper;
-import com.sizaif.emsdemo.pojo.Member;
-import com.sizaif.emsdemo.pojo.Users;
+import com.sizaif.emsdemo.mapper.User.PermissionsMapper;
+import com.sizaif.emsdemo.pojo.User.Member;
+import com.sizaif.emsdemo.pojo.User.Users;
 import com.sizaif.emsdemo.utils.DateUtils;
+import com.sizaif.emsdemo.utils.IPUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,29 +64,38 @@ public class UsersServiceAppoint {
          *  前台的role 传来的值 0,1,2,3,4  转化为对应的 角色名称
          */
         String defaut_role = "player";
-        int role_number = Integer.parseInt(httpServletRequest.getParameter("role"));
-        switch ( role_number ){
-            case 0:
-                defaut_role = "player";
-                break;
-            case 1:
-                defaut_role = "checker";
-                break;
-            case 2:
-                defaut_role = "worker";
-                break;
-            case 3:
-                defaut_role = "judger";
-                break;
-            case 4:
-                defaut_role = "administration";
-                break;
+        try {
+            int role_number = 0;
+            if(null != httpServletRequest.getParameter("role"))
+                role_number = Integer.parseInt(httpServletRequest.getParameter("role"));
+            switch ( role_number ){
+                case 0:
+                    defaut_role = "player";
+                    break;
+                case 1:
+                    defaut_role = "checker";
+                    break;
+                case 2:
+                    defaut_role = "worker";
+                    break;
+                case 3:
+                    defaut_role = "judger";
+                    break;
+                case 4:
+                    defaut_role = "administration";
+                    break;
+                default:
+                    defaut_role = "player";
+                    break;
+            }
+            umap.put("role",defaut_role);
+        }catch(Exception e){
+            e.printStackTrace();
         }
-        umap.put("role",defaut_role);
         return umap;
     }
 
-    public static void UsersOtherInfo(HashMap<String,Object> hashMap){
+    public static void UsersOtherInfo(HashMap<String,Object> hashMap,HttpServletRequest httpServletRequest){
         /**
          *   createDate
          *   modifyDate
@@ -106,11 +116,15 @@ public class UsersServiceAppoint {
         // 默认上次登录日期 null
         hashMap.put("lastLoginDate",null);
         // 待修改登录IP  默认未 本地
-        hashMap.put("lastLoginIp","127.0.0.1");
+        hashMap.put("lastLoginIp",IPUtils.getIpAddress(httpServletRequest));
         // 默认锁定日期null
         hashMap.put("lockDate",null);
 
     }
+
+
+
+
 
 
 }

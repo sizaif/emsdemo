@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sizaif.emsdemo.mapper.RolePermissionMapper" >
+<mapper namespace="com.sizaif.emsdemo.mapper.User.RolePermissionMapper" >
 
   <!--映射表-->
-  <resultMap id="BaseResultMap" type="com.sizaif.emsdemo.pojo.RolePermissionKey" >
+  <resultMap id="BaseResultMap" type="com.sizaif.emsdemo.pojo.User.RolePermissionKey" >
     <id column="permit_id" property="permitId" jdbcType="INTEGER" />
     <id column="role_id" property="roleId" jdbcType="INTEGER" />
   </resultMap>
 
-  <delete id="deleteByPrimaryKey" parameterType="com.sizaif.emsdemo.pojo.RolePermissionKey" >
+  <delete id="deleteByPrimaryKey" parameterType="com.sizaif.emsdemo.pojo.User.RolePermissionKey" >
     delete from role_permission
     where permit_id = #{permitId,jdbcType=INTEGER}
       and role_id = #{roleId,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.sizaif.emsdemo.pojo.RolePermissionKey" >
+  <insert id="insert" parameterType="com.sizaif.emsdemo.pojo.User.RolePermissionKey" >
     insert into role_permission (permit_id, role_id)
     values (#{permitId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
   </insert>
 
     <!--动态insert-->
-  <insert id="insertSelective" parameterType="com.sizaif.emsdemo.pojo.RolePermissionKey" >
+  <insert id="insertSelective" parameterType="com.sizaif.emsdemo.pojo.User.RolePermissionKey" >
     insert into role_permission
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="permitId != null" >

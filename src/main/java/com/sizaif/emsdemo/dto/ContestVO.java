@@ -1,7 +1,7 @@
 package com.sizaif.emsdemo.dto;
 
-import com.sizaif.emsdemo.pojo.Member;
-import com.sizaif.emsdemo.pojo.Team;
+import com.sizaif.emsdemo.pojo.User.Member;
+import com.sizaif.emsdemo.pojo.Contest.Team;
 
 import java.util.List;
 

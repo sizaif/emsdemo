@@ -1,6 +1,6 @@
 package com.sizaif.emsdemo.dto;
 
-import com.sizaif.emsdemo.pojo.RolePermissionKey;
+import com.sizaif.emsdemo.pojo.User.RolePermissionKey;
 
 
 import java.util.List;

@@ -1,59 +1,60 @@
 server:
-  port: 8080 #端口
+  port: 8081 #端口
 
 
 # 自定义文件上传路径
 web:
-  # Linux
-  # upload-path: /root/emsdemo/image
-  # Windows 10
-  upload-path: C:/Users/SIZ/Desktop/bishe/image/
+    # Linux
+    # upload-path: /root/emsdemo/image
+    # Windows 10
+    upload-path: C:/Users/SIZ/Desktop/bishe/image/
+
 #spring配置
 spring:
-  #数据库
-  datasource:
-    username: root
-    password: root
-    url: jdbc:mysql://localhost:3306/saishiguanli?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    type: com.alibaba.druid.pool.DruidDataSource
-    #Spring Boot 默认是不注入这些属性值的，需要自己绑定
-    #druid 数据源专有配置
-    initialSize: 5
-    minIdle: 5
-    maxActive: 20
-    maxWait: 60000
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 300000
-    validationQuery: SELECT 1 FROM DUAL
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    poolPreparedStatements: true
+    #数据库
+    datasource:
+        name: mysql_test
+        username: root
+        password: root
+        url: jdbc:mysql://localhost:3306/saishiguanli?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        type: com.alibaba.druid.pool.DruidDataSource
+        #Spring Boot 默认是不注入这些属性值的，需要自己绑定
+        #druid 数据源专有配置
+        druid:
+          initial-size: 1
+          initialSize: 5
+          minIdle: 5
+          maxActive: 20
+          maxWait: 60000
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 300000
+          validationQuery: SELECT 1 FROM DUAL
+          testWhileIdle: true
+          testOnBorrow: false
+          testOnReturn: false
+          poolPreparedStatements: true
 
-  #国际化配置
-  messages:
-    basename: i18n.login
-  #security
-  security:
-    user:
-      name: siz
-      password: 123
+    #国际化配置
+    messages:
+      basename: i18n.login
 
-  servlet:
-    multipart:
-      max-file-size: 2MB
-  #thymeleaf 配置
-  thymeleaf:
-    cache: false
-    encoding: utf-8
-    mode: HTML5
+    servlet:
+      multipart:
+        max-file-size: 2MB
+    #thymeleaf 配置
+    thymeleaf:
+      cache: false
+      encoding: utf-8
+      mode: HTML5
 
 
 #mybatis配置
 mybatis:
   typeAliasesPackage: com.sizaif.emsdemo.pojo
   mapperLocations: classpath:mybatis/Mapper/*.xml
+
+
 #分页pageHelper
 pagehelper:
   helper-dialect: mysql

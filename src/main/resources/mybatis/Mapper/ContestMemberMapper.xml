@@ -2,16 +2,16 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sizaif.emsdemo.mapper.ContestMemberMapper">
+<mapper namespace="com.sizaif.emsdemo.mapper.Contest.ContestMemberMapper">
 
     <!--映射表-->
-    <resultMap id="BaseResultMap" type="com.sizaif.emsdemo.pojo.ContestMemberkey" >
+    <resultMap id="BaseResultMap" type="com.sizaif.emsdemo.pojo.Contest.ContestMemberkey" >
         <id column="contest_id" property="contestId" jdbcType="INTEGER" />
         <id column="member_id" property="memberId" jdbcType="INTEGER" />
         <id column="isEnabled" property="isEnabled" jdbcType="INTEGER" />
     </resultMap>
 
-    <insert id="insert" parameterType="com.sizaif.emsdemo.pojo.ContestMemberkey" >
+    <insert id="insert" parameterType="com.sizaif.emsdemo.pojo.Contest.ContestMemberkey" >
         insert into saishiguanli.contest_member
           (contest_id, member_id,isEnabled)
         values
@@ -19,7 +19,7 @@
     </insert>
 
     <!--动态insert-->
-    <insert id="insertSelective" parameterType="com.sizaif.emsdemo.pojo.ContestMemberkey" >
+    <insert id="insertSelective" parameterType="com.sizaif.emsdemo.pojo.Contest.ContestMemberkey" >
         insert into saishiguanli.contest_member
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="contestId != null" >
@@ -57,7 +57,7 @@
         WHERE contest_id = #{contestId}
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="com.sizaif.emsdemo.pojo.ContestMemberkey" >
+    <delete id="deleteByPrimaryKey" parameterType="com.sizaif.emsdemo.pojo.Contest.ContestMemberkey" >
         delete from saishiguanli.contest_member
         where contest_id = #{contestId,jdbcType=INTEGER}
         and member_id = #{memberId,jdbcType=INTEGER}

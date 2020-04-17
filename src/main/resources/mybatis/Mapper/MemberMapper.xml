@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sizaif.emsdemo.mapper.MemberMapper">
+<mapper namespace="com.sizaif.emsdemo.mapper.User.MemberMapper">
 
     <!--映射表-->
     <resultMap id="MemberMap" type="Member">
@@ -89,9 +89,28 @@
     <select id="QueryAllMemberInfo" resultMap="MemberMap">
         SELECT saishiguanli.member.* FROM saishiguanli.member
     </select>
+
     <select id="QueryOneMemberInfoByID" resultMap="MemberMap" parameterType="int">
-        SELECT saishiguanli.member.* FROM  saishiguanli.member WHERE id = #{id};
+        SELECT saishiguanli.member.* FROM  saishiguanli.member
+        WHERE
+        <if test ="id !=null">
+            id = #{id}
+        </if>
+
     </select>
+
+    <select id="QueryMemberInfoByEmailOrPhone" resultMap="MemberMap" parameterType="map">
+        SELECT saishiguanli.member.* FROM  saishiguanli.member
+        WHERE
+            <if test ="email !=null">
+                email = #{email}
+            </if>
+            <if test ="phone !=null">
+                OR phone = #{phone};
+            </if>
+    </select>
+
+
 
     <!--动态SQL更新-->
     <update id="UpdateMember" parameterType="map" >

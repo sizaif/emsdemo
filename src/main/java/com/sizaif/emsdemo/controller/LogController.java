@@ -3,10 +3,10 @@ package com.sizaif.emsdemo.controller;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.appoint.UsersServiceAppoint;
 import com.sizaif.emsdemo.dto.IndexDto;
-import com.sizaif.emsdemo.pojo.Member;
-import com.sizaif.emsdemo.pojo.Users;
-import com.sizaif.emsdemo.service.MemberService;
-import com.sizaif.emsdemo.service.UsersService;
+import com.sizaif.emsdemo.pojo.User.Member;
+import com.sizaif.emsdemo.pojo.User.Users;
+import com.sizaif.emsdemo.service.User.MemberService;
+import com.sizaif.emsdemo.service.User.UsersService;
 
 import com.sizaif.emsdemo.utils.DateUtils;
 import org.apache.shiro.SecurityUtils;
@@ -19,6 +19,7 @@ import org.apache.shiro.session.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -119,5 +120,55 @@ public class LogController {
         // 登出
         currentUser.logout();
         return "redirect:/";
+    }
+
+
+    @RequestMapping("/registered")
+    @ResponseBody
+    public String registered(HttpServletResponse httpServletResponse,HttpServletRequest httpServletRequest){
+
+
+        String name = httpServletRequest.getParameter("uname");
+        String password = httpServletRequest.getParameter("encodePassword");
+        String email = httpServletRequest.getParameter("email");
+
+        logger.debug("---> 注册: "+ name + " " + password + " " + email );
+
+        try {
+            HashMap<String,Object> userhashMap = UsersServiceAppoint.UsersHttpWriteToMap(httpServletRequest,httpServletResponse);
+
+            UsersServiceAppoint.UsersOtherInfo(userhashMap,httpServletRequest);
+
+            logger.debug("UserMap---> " + userhashMap);
+
+            HashMap<String,Object> memberMap = UsersServiceAppoint.MemberHttpWriteToMap(httpServletRequest,httpServletResponse);
+
+            Users users = usersService.queryUserByName(userhashMap);
+            // 账户已存在
+            if( null != users)
+                return "100";
+            else{
+                SystemResult systemResult = usersService.AddOneUser(userhashMap);
+                if(systemResult.getStatus()==200){
+                    int key = Integer.parseInt(userhashMap.get("id").toString());
+                    memberMap.replace("id",key);
+                    memberMap.put("memberRankId",1);
+                    logger.debug("memberMap --> " + memberMap);
+                    SystemResult systemResult1 = memberService.AddOneMemberByHashMap(memberMap);
+                    if (systemResult1.getStatus()==200){
+                        return "200";
+                    }else{
+                        // 事务回滚 删除刚才添加的user
+                        // 插入的member 存在重复的邮箱或手机号
+                        usersService.DeleteUserById(key);
+                        return "101";
+                    }
+                }
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return  "100";
     }
 }

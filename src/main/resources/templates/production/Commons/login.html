@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <!--"-->
-  <head>
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
@@ -18,98 +18,198 @@
     <link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
     <!-- Animate.css -->
     <link th:href="@{/vendors/animate.css/animate.min.css}" rel="stylesheet">
+    <!-- iCheck -->
+    <link th:href="@{/vendors/iCheck/skins/flat/green.css}" rel="stylesheet">
+    <!--layui-->
+    <link th:href="@{/vendors/layui/css/layui.css}" rel="stylesheet">
+    <!-- starrr -->
+    <link th:href="@{/vendors/starrr/dist/starrr.css}" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
-  </head>
+</head>
 
-  <body class="login">
-    <div>
-      <a class="hiddenanchor" id="signup"></a>
-      <a class="hiddenanchor" id="signin"></a>
+<body class="login">
+<div>
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
 
-      <div class="login_wrapper">
+    <div class="login_wrapper">
         <div class="animate form login_form">
-          <section class="login_content">
-            <form th:action="@{/login}" method="post">
-              <h1 th:text="#{login.tip}"></h1>
-                <p th:text="${msg}" style="color:red"></p>
-              <div class="form-item ">
-                <input type="text" class="form-control" name="userName" th:placeholder="#{login.username}" required="" />
-              </div>
-              <div class="form-item ">
-                <input type="password" class="form-control" name="passWord"th:placeholder="#{login.password}" required="" />
-              </div>
-              <div class="form-item">
-                <label>
-                      <input type="submit" class="btn btn-default submit" th:value="#{login.btn}"></input>
-                </label>
-                  <label>
-                      <input type="checkbox" class="btn btn-default" name="rememberMe" value="rememberme" th:text="#{login.rememberme}">
-                  </label>
-              </div>
+            <section class="login_content">
+                <form th:action="@{/login}" method="post">
+                    <h1 th:text="#{login.tip}"></h1>
+                    <p th:text="${msg}" style="color:red"></p>
+                    <div class="form-item ">
+                        <input type="text" class="form-control" name="userName" th:placeholder="#{login.username}"
+                               required=""/>
+                    </div>
+                    <div class="form-item ">
+                        <input type="password" class="form-control" name="passWord" th:placeholder="#{login.password}"
+                               required=""/>
+                    </div>
+                    <div class="form-item">
+                        <label>
+                            <input type="submit" class="btn btn-default submit" th:value="#{login.btn}"></input>
+                        </label>
+                        <label>
+                            <input type="checkbox" class="btn btn-default" name="rememberMe" value="rememberme"
+                                   th:text="#{login.rememberme}">
+                        </label>
+                    </div>
 
-              <div class="clearfix"></div>
+                    <div class="clearfix"></div>
 
-              <div class="separator">
-                <p class="change_link">
-                  <a href="#signup" class="to_register" th:text="#{login.signup}"></a>
-                  <a th:href="@{/usr/login/lang(lang='en_US')}">English</a>
-                  <a th:href="@{/usr/login/lang(lang='zh_CN')}">中文</a>
-                  <a href="#" th:text="#{login.lostpwd}"></a>
+                    <div class="separator">
+                        <p class="change_link">
+                            <a href="#signup" class="to_register" th:text="#{login.signup}"></a>
+                            <a th:href="@{/usr/login/lang(lang='en_US')}">English</a>
+                            <a th:href="@{/usr/login/lang(lang='zh_CN')}">中文</a>
+                            <a href="#" th:text="#{login.lostpwd}"></a>
 
-                </p>
+                        </p>
 
-                <div class="clearfix"></div>
-                <br />
+                        <div class="clearfix"></div>
+                        <br/>
 
-                <div>
-                  <h1><i class="fa fa-cubes"></i> 赛事管理系统</h1>
-                  <p>©2020 All Rights Reserved.SIZ </p>
-                </div>
-              </div>
-            </form>
-          </section>
+                        <div>
+                            <h1><i class="fa fa-cubes"></i> 赛事管理系统</h1>
+                            <p>©2020 All Rights Reserved.SIZ </p>
+                        </div>
+                    </div>
+                </form>
+            </section>
         </div>
 
         <div id="register" class="animate form registration_form">
-          <section class="login_content">
-            <form>
-              <h1 th:text="#{login.tip2}"></h1>
-              <div>
-                <input type="text" class="form-control" th:placeholder="#{login.username}" required="" />
-              </div>
-              <div>
-                <input type="email" class="form-control" th:placeholder="#{login.email}" required="" />
-              </div>
-              <div>
-                <input type="password" class="form-control" th:placeholder="#{login.password}" required="" />
-              </div>
-              <div>
-                <a class="btn btn-default submit" href="../index.html" th:text="#{login.bt2}"></a>
-                <a href="#signin" class="btn btn-default submit" th:text="#{login.btn}"></a>
-              </div>
+            <section class="login_content">
+                <form class="form-horizontal form-label-left" data-parsley-validate="" id="registered_form">
+                    <h1 th:text="#{login.tip2}"></h1>
+                    <div class="item form-group">
+                        <input type="text" class="form-control"  name="uname" id="uname"
+                               th:placeholder="#{login.username}" required="required"
+                               data-parsley-required="true" data-parsley-trigger="blur"
+                               data-parsley-required-message="用户名不能为空"
+                               data-parsley-length="[4, 10]"
+                               data-parsley-length-message="用户名长度4-10位"
+                        />
+                    </div>
+                    <div class="item form-group">
+                        <input type="email" class="form-control" id="email" name="email"
+                               th:placeholder="#{login.email}" required=""
+                               data-parsley-required="true"
+                               data-parsley-required-message="邮箱不能为空"
+                               data-parsley-trigger="change"
+                               data-parslty-email
+                               data-parslty-email-message="请输入正确邮箱格式"
+                        >
+                    </div>
+                    <div class="item form-group">
+                        <label for="password" class="control-label fa fa-password"></label>
+                        <input id="password" type="password" name="encodePassword"
+                               class="form-control col-md-7 col-xs-12" th:placeholder="#{login.password}"
+                               data-parsley-required="true"
+                               data-parsley-trigger="focusout"
+                               data-parsley-required-message="密码不能为空"
+                               data-parsley-minlength="6"
+                               data-parsley-minlength-message="密码位数不可少于6位"/>
 
-              <div class="clearfix"></div>
+                    </div>
+                    <div class="item form-group">
+                        <label for="password2" class="control-label fa fa-password"></label>
+                        <input id="password2" type="password" name="password2" data-validate-linked="encodePassword"
+                               th:placeholder="#{login.password}" class="form-control col-md-7 col-xs-12"
+                               data-parsley-required="true"
+                               data-parsley-trigger="focusout"
+                               data-parsley-required-message="确认密码不能为空"
+                               data-parsley-equalto="#password"
+                               data-parsley-equalto-message="两次密码输入不一致"/>
+                        >
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-default submit validate" th:onclick="registered()" th:text="#{login.bt2}"></button>
+                        <a href="#signin" class="btn btn-default submit" th:text="#{login.btn}"></a>
+                    </div>
 
-              <div class="separator">
-                <p class="change_link">Already a member ?
+                    <div class="clearfix"></div>
 
-                  <a href="#">English</a>
-                  <a href="#">中文</a>
-                </p>
+                    <div class="separator">
+                        <p class="change_link"> [[#{login.hasaccount}]]
+                            <a href="#signin" class="to_register" th:text="#{login.btn}"></a>
+                            <a th:href="@{/usr/login/lang(lang='en_US')}">English</a>
+                            <a th:href="@{/usr/login/lang(lang='zh_CN')}">中文</a>
+                        </p>
 
-                <div class="clearfix"></div>
-                <br />
+                        <div class="clearfix"></div>
+                        <br/>
 
-                <div>
-                  <h1><i class="fa fa-cubes"></i> 赛事管理系统</h1>
-                  <p>©2020 All Rights Reserved.SIZ </p>
-                </div>
-              </div>
-            </form>
-          </section>
-        </div>
-      </div>
+                        <div>
+                            <h1><i class="fa fa-cubes"></i> 赛事管理系统</h1>
+                            <p>©2020 All Rights Reserved.SIZ </p>
+                        </div>
+                    </div>
+                </form>
+
+        </section>
     </div>
-  </body>
+</div>
+</div>
+<!-- jQuery -->
+<script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+<!-- Bootstrap -->
+<script th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+<!-- FastClick -->
+<script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
+<!-- NProgress -->
+<script th:src="@{/vendors/nprogress/nprogress.js}"></script>
+<!-- validator -->
+<script th:src="@{/vendors/validator/validator.js}"></script>
+<!-- iCheck -->
+<script th:src="@{/vendors/iCheck/icheck.min.js}"></script>
+<!-- jQuery Tags Input -->
+<script th:src="@{/vendors/jquery.tagsinput/src/jquery.tagsinput.js}"></script>
+<!-- Parsley -->
+<script th:src="@{/vendors/parsleyjs/dist/parsley.min.js}"></script>
+`
+<!-- Autosize -->
+<script th:src="@{/vendors/autosize/dist/autosize.min.js}"></script>
+<!--layui-->
+<script th:src="@{/vendors/layui/layui.js}"></script>
+<script>
+    function registered() {
+
+        layui.use("layer", function () {
+            var layer = layui.layer;
+
+
+            $.ajax({
+                type: "POST",
+                data: $("#registered_form").serialize(),
+                url: "/registered",
+                success: function (data) {
+
+                    if (data == "200") {
+                        layer.alert("注册成功.请登录!", function () {
+                            layer.closeAll();
+                        });
+                    } else if(data == "100"){
+                        layer.alert("账户已存在,请重试", function () {
+                            layer.closeAll();
+                        });
+                    }
+                    else if(data == "101"){
+                        layer.alert("邮箱已存在,请重试", function () {
+                            layer.closeAll();
+                        });
+                    }
+                },
+                error: function (data) {
+                    layer.alert("操作请求错误，联系技术人员");
+                }
+            });
+        })
+    }
+</script>
+</body>
+
+
 </html>

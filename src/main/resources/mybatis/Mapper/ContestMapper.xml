@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sizaif.emsdemo.mapper.ContestMapper">
+<mapper namespace="com.sizaif.emsdemo.mapper.Contest.ContestMapper">
 
     <!--映射表-->
     <resultMap id="BaseResultMap" type="Contest" >
@@ -198,7 +198,7 @@
         <result column="isEnabled" property="isEnabled"  />
         <result column="length" property="Length"  />
         <result column="type" property="Type"  />
-        <collection property="memberList" ofType="com.sizaif.emsdemo.pojo.Member">
+        <collection property="memberList" ofType="com.sizaif.emsdemo.pojo.User.Member">
             <result column="id" property="id"/>
             <result column="memberRank_id" property="memberRankId"/>
             <result column="address" property="address"/>
@@ -227,7 +227,7 @@
         <result column="length" property="Length"  />
         <result column="type" property="Type"  />
         <result column="tag" property="Tag"  />
-        <collection property="memberList" ofType="com.sizaif.emsdemo.pojo.Team">
+        <collection property="memberList" ofType="com.sizaif.emsdemo.pojo.Contest.Team">
             <id column="id" property="id"/>
             <result column="name" property="name"/>
             <result column="school" property="school"/>

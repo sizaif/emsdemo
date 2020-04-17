@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sizaif.emsdemo.mapper.UserMapper">
+<mapper namespace="com.sizaif.emsdemo.mapper.User.UserMapper">
 
 
     <!--一对一(多对一关系) 用association-->
@@ -104,7 +104,9 @@
 
 
     <select id="queryUserByName" parameterType="map" resultMap="UsersMap">
-        SELECT saishiguanli.users.* FROM saishiguanli.users WHERE users.uname=#{userName};
+        SELECT saishiguanli.users.* FROM saishiguanli.users
+        WHERE
+          users.uname=#{uname};
     </select>
 
     <!--动态sql插入-->
@@ -139,6 +141,9 @@
             <if test="encodePassword != null">
                 encodePassword,
             </if>
+            <if test="role != null">
+                role,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="createDate != null">
@@ -167,6 +172,9 @@
             </if>
             <if test="encodePassword != null">
                 #{encodePassword},
+            </if>
+            <if test="role != null">
+                #{role},
             </if>
         </trim>
     </insert>

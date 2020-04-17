@@ -4,11 +4,11 @@ package com.sizaif.emsdemo.controller;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.appoint.UsersServiceAppoint;
 import com.sizaif.emsdemo.dto.IndexDto;
-import com.sizaif.emsdemo.pojo.Member;
+import com.sizaif.emsdemo.pojo.User.Member;
 
-import com.sizaif.emsdemo.pojo.Users;
-import com.sizaif.emsdemo.service.MemberService;
-import com.sizaif.emsdemo.service.UsersService;
+import com.sizaif.emsdemo.pojo.User.Users;
+import com.sizaif.emsdemo.service.User.MemberService;
+import com.sizaif.emsdemo.service.User.UsersService;
 import com.sizaif.emsdemo.utils.FileUtils;
 import com.sizaif.emsdemo.utils.JsonUtils;
 import org.apache.shiro.SecurityUtils;
@@ -86,7 +86,7 @@ public class UserController {
         HashMap<String,Object> memberMap = UsersServiceAppoint.MemberHttpWriteToMap(httpServletRequest,httpServletResponse);
         HashMap<String,Object> usersMap = UsersServiceAppoint.UsersHttpWriteToMap(httpServletRequest,httpServletResponse);
 
-        UsersServiceAppoint.UsersOtherInfo(usersMap);
+        UsersServiceAppoint.UsersOtherInfo(usersMap,httpServletRequest);
 
 
         System.out.println(memberMap.toString());

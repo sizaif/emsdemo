@@ -2,8 +2,8 @@ package com.sizaif.emsdemo.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.sizaif.emsdemo.Result.SystemResult;
-import com.sizaif.emsdemo.pojo.Contest;
-import com.sizaif.emsdemo.service.ContestService;
+import com.sizaif.emsdemo.pojo.Contest.Contest;
+import com.sizaif.emsdemo.service.Contest.ContestService;
 import com.sizaif.emsdemo.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

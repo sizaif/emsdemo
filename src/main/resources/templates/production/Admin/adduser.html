@@ -17,7 +17,7 @@
     <link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
     <!-- iCheck -->
     <link th:href="@{/vendors/iCheck/skins/flat/green.css}" rel="stylesheet">
-    <!-- bootstrap-wysiwyg -->
+    <!-- bootstrap-wysiwyg 富文本编辑器 -->
     <link th:href="@{/vendors/google-code-prettify/bin/prettify.min.css}" rel="stylesheet">
     <!-- Select2 -->
     <link th:href="@{/vendors/select2/dist/css/select2.min.css}" rel="stylesheet">
@@ -25,8 +25,9 @@
     <link th:href="@{/vendors/switchery/dist/switchery.min.css}" rel="stylesheet">
     <!-- starrr -->
     <link th:href="@{/vendors/starrr/dist/starrr.css}" rel="stylesheet">
-    <!-- bootstrap-daterangepicker -->
-    <link th:href="@{/vendors/bootstrap-daterangepicker/daterangepicker.css}" rel="stylesheet">
+    <!--layui-->
+    <link th:href="@{/vendors/layui/css/layui.css}" rel="stylesheet">
+
     <!-- Custom Theme Style -->
     <link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
 
@@ -94,8 +95,7 @@
 
                                 <form class="form-horizontal form-label-left layui-form" novalidate th:action="@{/users/toAddPage/addUser}" method="post">
 
-                                    <p>For alternative validation library <code>parsleyJS</code> check out in the <a href="form.html">form page</a>
-                                    </p>
+
                                     <span class="section">用户信息</span>
 
                                     <div class="item form-group">
@@ -229,11 +229,6 @@
 <script th:src="@{/vendors/validator/validator.js}"></script>
 <!-- iCheck -->
 <script th:src="@{/vendors/iCheck/icheck.min.js}"></script>
-<!-- bootstrap-progressbar -->
-<script th:src="@{/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js}"></script>
-<!-- bootstrap-daterangepicker -->
-<script th:src="@{/vendors/moment/min/moment.min.js}"></script>
-<script th:src="@{/vendors/bootstrap-daterangepicker/daterangepicker.js}"></script>
 <!-- bootstrap-wysiwyg -->
 <script th:src="@{/vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js}"></script>
 <script th:src="@{/vendors/jquery.hotkeys/jquery.hotkeys.js}"></script>
@@ -248,7 +243,8 @@
 <script th:src="@{/vendors/parsleyjs/dist/parsley.min.js}"></script>
 <!-- Autosize -->
 <script th:src="@{/vendors/autosize/dist/autosize.min.js}"></script>
-
+<!--layui-->
+<script th:src="@{/vendors/layui/layui.js}"></script>
 <!-- jquery.inputmask -->
 <script th:src="@{/vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
 
