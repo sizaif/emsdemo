@@ -88,20 +88,20 @@
                         <input type="text" class="form-control"  name="uname" id="uname"
                                th:placeholder="#{login.username}" required="required"
                                data-parsley-required="true" data-parsley-trigger="blur"
-                               data-parsley-required-message="用户名不能为空"
+                               th:data-parsley-required-message="#{parsley.usernotnull}"
                                data-parsley-length="[4, 10]"
-                               data-parsley-length-message="用户名长度4-10位"
+                               th:data-parsley-length-message="#{parsley.userlength}"
                         />
                     </div>
                     <div class="item form-group">
                         <input type="email" class="form-control" id="email" name="email"
                                th:placeholder="#{login.email}" required=""
                                data-parsley-required="true"
-                               data-parsley-required-message="邮箱不能为空"
+                               th:data-parsley-required-message="#{parsley.emailnotnull}"
                                data-parsley-trigger="change"
                                data-parslty-email
-                               data-parslty-email-message="请输入正确邮箱格式"
-                        >
+                               th:data-parslty-email-message="#{parsley.emailformat}"
+                        />
                     </div>
                     <div class="item form-group">
                         <label for="password" class="control-label fa fa-password"></label>
@@ -109,9 +109,10 @@
                                class="form-control col-md-7 col-xs-12" th:placeholder="#{login.password}"
                                data-parsley-required="true"
                                data-parsley-trigger="focusout"
-                               data-parsley-required-message="密码不能为空"
+                               th:data-parsley-required-message="#{parsley.pwdnotnull}"
                                data-parsley-minlength="6"
-                               data-parsley-minlength-message="密码位数不可少于6位"/>
+                               th:data-parsley-minlength-message="#{parsley.pwdlength}"
+                        />
 
                     </div>
                     <div class="item form-group">
@@ -120,10 +121,11 @@
                                th:placeholder="#{login.password}" class="form-control col-md-7 col-xs-12"
                                data-parsley-required="true"
                                data-parsley-trigger="focusout"
-                               data-parsley-required-message="确认密码不能为空"
+                               th:data-parsley-required-message="#{parsley.rwpwdnotnull}"
                                data-parsley-equalto="#password"
-                               data-parsley-equalto-message="两次密码输入不一致"/>
-                        >
+                               th:data-parsley-equalto-message="#{parsley.pwdvalid}"
+                        />
+
                     </div>
                     <div>
                         <button type="submit" class="btn btn-default submit validate" th:onclick="registered()" th:text="#{login.bt2}"></button>
@@ -180,32 +182,43 @@
         layui.use("layer", function () {
             var layer = layui.layer;
 
+            //验证用户名
+            var userName = document.getElementById("uname").value;
+            //验证密码
+            var password = document.getElementById("password").value;
+            //再次验证密码
+            var repassword = document.getElementById("password2").value;
+            var emali = document.getElementById("email").value;
+            if(userName != "" && password != "" && repassword == password && emali!="") {
+                $.ajax({
+                    type: "POST",
+                    data: $("#registered_form").serialize(),
+                    url: "/registered",
+                    success: function (data) {
 
-            $.ajax({
-                type: "POST",
-                data: $("#registered_form").serialize(),
-                url: "/registered",
-                success: function (data) {
+                        if (data == "200") {
+                            layer.alert("注册成功.请登录!", function () {
+                                layer.closeAll();
+                            });
+                        } else if(data == "100"){
+                            layer.alert("账户已存在,请重试", function () {
+                                layer.closeAll();
+                            });
+                        }
+                        else if(data == "101"){
+                            layer.alert("邮箱已存在,请重试", function () {
+                                layer.closeAll();
+                            });
+                        }
+                    },
+                    error: function (data) {
+                        layer.alert("操作请求错误，联系技术人员");
+                    }
+                });
+            }
 
-                    if (data == "200") {
-                        layer.alert("注册成功.请登录!", function () {
-                            layer.closeAll();
-                        });
-                    } else if(data == "100"){
-                        layer.alert("账户已存在,请重试", function () {
-                            layer.closeAll();
-                        });
-                    }
-                    else if(data == "101"){
-                        layer.alert("邮箱已存在,请重试", function () {
-                            layer.closeAll();
-                        });
-                    }
-                },
-                error: function (data) {
-                    layer.alert("操作请求错误，联系技术人员");
-                }
-            });
+
+
         })
     }
 </script>

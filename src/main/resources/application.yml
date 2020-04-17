@@ -37,7 +37,8 @@ spring:
 
     #国际化配置
     messages:
-      basename: i18n.login
+      basename: i18n.messages
+
 
     servlet:
       multipart:

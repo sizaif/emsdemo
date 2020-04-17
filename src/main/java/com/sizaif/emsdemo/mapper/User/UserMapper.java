@@ -1,5 +1,6 @@
 package com.sizaif.emsdemo.mapper.User;
 
+import com.sizaif.emsdemo.dto.UserVO;
 import com.sizaif.emsdemo.pojo.User.Member;
 import com.sizaif.emsdemo.pojo.User.Users;
 import org.apache.ibatis.annotations.Mapper;
