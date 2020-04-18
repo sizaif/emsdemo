@@ -66,6 +66,7 @@
         <result column="lockDate" property="lockDate"/>
         <result column="uname" property="name"/>
         <result column="encodePassword" property="password"/>
+        <result column="role" property="role"/>
     </resultMap>
 
     <!--关联表查询-->
@@ -86,24 +87,24 @@
           users
     </select>
 
-    <select id="queryOneUserMemberById" resultMap="MemberUserMap">
+    <select id="queryOneUserMemberById" resultMap="MemberUserMap" parameterType="int">
         select
           member.* ,users.*
         from
           member ,users
-        where  member.id = users.id AND users.id = #{uid};
+        where  member.id = users.id AND users.id = #{id};
     </select>
 
-    <select id="queryOneUserById" resultType="Users">
+    <select id="queryOneUserById" resultMap="UsersMap">
         SELECT
           saishiguanli.users.*
         FROM
           users
-        WHERE users.id = #{uid}
+        WHERE users.id = #{id}
     </select>
 
 
-    <select id="queryUserByName" parameterType="map" resultMap="UsersMap">
+    <select id="queryUserByName" parameterType="string" resultMap="UsersMap">
         SELECT saishiguanli.users.* FROM saishiguanli.users
         WHERE
           users.uname=#{uname};
@@ -111,7 +112,7 @@
 
     <!--动态sql插入-->
     <!--keyColum-数据库中主键名称, keyProperty-实体类中主键名称,useGeneratedKeys="true" 拿到主键-->
-    <insert id="addUser" parameterType="map" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    <insert id="addUserSelective" parameterType="Users" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         INSERT INTO saishiguanli.users
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="createDate != null">
@@ -181,7 +182,7 @@
 
 
     <!--动态sql更新User-->
-    <update id="updateUser" parameterType="map" >
+    <update id="updateUserSelective" parameterType="com.sizaif.emsdemo.pojo.User.Users" >
         update saishiguanli.users
         <trim prefix="set" suffixOverrides=",">
             <if test="createDate!=null">createDate=#{createDate},</if>

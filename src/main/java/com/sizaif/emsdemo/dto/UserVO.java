@@ -14,8 +14,8 @@ import java.util.List;
 
 public class UserVO {
     private int id;
-    private int isEnabled;
-    private int isLocked;
+    private Boolean isEnabled;
+    private Boolean isLocked;
     private String createDate;
     private String modifyDate;
     private String lastLoginDate;
@@ -35,20 +35,20 @@ public class UserVO {
         this.id = id;
     }
 
-    public int getIsEnabled() {
+    public Boolean getEnabled() {
         return isEnabled;
     }
 
-    public void setIsEnabled(int isEnabled) {
-        this.isEnabled = isEnabled;
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
     }
 
-    public int getIsLocked() {
+    public Boolean getLocked() {
         return isLocked;
     }
 
-    public void setIsLocked(int isLocked) {
-        this.isLocked = isLocked;
+    public void setLocked(Boolean locked) {
+        isLocked = locked;
     }
 
     public String getCreateDate() {

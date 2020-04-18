@@ -24,6 +24,13 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByCode" resultMap="BaseResultMap" parameterType="string" >
+    select
+    <include refid="Base_Column_List" />
+    from role
+    where code = #{record}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from role
     where id = #{id,jdbcType=INTEGER}

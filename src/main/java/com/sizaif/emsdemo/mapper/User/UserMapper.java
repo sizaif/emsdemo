@@ -41,19 +41,18 @@ public interface UserMapper {
     Member queryOneUserMemberById(int id);
 
 
-
     /**
      * 通过用户名查询用户-> 登录
      * @return
      */
-    Users queryUserByName(Map<String,Object> map);
+    Users queryUserByName(String uname);
 
     /**
      *  添加一个用户用户
-     * @param map
+     * @param
      * @return
      */
-    int addUser(Map<String,Object> map);
+    int addUserSelective(Users users);
 
     /**
      *  通过ID删除用户
@@ -64,10 +63,10 @@ public interface UserMapper {
 
     /**
      * 更新用户
-     * @param map
+     * @param
      * @return
      */
-    int updateUser(Map<String,Object> map);
+    int updateUserSelective(Users users);
 
 
 }

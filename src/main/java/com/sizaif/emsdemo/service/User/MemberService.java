@@ -15,11 +15,11 @@ public interface MemberService {
      */
     List<Member> QueryAllMemberInfo();
 
-    SystemResult AddOneMemberByHashMap(HashMap<String,Object> map);
+    SystemResult AddOneMember(Member member);
 
     SystemResult DeleteOneMemberById(int id);
 
-    SystemResult UpdateMemberInfoByHashMap(HashMap<String,Object> map);
+    SystemResult UpdateMember(Member member);
     /**
      *
      * @param id

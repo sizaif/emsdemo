@@ -3,7 +3,9 @@ package com.sizaif.emsdemo.controller;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.appoint.UsersServiceAppoint;
 import com.sizaif.emsdemo.dto.IndexDto;
+import com.sizaif.emsdemo.mapper.User.RoleMapper;
 import com.sizaif.emsdemo.pojo.User.Member;
+import com.sizaif.emsdemo.pojo.User.Role;
 import com.sizaif.emsdemo.pojo.User.Users;
 import com.sizaif.emsdemo.service.User.MemberService;
 import com.sizaif.emsdemo.service.User.UsersService;
@@ -36,6 +38,9 @@ public class LogController {
     private UsersService usersService;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private RoleMapper roleMapper;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping({"/","index","index.html","/usr/login/lang","/toLogin"})
@@ -57,28 +62,20 @@ public class LogController {
         // 封装用户登陆数据
         UsernamePasswordToken token = new UsernamePasswordToken(userName, passWord);
         //记住我
-        boolean rem = rememberme == null ? false: true;
+        boolean rem = rememberme != null ? true:false;
         token.setRememberMe(rem);
 
         try {
             // 执行登录
             currentUser.login(token);
 
-
-
-            // 获取用户ID
-//            HashMap<String, Object> uhashmap = new HashMap<>();
-//            uhashmap.put("userName",userName);
-//            users = usersService.queryUserByName(uhashmap);
-
             Users users = (Users) currentUser.getPrincipal();
 
-
             // 修改上次登陆时间
-            Map<String, Object> hashMap = new HashMap<>();
-            hashMap.put("lastLoginDate",new DateUtils().DatetoString(new Date()));
-            hashMap.put("id",users.getId());
-            usersService.UpdateUserInfoByHashMap(hashMap);
+            users.setLastLoginDate(DateUtils.DatetoString(new Date()));
+
+            usersService.UpdateUserInfo(users);
+
             Member members = memberService.QueryOneMemberInfoByID(users.getId());
 
             /**
@@ -91,7 +88,6 @@ public class LogController {
             Session session =  currentUser.getSession();
             httpSession.setAttribute("IndexDto",indexDto);
             session.setAttribute("IndexDto",indexDto);
-
 
             return "redirect:/home";
         }catch(UnknownAccountException e){
@@ -135,26 +131,32 @@ public class LogController {
         logger.debug("---> 注册: "+ name + " " + password + " " + email );
 
         try {
-            HashMap<String,Object> userhashMap = UsersServiceAppoint.UsersHttpWriteToMap(httpServletRequest,httpServletResponse);
+            Users userhashMap = UsersServiceAppoint.UsersHttpWriteToMap(httpServletRequest,httpServletResponse);
 
             UsersServiceAppoint.UsersOtherInfo(userhashMap,httpServletRequest);
 
             logger.debug("UserMap---> " + userhashMap);
 
-            HashMap<String,Object> memberMap = UsersServiceAppoint.MemberHttpWriteToMap(httpServletRequest,httpServletResponse);
+            Member memberMap = UsersServiceAppoint.MemberHttpWriteToMap(httpServletRequest,httpServletResponse);
 
-            Users users = usersService.queryUserByName(userhashMap);
+            // 得到默认角色player 的ID
+            Role role = roleMapper.selectByCode("player");
+
+            SystemResult systemResult = usersService.AddOneUser(userhashMap,role.getId().toString());
+
             // 账户已存在
-            if( null != users)
+            if( systemResult.getStatus()==100)
                 return "100";
-            else{
-                SystemResult systemResult = usersService.AddOneUser(userhashMap);
-                if(systemResult.getStatus()==200){
-                    int key = Integer.parseInt(userhashMap.get("id").toString());
-                    memberMap.replace("id",key);
-                    memberMap.put("memberRankId",1);
+            else if(systemResult.getStatus()==200){
+
+                    // 返回主键得到新插入的userID
+                    int key = (int) systemResult.getData();
+
+                    // 开始插入 member  必须做
+                    memberMap.setId(key);
+                    memberMap.setMemberRankId(1);
                     logger.debug("memberMap --> " + memberMap);
-                    SystemResult systemResult1 = memberService.AddOneMemberByHashMap(memberMap);
+                    SystemResult systemResult1 = memberService.AddOneMember(memberMap);
                     if (systemResult1.getStatus()==200){
                         return "200";
                     }else{
@@ -164,8 +166,6 @@ public class LogController {
                         return "101";
                     }
                 }
-            }
-
         }catch(Exception e){
             e.printStackTrace();
         }

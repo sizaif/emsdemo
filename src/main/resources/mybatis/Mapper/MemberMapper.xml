@@ -18,7 +18,7 @@
         <result column="image" property="image"/>
     </resultMap>
     <!--动态SQL插入-->
-    <insert id="AddOneMember" parameterType="map" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    <insert id="AddOneMember" parameterType="com.sizaif.emsdemo.pojo.User.Member" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         INSERT INTO saishiguanli.member
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -99,7 +99,7 @@
 
     </select>
 
-    <select id="QueryMemberInfoByEmailOrPhone" resultMap="MemberMap" parameterType="map">
+    <select id="QueryMemberInfoByEmailOrPhone" resultMap="MemberMap" parameterType="com.sizaif.emsdemo.pojo.User.Member">
         SELECT saishiguanli.member.* FROM  saishiguanli.member
         WHERE
             <if test ="email !=null">
@@ -113,7 +113,7 @@
 
 
     <!--动态SQL更新-->
-    <update id="UpdateMember" parameterType="map" >
+    <update id="UpdateMember" parameterType="com.sizaif.emsdemo.pojo.User.Member" >
         update saishiguanli.member
         <trim prefix="set" suffixOverrides=",">
             <if test="memberRankId!=null">memberRank_id=#{memberRankId},</if>

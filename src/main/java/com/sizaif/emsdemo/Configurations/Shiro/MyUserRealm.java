@@ -91,8 +91,9 @@ public class MyUserRealm extends AuthorizingRealm{
         HashMap<String, Object> map = new HashMap<>();
         map.put("uname",userToken.getUsername());
         map.put("password",userToken.getPassword());
+
         // 连接数据库
-        Users users = usersService.queryUserByName(map);
+        Users users = usersService.queryUserByName("uname");
         logger.debug("用户登录认证！用户信息user：" + users);
         //是否有这个账户
         if(users==null){
@@ -100,12 +101,12 @@ public class MyUserRealm extends AuthorizingRealm{
             return null;
         }
         //是否激活
-        if(users!=null && users.getIsEnabled()!=1  ){
+        if(users!=null && users.getEnabled()!=true  ){
             //未激活
             throw new DisabledAccountException();
         }
         //是否锁定
-        if(users!=null && users.getIsLocked() == 1){
+        if(users!=null && users.getLocked() == true){
             // 被锁定
             throw  new LockedAccountException();
         }

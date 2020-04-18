@@ -76,8 +76,8 @@ public class TestUserMapper {
 
         users.setCreateDate(new DateUtils().DatetoString(new Date()));
         users.setModifyDate(new DateUtils().DatetoString(new Date()));
-        users.setIsEnabled(1);
-        users.setIsLocked(0);
+        users.setEnabled(true);
+        users.setLocked(false);
         users.setLastLoginDate(new DateUtils().DatetoString(new Date()));
         users.setLockDate(new DateUtils().DatetoString(new Date()));
         users.setLastLogIp("null");

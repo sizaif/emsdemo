@@ -14,6 +14,8 @@ import com.sizaif.emsdemo.utils.JsonUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +36,7 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private MemberService memberService;
@@ -81,13 +84,15 @@ public class UserController {
     }
 
     @PostMapping("/toAddPage/addUser")
-    public String AddUser(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse){
+    public String AddUser(@RequestParam("roleIds") String roleIds,HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse){
 
-        HashMap<String,Object> memberMap = UsersServiceAppoint.MemberHttpWriteToMap(httpServletRequest,httpServletResponse);
-        HashMap<String,Object> usersMap = UsersServiceAppoint.UsersHttpWriteToMap(httpServletRequest,httpServletResponse);
+
+        Member memberMap = UsersServiceAppoint.MemberHttpWriteToMap(httpServletRequest,httpServletResponse);
+        Users usersMap = UsersServiceAppoint.UsersHttpWriteToMap(httpServletRequest,httpServletResponse);
 
         UsersServiceAppoint.UsersOtherInfo(usersMap,httpServletRequest);
 
+        logger.debug("设置用户[新增或更新]！user:" + usersMap+ " "+ memberMap + ",roleIds:" + roleIds);
 
         System.out.println(memberMap.toString());
         System.out.println(usersMap.toString());
@@ -95,22 +100,21 @@ public class UserController {
         //调用service对user进行处理
         try {
 
-            SystemResult addUserResult = usersService.AddOneUser(usersMap);
-            int id = Integer.parseInt(usersMap.get("id").toString());
-
+            SystemResult addUserResult = usersService.AddOneUser(usersMap,roleIds);
+            int id = usersMap.getId();
             if(addUserResult.getStatus() == 200){
 
                 //添加成功
                 System.out.println(addUserResult.getMsg());
 
-                memberMap.put("id",id);
+                memberMap.setId(id);
 
                 /**
                  *  待处理  ,后续开发更改
                  *  设置 memberRankId
                  */
-                memberMap.put("memberRankId",1);
-                SystemResult addMemberResult = memberService.AddOneMemberByHashMap(memberMap);
+                memberMap.setMemberRankId(1);
+                SystemResult addMemberResult = memberService.AddOneMember(memberMap);
                 if (addMemberResult.getStatus() == 200){
 
                     //添加成功
@@ -164,16 +168,18 @@ public class UserController {
 
         //调用service对user进行处理
         try {
-            HashMap<String, Object> hmap = UsersServiceAppoint.MemberHttpWriteToMap(httpServletRequest,httpServletResponse);
+            Member hmap = UsersServiceAppoint.MemberHttpWriteToMap(httpServletRequest,httpServletResponse);
 
-            SystemResult UpdateUserResult = usersService.UpdateUserInfo(httpServletRequest,httpServletResponse);
+            Users users = UsersServiceAppoint.UsersHttpWriteToMap(httpServletRequest,httpServletResponse);
+            UsersServiceAppoint.UsersOtherInfo(users,httpServletRequest);
+            SystemResult UpdateUserResult = usersService.UpdateUserInfo(users);
 
             if(UpdateUserResult.getStatus() == 200){
                 //修改User成功
                 System.out.println(UpdateUserResult.getMsg());
 
 
-                SystemResult UpdateMemberResult = memberService.UpdateMemberInfoByHashMap(hmap);
+                SystemResult UpdateMemberResult = memberService.UpdateMember(hmap);
 
                 if(UpdateMemberResult.getStatus() == 200){
 
@@ -225,8 +231,8 @@ public class UserController {
         try {
 
             System.out.println("进行了member Update");
-            HashMap<String, Object> hashMap = UsersServiceAppoint.MemberHttpWriteToMap(httpServletRequest, httpServletResponse);
-            SystemResult UpdateMemberResult = memberService.UpdateMemberInfoByHashMap(hashMap);
+            Member member = UsersServiceAppoint.MemberHttpWriteToMap(httpServletRequest, httpServletResponse);
+            SystemResult UpdateMemberResult = memberService.UpdateMember(member);
             if(UpdateMemberResult.getStatus() == 200){
 
                 //修改Member成功
@@ -341,10 +347,8 @@ public class UserController {
         /**
          *  连接数据库进行进行更新
          */
-        HashMap<String, Object> memberMap = new HashMap<>();
-        memberMap.put("image",newFileName);
-        memberMap.put("id",id);
-        SystemResult systemResult = memberService.UpdateMemberInfoByHashMap(memberMap);
+        member.setImage(newFileName);
+        SystemResult systemResult = memberService.UpdateMember(member);
         if(systemResult.getStatus()!=200){
             // 失败
 

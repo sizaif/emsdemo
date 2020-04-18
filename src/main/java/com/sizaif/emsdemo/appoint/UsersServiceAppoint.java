@@ -36,29 +36,33 @@ public class UsersServiceAppoint {
         //头像
         dto.setuImage(member.getImage());
     }
-    public static HashMap<String,Object> MemberHttpWriteToMap(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
-        HashMap<String, Object> hmap = new HashMap<>();
-        hmap.put("address",httpServletRequest.getParameter("address"));
-        hmap.put("email",httpServletRequest.getParameter("email"));
-        hmap.put("birth",httpServletRequest.getParameter("birth"));
-        hmap.put("truename",httpServletRequest.getParameter("truename"));
-        hmap.put("phone",httpServletRequest.getParameter("phone"));
-        hmap.put("school",httpServletRequest.getParameter("school"));
+    public static Member MemberHttpWriteToMap(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        Member member = new Member();
+        member.setAddress(httpServletRequest.getParameter("address"));
+        member.setEmail(httpServletRequest.getParameter("email"));
+        member.setBirth(httpServletRequest.getParameter("birth"));
+        member.setTruename(httpServletRequest.getParameter("truename"));
+        member.setPhone(httpServletRequest.getParameter("phone"));
+        member.setSchool(httpServletRequest.getParameter("school"));
         /**
          *  前端没有image 信息  设置默认为 user.png
          */
-        hmap.put("image","user.png");
-        hmap.put("gender",httpServletRequest.getParameter("gender"));
-        hmap.put("id",httpServletRequest.getParameter("uid"));
-        hmap.put("memberRankId",httpServletRequest.getParameter("memberRankId"));
-        return hmap;
+        member.setImage("user.png");
+        String gender = httpServletRequest.getParameter("gender");
+        if ( null != gender)
+            member.setGender(Integer.parseInt(gender));
+        String id = httpServletRequest.getParameter("uid");
+        if( null != id)
+            member.setId(Integer.parseInt(id));
+
+        return member;
     }
 
-    public static HashMap<String,Object> UsersHttpWriteToMap(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
-        HashMap<String, Object> umap = new HashMap<>();
+    public static Users UsersHttpWriteToMap(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+        Users umap = new Users();
         // users
-        umap.put("uname",httpServletRequest.getParameter("uname"));
-        umap.put("encodePassword",httpServletRequest.getParameter("encodePassword"));
+        umap.setName(httpServletRequest.getParameter("uname"));
+        umap.setPassword(httpServletRequest.getParameter("encodePassword"));
 
         /**
          *  前台的role 传来的值 0,1,2,3,4  转化为对应的 角色名称
@@ -88,14 +92,14 @@ public class UsersServiceAppoint {
                     defaut_role = "player";
                     break;
             }
-            umap.put("role",defaut_role);
+            umap.setRole(defaut_role);
         }catch(Exception e){
             e.printStackTrace();
         }
         return umap;
     }
 
-    public static void UsersOtherInfo(HashMap<String,Object> hashMap,HttpServletRequest httpServletRequest){
+    public static void UsersOtherInfo(Users users,HttpServletRequest httpServletRequest){
         /**
          *   createDate
          *   modifyDate
@@ -106,19 +110,19 @@ public class UsersServiceAppoint {
          *   lockDate
          */
         // 当前创建时间
-        hashMap.put("createDate",new DateUtils().DatetoString(new Date()));
+        users.setCreateDate(DateUtils.DatetoString(new Date()));
         // 修改时间
-        hashMap.put("modifyDate",new DateUtils().DatetoString(new Date()));
+        users.setModifyDate(DateUtils.DatetoString(new Date()));
         // 默认启用状态
-        hashMap.put("isEnabled",1);
+        users.setEnabled(true);
         // 默认未锁定状态
-        hashMap.put("isLocked",0);
+        users.setLocked(false);
         // 默认上次登录日期 null
-        hashMap.put("lastLoginDate",null);
+        users.setLastLoginDate(null);
         // 待修改登录IP  默认未 本地
-        hashMap.put("lastLoginIp",IPUtils.getIpAddress(httpServletRequest));
+        users.setLastLogIp(IPUtils.getIpAddress(httpServletRequest));
         // 默认锁定日期null
-        hashMap.put("lockDate",null);
+        users.setLockDate(null);
 
     }
 

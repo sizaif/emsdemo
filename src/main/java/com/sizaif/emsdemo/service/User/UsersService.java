@@ -3,6 +3,7 @@ package com.sizaif.emsdemo.service.User;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.pojo.User.Member;
 import com.sizaif.emsdemo.pojo.User.Users;
+import org.apache.catalina.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,9 +14,9 @@ public interface UsersService {
 
 
 
-    SystemResult AddOneUser(Map<String,Object> map) throws Exception;
+    SystemResult AddOneUser(Users users,String roleIds);
 
-    SystemResult DeleteUserById(int id) throws Exception;
+    SystemResult DeleteUserById(int id);
 
 
     List<Users> queryAllUserList()throws Exception;
@@ -26,9 +27,7 @@ public interface UsersService {
 
     Member queryOneUserMemberById(int id)throws Exception;
 
-    Users queryUserByName(Map<String,Object> map);
+    Users queryUserByName(String record);
 
-    SystemResult UpdateUserInfo(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse);
-
-    SystemResult UpdateUserInfoByHashMap(Map<String,Object> map);
+    SystemResult UpdateUserInfo(Users users);
 }

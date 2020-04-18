@@ -21,10 +21,10 @@ public interface MemberMapper {
 
     /**
      *  添加一个memeber 用户信息, (必须先获得Users的主键ID)
-     * @param map
+     * @param
      * @return
      */
-    int AddOneMember(Map<String,Object> map);
+    int AddOneMember(Member member);
 
     /**
      * 通过ID 查询一个用户详细信息
@@ -35,10 +35,10 @@ public interface MemberMapper {
 
     /**
      * 更新用户详细信息
-     * @param map
+     * @param
      * @return
      */
-    int UpdateMember(HashMap<String,Object> map);
+    int UpdateMember(Member member);
 
 
     /**
@@ -52,9 +52,9 @@ public interface MemberMapper {
     /**
      *  数据库中 邮箱和手机号是唯一索引, 插入时不可重复
      *  插入数据前做检测
-     * @param map
+     * @param
      * @return
      */
-    List<Member> QueryMemberInfoByEmailOrPhone(HashMap<String,Object> map);
+    List<Member> QueryMemberInfoByEmailOrPhone(Member member);
 
 }

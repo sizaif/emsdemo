@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class Users implements Serializable {
 
     private int id;
-    private int isEnabled;
-    private int isLocked;
+    private Boolean isEnabled;
+    private Boolean isLocked;
     private String createDate;
     private String modifyDate;
     private String lastLoginDate;
@@ -19,20 +19,6 @@ public class Users implements Serializable {
     public Users() {
     }
 
-    public Users(int id, int isEnabled, int isLocked, String createDate, String modifyDate, String lastLoginDate, String lastLogIp, String lockDate, String name, String password, String role) {
-        this.id = id;
-        this.isEnabled = isEnabled;
-        this.isLocked = isLocked;
-        this.createDate = createDate;
-        this.modifyDate = modifyDate;
-        this.lastLoginDate = lastLoginDate;
-        this.lastLogIp = lastLogIp;
-        this.lockDate = lockDate;
-        this.name = name;
-        this.password = password;
-        this.role = role;
-    }
-
     public int getId() {
         return id;
     }
@@ -41,20 +27,20 @@ public class Users implements Serializable {
         this.id = id;
     }
 
-    public int getIsEnabled() {
+    public Boolean getEnabled() {
         return isEnabled;
     }
 
-    public void setIsEnabled(int isEnabled) {
-        this.isEnabled = isEnabled;
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
     }
 
-    public int getIsLocked() {
+    public Boolean getLocked() {
         return isLocked;
     }
 
-    public void setIsLocked(int isLocked) {
-        this.isLocked = isLocked;
+    public void setLocked(Boolean locked) {
+        isLocked = locked;
     }
 
     public String getCreateDate() {

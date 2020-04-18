@@ -22,28 +22,17 @@ public class MemberServiceimpl implements MemberService {
     }
 
     @Override
-    public SystemResult AddOneMemberByHashMap(HashMap<String,Object> map) {
-//        HashMap<String,Object> memberMap = new HashMap<String, Object>();
-//        memberMap.put("id",member.getId());
-//        memberMap.put("memberRankId",member.getMemberRankId());
-//        memberMap.put("address",member.getAddress());
-//        memberMap.put("birth",member.getBirth());
-//        memberMap.put("email",member.getEmail());
-//        memberMap.put("gender",member.getGender());
-//        memberMap.put("phone",member.getPhone());
-//        memberMap.put("truename",member.getTruename());
-//        memberMap.put("school",member.getSchool());
-//        memberMap.put("image",member.getImage());
+    public SystemResult AddOneMember(Member member) {
 
         // 插入前 做检测 是否已经存在
-        List<Member> memberList = memberMapper.QueryMemberInfoByEmailOrPhone(map);
+        List<Member> memberList = memberMapper.QueryMemberInfoByEmailOrPhone(member);
         // 已存在
         if(memberList.size() > 0)
         {
             return new SystemResult(100,"member 已经存在,不可以重复插入");
         }else
         {
-            int su = memberMapper.AddOneMember(map);
+            int su = memberMapper.AddOneMember(member);
             if(su>0)
             {
                 return new SystemResult(200,"addOneMember  sucessful");
@@ -72,25 +61,10 @@ public class MemberServiceimpl implements MemberService {
     }
 
     @Override
-    public SystemResult UpdateMemberInfoByHashMap(HashMap<String,Object>map) {
-        HashMap<String,Object> memberMap = new HashMap<String, Object>();
+    public SystemResult UpdateMember(Member member) {
 
-        /**
-         *  put("") 与数据库交换字段
-         *  get("") 前端获得字段
-         */
-        memberMap.put("id",map.get("id"));
-        memberMap.put("memberRankId",map.get("memberRankId"));
-        memberMap.put("address",map.get("address"));
-        memberMap.put("birth",map.get("birth"));
-        memberMap.put("email",map.get("email"));
-        memberMap.put("gender",map.get("gender"));
-        memberMap.put("phone",map.get("phone"));
-        memberMap.put("truename",map.get("truename"));
-        memberMap.put("school",map.get("school"));
-        memberMap.put("image",map.get("image"));
 
-        int su = memberMapper.UpdateMember(memberMap);
+        int su = memberMapper.UpdateMember(member);
         if(su > 0){
             return  new SystemResult(200,"Update MemberInfo sucessful");
         }
