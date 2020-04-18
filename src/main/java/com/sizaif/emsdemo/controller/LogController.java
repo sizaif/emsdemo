@@ -33,6 +33,7 @@ import java.util.Map;
 @Controller
 public class LogController {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     //注入Service
     @Autowired
     private UsersService usersService;
@@ -41,7 +42,7 @@ public class LogController {
     @Autowired
     private RoleMapper roleMapper;
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @RequestMapping({"/","index","index.html","/usr/login/lang","/toLogin"})
     public String Index(Model model){
@@ -144,6 +145,8 @@ public class LogController {
 
             SystemResult systemResult = usersService.AddOneUser(userhashMap,role.getId().toString());
 
+
+            logger.debug(systemResult.getMsg()+" "+systemResult.getStatus());
             // 账户已存在
             if( systemResult.getStatus()==100)
                 return "100";
@@ -151,11 +154,12 @@ public class LogController {
 
                     // 返回主键得到新插入的userID
                     int key = (int) systemResult.getData();
-
+                    logger.debug("得到的主键userId --> " + key);
                     // 开始插入 member  必须做
                     memberMap.setId(key);
                     memberMap.setMemberRankId(1);
                     logger.debug("memberMap --> " + memberMap);
+                    logger.debug("开始添加一个member");
                     SystemResult systemResult1 = memberService.AddOneMember(memberMap);
                     if (systemResult1.getStatus()==200){
                         return "200";
@@ -163,6 +167,8 @@ public class LogController {
                         // 事务回滚 删除刚才添加的user
                         // 插入的member 存在重复的邮箱或手机号
                         usersService.DeleteUserById(key);
+                        // 从 用户角色表中删除 关系
+                        usersService.DeleteUserRolle(key,role.getId().toString());
                         return "101";
                     }
                 }

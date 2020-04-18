@@ -120,7 +120,7 @@ public class UsersServiceAppoint {
         // 默认上次登录日期 null
         users.setLastLoginDate(null);
         // 待修改登录IP  默认未 本地
-        users.setLastLogIp(IPUtils.getIpAddress(httpServletRequest));
+        users.setLastLoginIp(IPUtils.getIpAddress(httpServletRequest));
         // 默认锁定日期null
         users.setLockDate(null);
 

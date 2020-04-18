@@ -5,7 +5,7 @@
 <mapper namespace="com.sizaif.emsdemo.mapper.User.PermissionsMapper">
 
     <!--映射表-->
-    <resultMap id="BaseResultMap" type="Permission" >
+    <resultMap id="BaseResultMap" type="com.sizaif.emsdemo.pojo.User.Permission" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="title" property="name" jdbcType="VARCHAR" />
         <result column="pid" property="pid" jdbcType="INTEGER" />
@@ -33,7 +33,7 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="Permission" >
+    <insert id="insert" parameterType="com.sizaif.emsdemo.pojo.User.Permission" >
         insert into permission
         (id, name, pid, istype, descpt, code,page, insert_time,update_time)
         values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER},
@@ -42,7 +42,7 @@
         #{insertTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
     </insert>
     <!--动态插入-->
-    <insert id="insertSelective" parameterType="Permission" >
+    <insert id="insertSelective" parameterType="com.sizaif.emsdemo.pojo.User.Permission" >
         insert into permission
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -105,7 +105,7 @@
     </insert>
 
     <!--动态更新-->
-    <update id="updateByPrimaryKeySelective" parameterType="Permission" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.sizaif.emsdemo.pojo.User.Permission" >
         update permission
         <set >
             <if test="title != null" >
@@ -136,7 +136,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <update id="updateByPrimaryKey" parameterType="Permission" >
+    <update id="updateByPrimaryKey" parameterType="com.sizaif.emsdemo.pojo.User.Permission" >
         update permission
         set name = #{title,jdbcType=VARCHAR},
         pid = #{pid,jdbcType=INTEGER},

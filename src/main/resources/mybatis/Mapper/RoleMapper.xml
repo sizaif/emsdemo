@@ -24,7 +24,7 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectByCode" resultMap="BaseResultMap" parameterType="string" >
+  <select id="selectByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from role
@@ -36,7 +36,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
     <!--动态sql 插入-->
-  <insert id="insertSelective" parameterType="Role" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.sizaif.emsdemo.pojo.User.Role" useGeneratedKeys="true" keyProperty="id">
     insert into role
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -87,7 +87,7 @@
   </insert>
 
     <!--动态sql 更新-->
-  <update id="updateByPrimaryKeySelective" parameterType="Role" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.sizaif.emsdemo.pojo.User.Role" >
     update role
     <set >
       <if test="roleName != null" >
@@ -112,7 +112,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <update id="updateByPrimaryKey" parameterType="Role" >
+  <update id="updateByPrimaryKey" parameterType="com.sizaif.emsdemo.pojo.User.Role" >
     update role
     set role_name = #{roleName,jdbcType=VARCHAR},
       descpt = #{descpt,jdbcType=VARCHAR},
@@ -124,7 +124,7 @@
   </update>
 
 
-  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="Role" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.sizaif.emsdemo.pojo.User.Role" >
     insert into role (id, role_name, descpt,
     code, insert_uid, insert_time,
     update_time)

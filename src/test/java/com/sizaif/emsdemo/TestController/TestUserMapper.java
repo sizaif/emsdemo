@@ -50,10 +50,16 @@ public class TestUserMapper {
     @Test
     public void Test3(){
 
-        List<ContestVO> contestVOList = contestService.getContestByMember(1);
-        for (ContestVO contestVO : contestVOList) {
-            System.out.println(contestVO.toString());
-        }
+        Users users= new Users();
+        users = userMapper.queryUserByName("test08");
+        if(null == users)
+            System.out.println("null--->");
+//        System.out.println(users.toString());
+
+//        Member member2 = new Member();
+//        member2.setEmail("11112223444@qq.com");
+//        List<Member> member = memberMapper.QueryMemberInfoByEmailOrPhone(member2);
+//        System.out.println(member.size());
     }
 
     @Test
@@ -80,7 +86,7 @@ public class TestUserMapper {
         users.setLocked(false);
         users.setLastLoginDate(new DateUtils().DatetoString(new Date()));
         users.setLockDate(new DateUtils().DatetoString(new Date()));
-        users.setLastLogIp("null");
+        users.setLastLoginIp("null");
         users.setName("test07");
         users.setPassword("test");
         hashMap.put("createDate",users.getCreateDate());

@@ -18,6 +18,7 @@ public interface UsersService {
 
     SystemResult DeleteUserById(int id);
 
+    SystemResult DeleteUserRolle(int userId,String roleIds);
 
     List<Users> queryAllUserList()throws Exception;
 

@@ -4,6 +4,8 @@ import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.mapper.User.MemberMapper;
 import com.sizaif.emsdemo.pojo.User.Member;
 import com.sizaif.emsdemo.service.User.MemberService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +15,12 @@ import java.util.List;
 @Service
 public class MemberServiceimpl implements MemberService {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private MemberMapper memberMapper;
+
+
     @Override
     public List<Member> QueryAllMemberInfo() {
         List<Member> members = memberMapper.QueryAllMemberInfo();
@@ -25,13 +31,14 @@ public class MemberServiceimpl implements MemberService {
     public SystemResult AddOneMember(Member member) {
 
         // 插入前 做检测 是否已经存在
+        logger.debug("开始验证member的邮箱和手机号是否重复");
         List<Member> memberList = memberMapper.QueryMemberInfoByEmailOrPhone(member);
         // 已存在
         if(memberList.size() > 0)
         {
+            logger.debug("member 邮箱或手机号重复");
             return new SystemResult(100,"member 已经存在,不可以重复插入");
-        }else
-        {
+        }else {
             int su = memberMapper.AddOneMember(member);
             if(su>0)
             {

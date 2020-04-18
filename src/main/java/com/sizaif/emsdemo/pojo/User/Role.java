@@ -17,6 +17,19 @@ public class Role {
 
     private String updateTime;
 
+    public Role() {
+    }
+
+    public Role(Integer id, String roleName, String descpt, String code, Integer insertUid, String insertTime, String updateTime) {
+        this.id = id;
+        this.roleName = roleName;
+        this.descpt = descpt;
+        this.code = code;
+        this.insertUid = insertUid;
+        this.insertTime = insertTime;
+        this.updateTime = updateTime;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -128,7 +128,7 @@
 
                     </div>
                     <div>
-                        <button type="submit" class="btn btn-default submit validate" th:onclick="registered()" th:text="#{login.bt2}"></button>
+                        <button type="button" class="btn btn-default submit validate" th:onclick="registered()" th:text="#{login.bt2}"></button>
                         <a href="#signin" class="btn btn-default submit" th:text="#{login.btn}"></a>
                     </div>
 
@@ -190,12 +190,13 @@
             var repassword = document.getElementById("password2").value;
             var emali = document.getElementById("email").value;
             if(userName != "" && password != "" && repassword == password && emali!="") {
+                console.log("ajax");
                 $.ajax({
-                    type: "POST",
+                    type: "post",
                     data: $("#registered_form").serialize(),
                     url: "/registered",
                     success: function (data) {
-
+                        console.log(data);
                         if (data == "200") {
                             layer.alert("注册成功.请登录!", function () {
                                 layer.closeAll();

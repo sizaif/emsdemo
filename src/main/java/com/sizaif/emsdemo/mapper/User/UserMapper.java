@@ -45,7 +45,7 @@ public interface UserMapper {
      * 通过用户名查询用户-> 登录
      * @return
      */
-    Users queryUserByName(String uname);
+    Users queryUserByName(String name);
 
     /**
      *  添加一个用户用户

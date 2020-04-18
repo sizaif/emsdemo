@@ -10,13 +10,27 @@ public class Users implements Serializable {
     private String createDate;
     private String modifyDate;
     private String lastLoginDate;
-    private String lastLogIp;
+    private String lastLoginIp;
     private String lockDate;
     private String name;
     private String password;
     private String role;
 
     public Users() {
+    }
+
+    public Users(int id, Boolean isEnabled, Boolean isLocked, String createDate, String modifyDate, String lastLoginDate, String lastLoginIp, String lockDate, String name, String password, String role) {
+        this.id = id;
+        this.isEnabled = isEnabled;
+        this.isLocked = isLocked;
+        this.createDate = createDate;
+        this.modifyDate = modifyDate;
+        this.lastLoginDate = lastLoginDate;
+        this.lastLoginIp = lastLoginIp;
+        this.lockDate = lockDate;
+        this.name = name;
+        this.password = password;
+        this.role = role;
     }
 
     public int getId() {
@@ -67,12 +81,12 @@ public class Users implements Serializable {
         this.lastLoginDate = lastLoginDate;
     }
 
-    public String getLastLogIp() {
-        return lastLogIp;
+    public String getLastLoginIp() {
+        return lastLoginIp;
     }
 
-    public void setLastLogIp(String lastLogIp) {
-        this.lastLogIp = lastLogIp;
+    public void setLastLoginIp(String lastLoginIp) {
+        this.lastLoginIp = lastLoginIp;
     }
 
     public String getLockDate() {
@@ -116,7 +130,7 @@ public class Users implements Serializable {
                 ", createDate='" + createDate + '\'' +
                 ", modifyDate='" + modifyDate + '\'' +
                 ", lastLoginDate='" + lastLoginDate + '\'' +
-                ", lastLogIp='" + lastLogIp + '\'' +
+                ", lastLoginIp='" + lastLoginIp + '\'' +
                 ", lockDate='" + lockDate + '\'' +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +

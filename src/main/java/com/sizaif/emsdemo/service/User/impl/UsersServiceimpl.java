@@ -8,6 +8,8 @@ import com.sizaif.emsdemo.pojo.User.UserRoleKey;
 import com.sizaif.emsdemo.pojo.User.Users;
 import com.sizaif.emsdemo.service.User.UsersService;
 import com.sizaif.emsdemo.utils.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,7 @@ import java.util.Map;
 @Service
 public class UsersServiceimpl implements UsersService {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     //注入mapper
     @Autowired
     private UserMapper userMapper;
@@ -35,15 +38,19 @@ public class UsersServiceimpl implements UsersService {
     @Override
     public SystemResult AddOneUser(Users user,String roleIds) {
 
-        Users existusers = userMapper.queryUserByName(user.getName());
+        logger.debug("开始验证用户是否存在");
+        Users existusers = null;
+        existusers = userMapper.queryUserByName(user.getName());
 
         if( null != existusers ){
             return new SystemResult(100,"用户已存在",existusers);
         }else{
+            logger.debug("开始添加用户");
             int su = userMapper.addUserSelective(user);
             if(su>0){
                 int userId = user.getId();
                 // 给用户授角色
+                logger.debug("开始给用户授角色");
                 SystemResult setUserRoleKeyresult = setUserRoleKey(userId, roleIds);
                 // 添加角用户色成功
                 if(setUserRoleKeyresult.getStatus()==200){
@@ -69,6 +76,26 @@ public class UsersServiceimpl implements UsersService {
             return new SystemResult(200,"delete oneuser  successful");
         }else
             return new SystemResult(100,"delete failed");
+    }
+
+    @Override
+    public SystemResult DeleteUserRolle(int userId, String roleIds) {
+        String[] arrays = roleIds.split(",");
+        int c = 0;
+
+        for (String roleId : arrays) {
+            UserRoleKey urk = new UserRoleKey();
+            urk.setRoleId(Integer.valueOf(roleId));
+            urk.setUserId(userId);
+            int su = userRoleMapper.deleteByPrimaryKey(urk);
+            if( su > 0)
+                c++;
+        }
+        if( c == arrays.length)
+            return new SystemResult(200,"删除用户角色成功",arrays);
+        else
+            return new SystemResult(100,"删除用户角色失败",arrays);
+
     }
 
 

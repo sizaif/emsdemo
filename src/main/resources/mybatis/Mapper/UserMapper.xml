@@ -7,7 +7,7 @@
 
     <!--一对一(多对一关系) 用association-->
     <!--映射表-->
-    <resultMap id="MemberUserMap" type="Member">
+    <resultMap id="MemberUserMap" type="com.sizaif.emsdemo.pojo.User.Member">
         <!--column数据库中的字段，property实体类中的属性-->
         <id column="id" property="id"/>
         <result column="memberRank_id" property="memberRankId"/>
@@ -21,14 +21,14 @@
         <result column="image" property="image"/>
 
         <!--关联查询 property users对应数据库中表明 javaType对应到实体类名字-->
-        <association property="users" javaType="Users">
+        <association property="users" javaType="com.sizaif.emsdemo.pojo.User.Users">
             <id column="id" property="id"/>
             <result column="createDate" property="createDate"/>
             <result column="modifyDate" property="modifyDate"/>
             <result column="isEnabled" property="isEnabled"/>
             <result column="isLocked" property="isLocked"/>
             <result column="lastLoginDate" property="lastLoginDate"/>
-            <result column="lastLoginIp" property="lastLogIp"/>
+            <result column="lastLoginIp" property="lastLoginIp"/>
             <result column="lockDate" property="lockDate"/>
             <result column="uname" property="name"/>
             <result column="encodePassword" property="password"/>
@@ -54,19 +54,19 @@
     <!--</resultMap>-->
 
     <!--映射表-->
-    <resultMap id="UsersMap" type="Users">
-        <id column="id" property="id" />
+    <resultMap id="UsersMap" type="com.sizaif.emsdemo.pojo.User.Users">
         <!--column数据库中的字段，property实体类中的属性-->
-        <result column="createDate" property="createDate"/>
-        <result column="modifyDate" property="modifyDate"/>
-        <result column="isEnabled" property="isEnabled"/>
-        <result column="isLocked" property="isLocked"/>
-        <result column="lastLoginDate" property="lastLoginDate"/>
-        <result column="lastLoginIp" property="lastLogIp"/>
-        <result column="lockDate" property="lockDate"/>
-        <result column="uname" property="name"/>
-        <result column="encodePassword" property="password"/>
-        <result column="role" property="role"/>
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="createDate" property="createDate" jdbcType="VARCHAR" />
+        <result column="modifyDate" property="modifyDate" jdbcType="VARCHAR" />
+        <result column="isEnabled" property="isEnabled" jdbcType="INTEGER"/>
+        <result column="isLocked" property="isLocked" jdbcType="INTEGER"/>
+        <result column="lastLoginDate" property="lastLoginDate" jdbcType="VARCHAR" />
+        <result column="lastLoginIp" property="lastLoginIp" jdbcType="VARCHAR" />
+        <result column="lockDate" property="lockDate" jdbcType="VARCHAR" />
+        <result column="uname" property="name" jdbcType="VARCHAR"/>
+        <result column="encodePassword" property="password" jdbcType="VARCHAR"/>
+        <result column="role" property="role" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--关联表查询-->
@@ -104,15 +104,15 @@
     </select>
 
 
-    <select id="queryUserByName" parameterType="string" resultMap="UsersMap">
+    <select id="queryUserByName"  parameterType="java.lang.String" resultMap="UsersMap">
         SELECT saishiguanli.users.* FROM saishiguanli.users
         WHERE
-          users.uname=#{uname};
+          saishiguanli.users.uname = #{name};
     </select>
 
     <!--动态sql插入-->
     <!--keyColum-数据库中主键名称, keyProperty-实体类中主键名称,useGeneratedKeys="true" 拿到主键-->
-    <insert id="addUserSelective" parameterType="Users" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    <insert id="addUserSelective" parameterType="com.sizaif.emsdemo.pojo.User.Users" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         INSERT INTO saishiguanli.users
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="createDate != null">
@@ -136,10 +136,10 @@
             <if test="lockDate != null">
                 lockDate,
             </if>
-            <if test="uname != null">
+            <if test="name != null">
                 uname,
             </if>
-            <if test="encodePassword != null">
+            <if test="password != null">
                 encodePassword,
             </if>
             <if test="role != null">
@@ -168,11 +168,11 @@
             <if test="lockDate != null">
                 #{lockDate},
             </if>
-            <if test="uname != null">
-                #{uname},
+            <if test="name != null">
+                #{name},
             </if>
-            <if test="encodePassword != null">
-                #{encodePassword},
+            <if test="password != null">
+                #{password},
             </if>
             <if test="role != null">
                 #{role},
@@ -185,16 +185,16 @@
     <update id="updateUserSelective" parameterType="com.sizaif.emsdemo.pojo.User.Users" >
         update saishiguanli.users
         <trim prefix="set" suffixOverrides=",">
-            <if test="createDate!=null">createDate=#{createDate},</if>
-            <if test="modifyDate!=null">modifyDate=#{modifyDate},</if>
-            <if test="isEnabled!=null">isEnabled=#{isEnabled},</if>
-            <if test="isLocked!=null">isLocked=#{isLocked},</if>
-            <if test="lastLoginDate!=null">lastLoginDate=#{lastLoginDate},</if>
-            <if test="lastLoginIp!=null">lastLoginIp=#{lastLoginIp},</if>
-            <if test="lockDate!=null">lockDate=#{lockDate},</if>
-            <if test="name!=null"> uname=#{name},</if>
-            <if test="encodePassword!=null"> encodePassword=#{encodePassword},</if>
-            <if test="role!=null"> role=#{role},</if>
+            <if test="createDate != null">createDate=#{createDate},</if>
+            <if test="modifyDate != null">modifyDate=#{modifyDate},</if>
+            <if test="isEnabled != null">isEnabled=#{isEnabled},</if>
+            <if test="isLocked != null">isLocked=#{isLocked},</if>
+            <if test="lastLoginDate != null">lastLoginDate=#{lastLoginDate},</if>
+            <if test="lastLoginIp != null">lastLoginIp=#{lastLoginIp},</if>
+            <if test="lockDate != null">lockDate=#{lockDate},</if>
+            <if test="name != null"> uname=#{name},</if>
+            <if test="password != null"> encodePassword=#{password},</if>
+            <if test="role != null"> role=#{role},</if>
         </trim>
         where id = #{id}
     </update>
