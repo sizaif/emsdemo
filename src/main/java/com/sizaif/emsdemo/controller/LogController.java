@@ -101,11 +101,11 @@ public class LogController {
             return "production/commons/login";
         }catch (LockedAccountException e){
             // 用户被锁定
-            model.addAttribute("msg", "用户被锁定");
+            model.addAttribute("msg", "用户被锁定,请联系管理员");
             return "production/commons/login";
         }catch (DisabledAccountException e){
             // 用户未激活
-            model.addAttribute("msg", "用户未激活");
+            model.addAttribute("msg", "用户未激活,请联系管理员");
             return "production/commons/login";
         }
     }

@@ -9,8 +9,10 @@ import com.sizaif.emsdemo.pojo.User.Member;
 import com.sizaif.emsdemo.pojo.User.Users;
 import com.sizaif.emsdemo.service.User.MemberService;
 import com.sizaif.emsdemo.service.User.UsersService;
+import com.sizaif.emsdemo.utils.DateUtils;
 import com.sizaif.emsdemo.utils.FileUtils;
 import com.sizaif.emsdemo.utils.JsonUtils;
+import org.apache.catalina.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -29,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -256,7 +259,7 @@ public class UserController {
      * @param id
      * @return
      */
-    @GetMapping("/toDeleteUser/{id}")
+    @RequestMapping("/toDeleteUser/{id}")
     public String toDeleteUser(@PathVariable("id") Integer id){
 
         try {
@@ -288,6 +291,92 @@ public class UserController {
 
     }
 
+
+    /**
+     *  设置用户 是否启用状态
+     * @param id
+     * @param isEnabled
+     * @return
+     */
+    @RequestMapping("/setEnabled")
+    @ResponseBody
+    public String setEnabled(@RequestParam("id") Integer id, @RequestParam("isEnabled") Boolean isEnabled){
+
+        logger.debug("设置用户是否启用！id:" + id + ",isEnabled:" + isEnabled);
+
+        String msg = "";
+        try {
+            if (null == id || null == isEnabled) {
+                logger.debug("设置用户是否启用，结果=请求参数有误，请您稍后再试");
+                return "请求参数有误，请您稍后再试";
+            }
+
+            // 设置用户是否启用
+            Users user = new Users();
+            user.setId(id);
+            // 是否启用状态
+            user.setEnabled(isEnabled);
+            user.setModifyDate(DateUtils.DatetoString(new Date()));
+            logger.debug(user.toString());
+            SystemResult systemResult = usersService.UpdateUserInfo(user);
+            if( systemResult.getStatus()== 200){
+                logger.debug("更新用户启用状态成功");
+                return  "200";
+            }else{
+                logger.debug("更新用户启用状态失败");
+                return "100";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("设置用户是否启用异常！", e);
+            msg = "操作异常，请您稍后再试！";
+        }
+        return msg;
+    }
+
+    /**
+     *  设置用户是否锁定状态
+     * @param id
+     * @param isLocked
+     * @return
+     */
+    @RequestMapping("/setLocked")
+    @ResponseBody
+    public String setLocked(@RequestParam("id") Integer id, @RequestParam("isLocked") Boolean isLocked){
+
+        logger.debug("设置用户是否锁定！id:" + id + ",isLocked:" + isLocked);
+
+        String msg = "";
+        try {
+            if (null == id || null == isLocked) {
+                logger.debug("设置用户是否锁定，结果=请求参数有误，请您稍后再试");
+                return "请求参数有误，请您稍后再试";
+            }
+
+            // 设置用户是否锁定
+            Users user = new Users();
+            user.setId(id);
+            // 是否锁定状态
+            user.setLocked(isLocked);
+            user.setModifyDate(DateUtils.DatetoString(new Date()));
+            logger.debug(user.toString());
+            SystemResult systemResult = usersService.UpdateUserInfo(user);
+            if( systemResult.getStatus()== 200){
+                logger.debug("更新用户锁定状态成功");
+                return  "200";
+            }else{
+                logger.debug("更新用户锁定状态失败");
+                return "100";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("设置用户是否锁定异常！", e);
+            msg = "操作异常，请您稍后再试！";
+        }
+        return msg;
+    }
+
+
     @Value("${web.upload-path}")
     private String path;
 
@@ -313,14 +402,6 @@ public class UserController {
         Subject currentUser = SecurityUtils.getSubject();
 
         Users curru = (Users) currentUser.getPrincipal();
-
-//        IndexDto indexDto = new IndexDto();
-//        HttpSession session = httpServletRequest.getSession();
-//        try {
-//            indexDto = (IndexDto) session.getAttribute("IndexDto");
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
 
         System.out.println("currenttUser.ID--> " + curru.getId());
         /**
