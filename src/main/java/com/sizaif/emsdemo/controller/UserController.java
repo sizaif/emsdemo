@@ -150,28 +150,9 @@ public class UserController {
         return "redirect:/users/toUserList";
     }
 
-    /**
-     * 跳转到更新页面
-     * @param model
-     * @param id
-     * @return
-     */
-    @GetMapping("/toUpdateMemberUserInfoPage/{uid}")
-    public String toUpdateUser(Model model,@PathVariable("uid")Integer id){
-
-        // 查出用户信息
-        try {
-            List<MemberVO> memberuserById = usersService.queryOneUserMemberById(id);
-            model.addAttribute("MemberInfo",memberuserById);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            return "production/Admin/updatememberinfo";
-        }
-    }
 
 
-    @RequestMapping("/toUpdateMemberUserInfoPage/updateInfo")
+    @RequestMapping("/updateUMRInfo")
     public String UpdateMemberInfo1(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
 
         //调用service对user进行处理

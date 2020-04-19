@@ -8,7 +8,7 @@
     <div class="nav_menu">
         <nav>
             <div class="nav toggle">
-                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                <a id="menu_toggle"><i class="glyphicon glyphicon-object-align-left"></i></a>
             </div>
 
             <ul class="nav navbar-nav navbar-right">
@@ -26,7 +26,7 @@
                             </a>
                         </li>
                         <li><a href="javascript:;">Help</a></li>
-                        <li><a th:href="@{/logout}"><i class="fa fa-sign-out pull-right"></i> 登出</a></li>
+                        <li><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-out pull-right"></span> 登出</a></li>
                     </ul>
                 </li>
 
@@ -111,7 +111,7 @@
         <!--侧边栏-菜单栏-info-->
         <div class="profile clearfix" th:fragment="menu_profile_quick_info">
             <div class="profile_pic">
-                <img th:src="@{/images/}+${session.IndexDto.uImage}" alt="..." class="img-circle profile_img">
+                <img th:src="@{/images/}+${session.IndexDto.uImage}" alt="..." class="layui-circle img-circle profile_img">
             </div>
             <div class="profile_info">
                 <span>欢迎你,</span>

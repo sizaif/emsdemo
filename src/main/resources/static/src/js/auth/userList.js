@@ -9,19 +9,14 @@ $(function(){
         //监听提交
         form.on('submit(UserSumbit)', function(data){
 
-            var
-
             layer.confirm('确定提交么？', {
                 btn: ['返回','确认'] //按钮
             },function(){
                 layer.closeAll();
             },function() {
                 // layer.closeAll();//关闭所有弹框
-                submitAjax(data);
+                formSubmit(data);
             });
-            console.log($("#UserForm").serialize());
-
-
             return false;
         });
 
@@ -29,47 +24,48 @@ $(function(){
     });
 });
 //提交数据
-function submitAjax(obj) {
-    console.log(obj)
-    // if( obj.flag == "update"){
-    //     $.ajax({
-    //         type: "POST",
-    //         data: $("#UserForm").serialize(),
-    //         // url: "/auth/setRole",
-    //         success: function (data) {
-    //             if (data == "200") {
-    //                 layer.alert("操作成功",function(){
-    //                     layer.closeAll();
-    //                     load();
-    //                 });
-    //             } else {
-    //                 layer.alert(data);
-    //             }
-    //         },
-    //         error: function (data) {
-    //             layer.alert("操作请求错误，请您联系技术人员");
-    //         }
-    //     });
-    // }else if(obj.flag == "add"){
-    //     $.ajax({
-    //         type: "POST",
-    //         data: $("#RoleForm").serialize(),
-    //         url: "/auth/addRole",
-    //         success: function (data) {
-    //             if (data == "200") {
-    //                 layer.alert("操作成功",function(){
-    //                     layer.closeAll();
-    //                     load();
-    //                 });
-    //             } else {
-    //                 layer.alert(data);
-    //             }
-    //         },
-    //         error: function (data) {
-    //             layer.alert("操作请求错误，请您联系技术人员");
-    //         }
-    //     });
-    // }
+function formSubmit(obj) {
+    console.log("SSSSS--->"+obj)
+    if($("#flag").val() == "update"){
+        // console.log($("#UserForm").serialize());
+        $.ajax({
+            type: "POST",
+            data: $("#UserForm").serialize(),
+            url: "/users//updateUMRInfo",
+            success: function (data) {
+                if (data == "200") {
+                    layer.alert("操作成功",function(){
+                        layer.closeAll();
+                        load();
+                    });
+                } else {
+                    layer.alert(data);
+                }
+            },
+            error: function (data) {
+                layer.alert("操作请求错误，请您联系技术人员");
+            }
+        });
+    }else if(obj.flag == "add"){
+        $.ajax({
+            type: "POST",
+            data: $("#RoleForm").serialize(),
+            url: "/users//addUMRInfo",
+            success: function (data) {
+                if (data == "200") {
+                    layer.alert("操作成功",function(){
+                        layer.closeAll();
+                        load();
+                    });
+                } else {
+                    layer.alert(data);
+                }
+            },
+            error: function (data) {
+                layer.alert("操作请求错误，请您联系技术人员");
+            }
+        });
+    }
 }
 // 切换是否启用
 function switchEnable(id,name,flag) {
