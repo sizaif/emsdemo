@@ -1,81 +1,77 @@
 
 
 $(function(){
-    layui.use('layer','form', function(){
+    layui.use(['layer','form'], function(){
         var layer = layui.layer;
         var form  = layui.form;
-        // //监听工具条
-        // table.on('tool(userTable)', function(obj){
-        //     var data = obj.data;
-        //     if(obj.event === 'del'){
-        //         delUser(data,data.id,data.username);
-        //     } else if(obj.event === 'edit'){
-        //         //编辑
-        //         getUserAndRoles(data,data.id);
-        //     } else if(obj.event === 'recover'){
-        //         //恢复
-        //         recoverUser(data,data.id);
-        //     }
-        // });
-        // //监听提交
-        // form.on('submit(userSubmit)', function(data){
-        //     // TODO 校验
-        //     formSubmit(data);
-        //     return false;
-        // });
 
 
         //监听提交
         form.on('submit(UserSumbit)', function(data){
-            console.log("data--->"+data);
 
+            var
+
+            layer.confirm('确定提交么？', {
+                btn: ['返回','确认'] //按钮
+            },function(){
+                layer.closeAll();
+            },function() {
+                // layer.closeAll();//关闭所有弹框
+                submitAjax(data);
+            });
             console.log($("#UserForm").serialize());
 
-            if( flag == "update"){
-                $.ajax({
-                    type: "POST",
-                    data: $("#UserForm").serialize(),
-                    // url: "/auth/setRole",
-                    success: function (data) {
-                        if (data == "200") {
-                            layer.alert("操作成功",function(){
-                                layer.closeAll();
-                                load();
-                            });
-                        } else {
-                            layer.alert(data);
-                        }
-                    },
-                    error: function (data) {
-                        layer.alert("操作请求错误，请您联系技术人员");
-                    }
-                });
-            }else if(flag == "add"){
-                $.ajax({
-                    type: "POST",
-                    data: $("#RoleForm").serialize(),
-                    url: "/auth/addRole",
-                    success: function (data) {
-                        if (data == "200") {
-                            layer.alert("操作成功",function(){
-                                layer.closeAll();
-                                load();
-                            });
-                        } else {
-                            layer.alert(data);
-                        }
-                    },
-                    error: function (data) {
-                        layer.alert("操作请求错误，请您联系技术人员");
-                    }
-                });
-            }
+
             return false;
         });
 
         form.render();
     });
 });
+//提交数据
+function submitAjax(obj) {
+    console.log(obj)
+    // if( obj.flag == "update"){
+    //     $.ajax({
+    //         type: "POST",
+    //         data: $("#UserForm").serialize(),
+    //         // url: "/auth/setRole",
+    //         success: function (data) {
+    //             if (data == "200") {
+    //                 layer.alert("操作成功",function(){
+    //                     layer.closeAll();
+    //                     load();
+    //                 });
+    //             } else {
+    //                 layer.alert(data);
+    //             }
+    //         },
+    //         error: function (data) {
+    //             layer.alert("操作请求错误，请您联系技术人员");
+    //         }
+    //     });
+    // }else if(obj.flag == "add"){
+    //     $.ajax({
+    //         type: "POST",
+    //         data: $("#RoleForm").serialize(),
+    //         url: "/auth/addRole",
+    //         success: function (data) {
+    //             if (data == "200") {
+    //                 layer.alert("操作成功",function(){
+    //                     layer.closeAll();
+    //                     load();
+    //                 });
+    //             } else {
+    //                 layer.alert(data);
+    //             }
+    //         },
+    //         error: function (data) {
+    //             layer.alert("操作请求错误，请您联系技术人员");
+    //         }
+    //     });
+    // }
+}
+// 切换是否启用
 function switchEnable(id,name,flag) {
 
     var isEnabled = flag;
@@ -110,6 +106,7 @@ function switchEnable(id,name,flag) {
 
 }
 
+// 切换是否禁用
 function switchLocked(id,name,flag) {
 
     var isLocked = flag;
@@ -145,17 +142,7 @@ function switchLocked(id,name,flag) {
 }
 
 
-/**
- * 设置“禁用/可用”的按钮样式
- * @param switchElement
- * @param checkedBool
- */
-// function setSwitchery(switchElement, checkedBool) {
-//     if ((checkedBool && !switchElement.isChecked()) || (!checkedBool && switchElement.isChecked())) {
-//         switchElement.setPosition(true);
-//         switchElement.handleOnchange(true);
-//     }
-// }
+// 修改
 function edit(obj) {
 
     console.log(obj);
@@ -178,12 +165,6 @@ function edit(obj) {
         $("#flag").val("update");
 
 
-        if(obj.gender == 1){
-            console.log(obj.gender);
-            $("#men").attr("checked",true);
-        }else {
-            $("#women").prop("checked",true);
-        }
         var existRole='';
 
         if(obj.users.userRoles !=null ){
@@ -202,33 +183,39 @@ function edit(obj) {
 
                 var div=$("<option  name='roleId' value="+item.id+" title="+item.descpt+">"+
                     "<span>"+item.descpt+"</span>"+
-                    "<i class='layui-icon'>&#xe626;</i>" +
                     "</option>");
                 if(existRole!='' && existRole.indexOf(item.id)>=0){
 
                     div=$("<option   name='roleId' value="+item.id+" title="+item.descpt+" selected >"+
                         "<span>"+item.descpt+"</span>"+
-                        "<i class='layui-icon'>&#xe627;</i>" +
                         "</option>");
                 }
                 $("#roleDiv").append(div);
             });
+            // 修改性别
+            if(obj.gender == 0){
+                // console.log(obj.gender);
+                $("#men").removeAttr("checked");
+                $("#women").attr("checked","checked");
+            }
+            layui.form.render('radio');
+            layui.form.render('select');
         });
 
-        // layui.form.render('checkbox');
         layer.open({
             type:1,
             title: "编辑用户详细信息",
             fixed:false,
             resize :false,
-            offset:'lt',
+            offset:'auto',
             shadeClose: true,
             btn: '关闭',
-            area: ['600px', '680px'],
+            area: ['600px', '720px'],
             content:$('#eidtUser'),
-            end:function(){
+            end: function(){
                 location.reload();
             }
         });
+
     }
 }
