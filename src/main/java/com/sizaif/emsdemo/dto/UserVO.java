@@ -2,6 +2,7 @@ package com.sizaif.emsdemo.dto;
 
 import com.sizaif.emsdemo.pojo.User.UserRoleKey;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,20 +13,39 @@ import java.util.List;
  * @version: v1.0$
  */
 
-public class UserVO {
+public class UserVO implements Serializable {
+
     private int id;
     private Boolean isEnabled;
     private Boolean isLocked;
     private String createDate;
     private String modifyDate;
     private String lastLoginDate;
-    private String lastLogIp;
+    private String lastLoginIp;
     private String lockDate;
     private String name;
     private String password;
     private String role;
 
-    private List<UserRoleKey> userRoles;
+    private UserRoleKey userRoles;
+
+    public UserVO() {
+    }
+
+    public UserVO(int id, Boolean isEnabled, Boolean isLocked, String createDate, String modifyDate, String lastLoginDate, String lastLoginIp, String lockDate, String name, String password, String role, UserRoleKey userRoles) {
+        this.id = id;
+        this.isEnabled = isEnabled;
+        this.isLocked = isLocked;
+        this.createDate = createDate;
+        this.modifyDate = modifyDate;
+        this.lastLoginDate = lastLoginDate;
+        this.lastLoginIp = lastLoginIp;
+        this.lockDate = lockDate;
+        this.name = name;
+        this.password = password;
+        this.role = role;
+        this.userRoles = userRoles;
+    }
 
     public int getId() {
         return id;
@@ -75,12 +95,12 @@ public class UserVO {
         this.lastLoginDate = lastLoginDate;
     }
 
-    public String getLastLogIp() {
-        return lastLogIp;
+    public String getLastLoginIp() {
+        return lastLoginIp;
     }
 
-    public void setLastLogIp(String lastLogIp) {
-        this.lastLogIp = lastLogIp;
+    public void setLastLoginIp(String lastLoginIp) {
+        this.lastLoginIp = lastLoginIp;
     }
 
     public String getLockDate() {
@@ -115,11 +135,11 @@ public class UserVO {
         this.role = role;
     }
 
-    public List<UserRoleKey> getUserRoles() {
+    public UserRoleKey getUserRoles() {
         return userRoles;
     }
 
-    public void setUserRoles(List<UserRoleKey> userRoles) {
+    public void setUserRoles(UserRoleKey userRoles) {
         this.userRoles = userRoles;
     }
 
@@ -132,7 +152,7 @@ public class UserVO {
                 ", createDate='" + createDate + '\'' +
                 ", modifyDate='" + modifyDate + '\'' +
                 ", lastLoginDate='" + lastLoginDate + '\'' +
-                ", lastLogIp='" + lastLogIp + '\'' +
+                ", lastLoginIp='" + lastLoginIp + '\'' +
                 ", lockDate='" + lockDate + '\'' +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +

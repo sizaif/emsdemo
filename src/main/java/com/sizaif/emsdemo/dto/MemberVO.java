@@ -1,8 +1,16 @@
-package com.sizaif.emsdemo.pojo.User;
+package com.sizaif.emsdemo.dto;
 
-import com.sizaif.emsdemo.dto.UserVO;
+import java.util.List;
 
-public class Member {
+/**
+ * @author ：sizaif
+ * @date ：Created in 2020/4/19 14:16
+ * @description：关联用户成员角色表信息
+ * @modified By：sizaif
+ * @version: v1.0$
+ */
+
+public class MemberVO {
 
     private int id;
     private int memberRankId;
@@ -15,11 +23,12 @@ public class Member {
     private String school;
     private String image;
 
-    public Member() {
+    private UserVO users;
+
+    public MemberVO() {
     }
 
-
-    public Member(int id, int memberRankId, String address, String birth, String email, int gender, String phone, String truename, String school, String image) {
+    public MemberVO(int id, int memberRankId, String address, String birth, String email, int gender, String phone, String truename, String school, String image, UserVO users) {
         this.id = id;
         this.memberRankId = memberRankId;
         this.address = address;
@@ -30,22 +39,7 @@ public class Member {
         this.truename = truename;
         this.school = school;
         this.image = image;
-    }
-
-    @Override
-    public String toString() {
-        return "Member{" +
-                "id=" + id +
-                ", memberRankId=" + memberRankId +
-                ", address='" + address + '\'' +
-                ", birth='" + birth + '\'' +
-                ", email='" + email + '\'' +
-                ", gender=" + gender +
-                ", phone='" + phone + '\'' +
-                ", truename='" + truename + '\'' +
-                ", school='" + school + '\'' +
-                ", image='" + image + '\'' +
-                '}';
+        this.users = users;
     }
 
     public int getId() {
@@ -128,5 +122,28 @@ public class Member {
         this.image = image;
     }
 
+    public UserVO getUsers() {
+        return users;
+    }
 
+    public void setUsers(UserVO users) {
+        this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return "MemberVO{" +
+                "id=" + id +
+                ", memberRankId=" + memberRankId +
+                ", address='" + address + '\'' +
+                ", birth='" + birth + '\'' +
+                ", email='" + email + '\'' +
+                ", gender=" + gender +
+                ", phone='" + phone + '\'' +
+                ", truename='" + truename + '\'' +
+                ", school='" + school + '\'' +
+                ", image='" + image + '\'' +
+                ", users=" + users +
+                '}';
+    }
 }

@@ -193,7 +193,7 @@ function updateRole(id) {
     if(id!=null && !isNaN(id)){
         $("#id").val(id);
         $("input[name='flag']").val("update");
-        $.get("/auth/getRole",{"id":id},function(data) {
+        $.get("/auth/getRoleById",{"id":id},function(data) {
             if(null!=data){
                 var jsonobj= eval('(' + data + ')');
                 console.log(jsonobj);

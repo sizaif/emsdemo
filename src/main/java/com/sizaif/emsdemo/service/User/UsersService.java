@@ -1,6 +1,7 @@
 package com.sizaif.emsdemo.service.User;
 
 import com.sizaif.emsdemo.Result.SystemResult;
+import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.pojo.User.Member;
 import com.sizaif.emsdemo.pojo.User.Users;
 import org.apache.catalina.User;
@@ -22,11 +23,11 @@ public interface UsersService {
 
     List<Users> queryAllUserList()throws Exception;
 
-    List<Member> queryAllUserMemberList() throws Exception;
+    List<MemberVO> queryAllUserMemberRoleList();
 
     Users queryOneUserById(int id) throws Exception;
 
-    Member queryOneUserMemberById(int id)throws Exception;
+    List<MemberVO> queryOneUserMemberById(int id)throws Exception;
 
     Users queryUserByName(String record);
 

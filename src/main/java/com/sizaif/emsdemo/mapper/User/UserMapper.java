@@ -1,13 +1,12 @@
 package com.sizaif.emsdemo.mapper.User;
 
-import com.sizaif.emsdemo.dto.UserVO;
+import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.pojo.User.Member;
 import com.sizaif.emsdemo.pojo.User.Users;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 // 这是mybaties 的Mapper类
 @Mapper
@@ -18,7 +17,7 @@ public interface UserMapper {
      * 获得所有用户以及详细成员信息列表
      * @return
      */
-    List<Member> queryAllUserMemberList();
+    List<MemberVO> queryAllUserMemberRoleList();
 
     /**
      * 只返回用户列表 没有详细成员信息
@@ -38,7 +37,7 @@ public interface UserMapper {
      * @param id
      * @return
      */
-    Member queryOneUserMemberById(int id);
+    List<MemberVO> queryOneUserMemberById(int id);
 
 
     /**

@@ -31,12 +31,23 @@
                 </exclusion>
             </exclusions>
 		</dependency>
-		<!--&lt;!&ndash;整合spring security&ndash;&gt;-->
-		<!--<dependency>-->
-			<!--<groupId>org.springframework.boot</groupId>-->
-			<!--<artifactId>spring-boot-starter-security</artifactId>-->
-		<!--</dependency>-->
 
+		<!--</dependency>-->
+		<!--Springfox Swagger2-Ui-->
+		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+
+		<!--Springfox Swagger2 -->
+		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
 		<!--shiro thymeleaf-->
          <!--https://mvnrepository.com/artifact/com.github.theborakompanioni/thymeleaf-extras-shiro-->
         <dependency>

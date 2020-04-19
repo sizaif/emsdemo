@@ -4,6 +4,7 @@ package com.sizaif.emsdemo.controller;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.appoint.UsersServiceAppoint;
 import com.sizaif.emsdemo.dto.IndexDto;
+import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.pojo.User.Member;
 
 import com.sizaif.emsdemo.pojo.User.Users;
@@ -12,6 +13,8 @@ import com.sizaif.emsdemo.service.User.UsersService;
 import com.sizaif.emsdemo.utils.DateUtils;
 import com.sizaif.emsdemo.utils.FileUtils;
 import com.sizaif.emsdemo.utils.JsonUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.catalina.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -35,6 +38,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+@Api("用户管理类")
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -52,6 +56,7 @@ public class UserController {
      * @param model
      * @return
      */
+    @ApiOperation(value="获取用户列表", notes="")
     @RequestMapping("/toUserList")
     public String queryUserList(Model model)
     {
@@ -59,7 +64,7 @@ public class UserController {
         try {
             List<Users> usersLists = usersService.queryAllUserList();
             List<Member> memberList = memberService.QueryAllMemberInfo();
-            List<Member> memberuserList = usersService.queryAllUserMemberList();
+            List<MemberVO> memberuserList = usersService.queryAllUserMemberRoleList();
             JsonUtils jsonUtils = new JsonUtils();
             String JsonUserList = jsonUtils.objectToJson(usersLists);
             String JsonMemberList = jsonUtils.objectToJson(memberList);
@@ -156,7 +161,7 @@ public class UserController {
 
         // 查出用户信息
         try {
-            Member memberuserById = usersService.queryOneUserMemberById(id);
+            List<MemberVO> memberuserById = usersService.queryOneUserMemberById(id);
             model.addAttribute("MemberInfo",memberuserById);
         } catch (Exception e) {
             e.printStackTrace();

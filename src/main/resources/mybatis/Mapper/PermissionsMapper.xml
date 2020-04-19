@@ -210,11 +210,11 @@
     <!--=Start getUserPerms 根据用户ID查找权限树列表-->
     <select id="getUserPerms" resultType="com.sizaif.emsdemo.dto.PermissionVO">
         select
-        p.id, p.name,p.pid pId,  p.istype, p.code
+        p.id, p.name,p.pid pId,  p.istype, p.code,r.role_name
         from permission p
         LEFT JOIN role_permission rp ON rp.permit_id=p.id
         LEFT JOIN role r ON r.id=rp.role_id
-        LEFT JOIN user_role ur ON ur.role_id=r.id
+        LEFT JOIN users_role ur ON ur.role_id=r.id
         WHERE ur.user_id=#{userId}
         GROUP BY p.id
     </select>

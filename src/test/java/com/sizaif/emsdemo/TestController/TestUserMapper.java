@@ -1,6 +1,7 @@
 package com.sizaif.emsdemo.TestController;
 
 import com.sizaif.emsdemo.dto.ContestVO;
+import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.mapper.Contest.ContestMapper;
 import com.sizaif.emsdemo.mapper.User.MemberMapper;
 import com.sizaif.emsdemo.mapper.User.UserMapper;
@@ -69,51 +70,15 @@ public class TestUserMapper {
 //        hashMap.put("userName","root");
 //        Users users = usersService.queryUserByName(hashMap);
 //        System.out.println(users.toString());
-        Member member = userMapper.queryOneUserMemberById(1);
+        List<MemberVO> member = userMapper.queryOneUserMemberById(1);
+        for (MemberVO vo : member) {
+            System.out.println(vo.toString());
+        }
         System.out.println(member.toString());
+//        List<MemberVO> members = usersService.queryAllUserMemberRoleList();
+//        for (MemberVO user : members) {
+//            System.out.println(user.toString());
+//        }
     }
-    @Test
-    public void Test() throws Exception {
 
-
-        HashMap<String, Object> hashMap = new HashMap<>();
-//        createDate, modifyDate, isEnabled, isLocked, lastLoginDate, lastLoginIp, lockDate, name, encodePassword
-        Users users = new Users();
-
-        users.setCreateDate(new DateUtils().DatetoString(new Date()));
-        users.setModifyDate(new DateUtils().DatetoString(new Date()));
-        users.setEnabled(true);
-        users.setLocked(false);
-        users.setLastLoginDate(new DateUtils().DatetoString(new Date()));
-        users.setLockDate(new DateUtils().DatetoString(new Date()));
-        users.setLastLoginIp("null");
-        users.setName("test07");
-        users.setPassword("test");
-        hashMap.put("createDate",users.getCreateDate());
-        hashMap.put("modifyDate",users.getModifyDate());
-        hashMap.put("isEnabled","1");
-        hashMap.put("isLocked","0");
-        hashMap.put("lastLoginDate",new DateUtils().DatetoString(new Date()));
-        hashMap.put("lastLoginIp","127.0.0.1");
-        hashMap.put("lockDate",new DateUtils().DatetoString(new Date()));
-        hashMap.put("name",users.getName());
-        hashMap.put("encodePassword",users.getPassword());
-
-//        userMapper.addUser(hashMap);
-//
-//        System.out.println(users.getId());
-//        System.out.println(hashMap.get("id").toString());
-//        int id = Integer.parseInt(hashMap.get("id").toString());
-        Member member2 = new Member(5,1,"china",new DateUtils().DatetoString(new Date()),"test2@test.com",0,"1234567891","徐文昌","烟台大学","null");
-//        memberService.AddOneMember(member2);
-        List<Member> members2 = memberService.QueryAllMemberInfo();
-        for (Member member : members2) {
-            System.out.println(member.toString());
-        }
-        List<Member> members = usersService.queryAllUserMemberList();
-        for (Member user : members) {
-            System.out.println(user.toString());
-        }
-        
-    }
 }

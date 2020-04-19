@@ -7,7 +7,7 @@
 
     <!--一对一(多对一关系) 用association-->
     <!--映射表-->
-    <resultMap id="MemberUserMap" type="com.sizaif.emsdemo.pojo.User.Member">
+    <resultMap id="MemberUserMap" type="com.sizaif.emsdemo.dto.MemberVO">
         <!--column数据库中的字段，property实体类中的属性-->
         <id column="id" property="id"/>
         <result column="memberRank_id" property="memberRankId"/>
@@ -21,7 +21,8 @@
         <result column="image" property="image"/>
 
         <!--关联查询 property users对应数据库中表明 javaType对应到实体类名字-->
-        <association property="users" javaType="com.sizaif.emsdemo.pojo.User.Users">
+        <!--association-->
+        <collection property="users" javaType="com.sizaif.emsdemo.dto.UserVO">
             <id column="id" property="id"/>
             <result column="createDate" property="createDate"/>
             <result column="modifyDate" property="modifyDate"/>
@@ -33,7 +34,11 @@
             <result column="uname" property="name"/>
             <result column="encodePassword" property="password"/>
             <result column="role" property="role"/>
-        </association>
+            <collection property="userRoles" javaType="com.sizaif.emsdemo.pojo.User.UserRoleKey">
+                <result column="user_id" property="userId" javaType="java.lang.Integer"/>
+                <result column="role_id" property="roleId" javaType="java.lang.Integer"/>
+            </collection>
+        </collection>
     </resultMap>
     
     <!--<resultMap id="UsersRoleMap" type="Users">-->
@@ -69,14 +74,16 @@
         <result column="role" property="role" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <sql id="User_No_Password_List" >
+        users.id,users.createDate,users.modifyDate,users.isEnabled,users.isLocked,users.lastLoginDate,users.lastLoginIp,users.lockDate,users.uname,users.role
+    </sql>
+
     <!--关联表查询-->
-    <select id="queryAllUserMemberList" resultMap="MemberUserMap">
-        SELECT
-            member.* ,users.*
-         FROM
-            member ,users
-         WHERE
-          member.id = users.id
+    <select id="queryAllUserMemberRoleList" resultMap="MemberUserMap">
+        SELECT m.*,ur.*,<include refid="User_No_Password_List" />
+        FROM member m, users,role r
+        LEFT JOIN users_role ur ON ur.role_id = r.id
+        WHERE m.id = users.id AND ur.user_id= users.id
     </select>
 
     
@@ -88,11 +95,10 @@
     </select>
 
     <select id="queryOneUserMemberById" resultMap="MemberUserMap" parameterType="int">
-        select
-          member.* ,users.*
-        from
-          member ,users
-        where  member.id = users.id AND users.id = #{id};
+        SELECT m.*,ur.*,<include refid="User_No_Password_List" />
+        FROM member m, users,role r
+        LEFT JOIN users_role ur ON ur.role_id = r.id
+        WHERE m.id = users.id AND ur.user_id= users.id AND users.id = #{id}
     </select>
 
     <select id="queryOneUserById" resultMap="UsersMap">

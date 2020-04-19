@@ -154,7 +154,7 @@ public class AuthController {
 
 
     /**
-     * 获取权限
+     * 获取某个id的权限
      * @param id
      * @return
      */
@@ -281,7 +281,7 @@ public class AuthController {
      * @param id RoleAndPerms
      * @return json
      */
-    @RequestMapping("/getRole")
+    @RequestMapping("/getRoleById")
     @ResponseBody
     public String getRole(@RequestParam("id") int id){
         logger.debug("获取角色--id-" + id);
@@ -295,6 +295,15 @@ public class AuthController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @RequestMapping("/getRoles")
+    @ResponseBody
+    public String getRoles(){
+        logger.debug("获取全部角色列表信息");
+
+        List<Role> rolesList = authService.roleList();
+        return JsonUtils.objectToJson(rolesList);
     }
 
 

@@ -1,9 +1,9 @@
 
 
 $(function(){
-    layui.use('layer', function(){
+    layui.use('layer','form', function(){
         var layer = layui.layer;
-
+        var form  = layui.form;
         // //监听工具条
         // table.on('tool(userTable)', function(obj){
         //     var data = obj.data;
@@ -24,14 +24,64 @@ $(function(){
         //     return false;
         // });
 
+
+        //监听提交
+        form.on('submit(UserSumbit)', function(data){
+            console.log("data--->"+data);
+
+            console.log($("#UserForm").serialize());
+
+            if( flag == "update"){
+                $.ajax({
+                    type: "POST",
+                    data: $("#UserForm").serialize(),
+                    // url: "/auth/setRole",
+                    success: function (data) {
+                        if (data == "200") {
+                            layer.alert("操作成功",function(){
+                                layer.closeAll();
+                                load();
+                            });
+                        } else {
+                            layer.alert(data);
+                        }
+                    },
+                    error: function (data) {
+                        layer.alert("操作请求错误，请您联系技术人员");
+                    }
+                });
+            }else if(flag == "add"){
+                $.ajax({
+                    type: "POST",
+                    data: $("#RoleForm").serialize(),
+                    url: "/auth/addRole",
+                    success: function (data) {
+                        if (data == "200") {
+                            layer.alert("操作成功",function(){
+                                layer.closeAll();
+                                load();
+                            });
+                        } else {
+                            layer.alert(data);
+                        }
+                    },
+                    error: function (data) {
+                        layer.alert("操作请求错误，请您联系技术人员");
+                    }
+                });
+            }
+            return false;
+        });
+
+        form.render();
     });
 });
 function switchEnable(id,name,flag) {
 
     var isEnabled = flag;
     console.log(isEnabled);
-    var state = isEnabled == true ? "启用":"关闭";
-    layer.confirm('您确定要把用户：'+name+'设置为 "'+state+'" 状态吗？', {
+    var state = isEnabled == true ? "启用":"未启用";
+    layer.confirm('您确定要把用户：<font style=\'font-weight:bold;\' color=\'blue\'>'+name+'</font>设置为 <font style=\'font-weight:bold;\' color=\'red\'>'+state+'</font> 状态吗？', {
         btn: ['确认','返回'] //按钮
     }, function(){
         $.post("/users/setEnabled",{"id":id,"isEnabled":isEnabled},function(data){
@@ -65,7 +115,7 @@ function switchLocked(id,name,flag) {
     var isLocked = flag;
     console.log(isLocked);
     var state = isLocked == false ? "未锁定":"锁定";
-    layer.confirm('您确定要把用户：'+name+'设置为 "'+state+'" 状态吗？', {
+    layer.confirm('您确定要把用户：<font style=\'font-weight:bold;\' color=\'blue\'>'+name+'</font>设置为 <font style=\'font-weight:bold;\' color=\'red\'>'+state+'</font> 状态吗？', {
         btn: ['确认','返回'] //按钮
     }, function(){
         $.post("/users/setLocked",{"id":id,"isLocked":isLocked},function(data){
@@ -92,4 +142,93 @@ function switchLocked(id,name,flag) {
         parent.location.reload();
     });
 
+}
+
+
+/**
+ * 设置“禁用/可用”的按钮样式
+ * @param switchElement
+ * @param checkedBool
+ */
+// function setSwitchery(switchElement, checkedBool) {
+//     if ((checkedBool && !switchElement.isChecked()) || (!checkedBool && switchElement.isChecked())) {
+//         switchElement.setPosition(true);
+//         switchElement.handleOnchange(true);
+//     }
+// }
+function edit(obj) {
+
+    console.log(obj);
+    var isLocked = obj.users.locked;
+    if(isLocked){
+        layer.msg("该用户已经被锁定，不可进行编辑；</br>  如需编辑，请设置为<font style='font-weight:bold;' color='green'>未锁定</font>状态。", {icon: 2});
+    }else{
+
+        $("#id2").val(obj.users.id==null?'':obj.users.id);
+        $("#id").val(obj.users.id==null?'':obj.users.id);
+        $("#truename").val(obj.truename==null?'':obj.truename);
+        $("#school").val(obj.school==null?'':obj.school);
+        $("#mobile").val(obj.users.mobile==null?'':obj.users.mobile);
+        $("#email").val(obj.email==null?'':obj.email);
+        $("#email2").val(obj.email==null?'':obj.email);
+        $("#telephone").val(obj.phone==null?'':obj.phone);
+        $("#address").val(obj.address==null?'':obj.address);
+        $("#username").val(obj.users.name==null?'':obj.users.name);
+
+        $("#flag").val("update");
+
+
+        if(obj.gender == 1){
+            console.log(obj.gender);
+            $("#men").attr("checked",true);
+        }else {
+            $("#women").prop("checked",true);
+        }
+        var existRole='';
+
+        if(obj.users.userRoles !=null ){
+            existRole+=obj.users.userRoles.roleId+',';
+            // console.log("item.roleid->"+existRole);
+
+        }
+        // console.log("existRole->" +existRole);
+        $("#roleDiv").empty();
+        // 全部角色信息 显示角色数据
+        $.get("/auth/getRoles",function(data){
+            // console.log(data);
+
+            var jsonobj= eval('(' + data + ')');
+            $.each(jsonobj,function (index, item) {
+
+                var div=$("<option  name='roleId' value="+item.id+" title="+item.descpt+">"+
+                    "<span>"+item.descpt+"</span>"+
+                    "<i class='layui-icon'>&#xe626;</i>" +
+                    "</option>");
+                if(existRole!='' && existRole.indexOf(item.id)>=0){
+
+                    div=$("<option   name='roleId' value="+item.id+" title="+item.descpt+" selected >"+
+                        "<span>"+item.descpt+"</span>"+
+                        "<i class='layui-icon'>&#xe627;</i>" +
+                        "</option>");
+                }
+                $("#roleDiv").append(div);
+            });
+        });
+
+        // layui.form.render('checkbox');
+        layer.open({
+            type:1,
+            title: "编辑用户详细信息",
+            fixed:false,
+            resize :false,
+            offset:'lt',
+            shadeClose: true,
+            btn: '关闭',
+            area: ['600px', '680px'],
+            content:$('#eidtUser'),
+            end:function(){
+                location.reload();
+            }
+        });
+    }
 }

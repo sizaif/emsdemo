@@ -1,6 +1,7 @@
 package com.sizaif.emsdemo.service.User.impl;
 
 import com.sizaif.emsdemo.Result.SystemResult;
+import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.mapper.User.UserMapper;
 import com.sizaif.emsdemo.mapper.User.UserRoleMapper;
 import com.sizaif.emsdemo.pojo.User.Member;
@@ -106,8 +107,8 @@ public class UsersServiceimpl implements UsersService {
     }
 
     @Override
-    public List<Member> queryAllUserMemberList() throws Exception {
-        List<Member> usersmemberslist = userMapper.queryAllUserMemberList();
+    public List<MemberVO> queryAllUserMemberRoleList()  {
+        List<MemberVO> usersmemberslist = userMapper.queryAllUserMemberRoleList();
         return usersmemberslist;
     }
 
@@ -118,8 +119,8 @@ public class UsersServiceimpl implements UsersService {
     }
 
     @Override
-    public Member queryOneUserMemberById(int uid) throws Exception {
-        Member member = userMapper.queryOneUserMemberById(uid);
+    public List<MemberVO> queryOneUserMemberById(int uid) throws Exception {
+        List<MemberVO> member = userMapper.queryOneUserMemberById(uid);
         return member;
     }
 
