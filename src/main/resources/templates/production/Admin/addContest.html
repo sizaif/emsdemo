@@ -1,38 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>赛事添加</title>
-
-    <!-- Bootstrap -->
-    <link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link th:href="@{/vendors/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
-    <!-- NProgress -->
-    <link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
-    <!-- iCheck -->
-    <link th:href="@{/vendors/iCheck/skins/flat/green.css}" rel="stylesheet">
-    <!-- bootstrap-wysiwyg -->
-    <link th:href="@{/vendors/google-code-prettify/bin/prettify.min.css}" rel="stylesheet">
-    <!-- Select2 -->
-    <link th:href="@{/vendors/select2/dist/css/select2.min.css}" rel="stylesheet">
-    <!--layui-->
-    <!--<link th:href="@{/vendors/layui/css/layui.css}" rel="stylesheet">-->
-    <!-- Switchery -->
-    <link th:href="@{/vendors/switchery/dist/switchery.min.css}" rel="stylesheet">
-    <!-- starrr -->
-    <link th:href="@{/vendors/starrr/dist/starrr.css}" rel="stylesheet">
-    <!-- bootstrap-daterangepicker -->
-    <link th:href="@{/vendors/bootstrap-daterangepicker/daterangepicker.css}" rel="stylesheet">
-    <!-- Custom Theme Style -->
-    <link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
-
-</head>
+<html xmlns:th="http://www.thymeleaf.org" th:with="title='添加赛事'">
+<!--head-->
+<header th:replace="~{production/Commons/header::headerFragment(${title})}"></header>
+<!--head-->
 
 <body class="nav-md">
 <div class="container body">

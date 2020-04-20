@@ -199,6 +199,40 @@ public class UsersServiceimpl implements UsersService {
             return new SystemResult(100,"Update UserInfo failed");
     }
 
+    /**
+     * 对用户角色表进行更新
+     *
+     * @param userRoleKey
+     * @return
+     */
+    @Override
+    public SystemResult UpdateUserRole(UserRoleKey userRoleKey) {
+
+        // 先删除原先的关系
+        List<UserRoleKey> existkeyList = userRoleMapper.findByUserId(userRoleKey.getUserId());
+        int count = 0;
+        if( null != existkeyList){
+
+            for (UserRoleKey roleKey : existkeyList) {
+                logger.debug("BBBB");
+                int su  = userRoleMapper.deleteByPrimaryKey(roleKey);
+                if(su > 0)
+                    count++;
+            }
+            if(count == existkeyList.size()){
+
+                // 插入新的关系表
+                int re = userRoleMapper.insertSelective(userRoleKey);
+                if( re > 0 ){
+                    return  new SystemResult(200,"更新关系表成功");
+                }else
+                    return  new SystemResult(100,"更新关系表失败");
+            }
+        }
+
+        return  new SystemResult(100,"更新关系表失败");
+    }
+
     public SystemResult setUserRoleKey(int userId,String roleIds) {
 
         String[] arrays = roleIds.split(",");

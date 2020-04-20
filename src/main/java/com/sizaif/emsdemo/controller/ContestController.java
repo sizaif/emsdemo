@@ -2,6 +2,7 @@ package com.sizaif.emsdemo.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.sizaif.emsdemo.Result.SystemResult;
+import com.sizaif.emsdemo.appoint.ContestServiceAppoint;
 import com.sizaif.emsdemo.pojo.Contest.Contest;
 import com.sizaif.emsdemo.service.Contest.ContestService;
 import com.sizaif.emsdemo.utils.DateUtils;
@@ -36,10 +37,15 @@ public class ContestController {
         logger.debug("获得比赛列表！,分页");
         ModelAndView mav = new ModelAndView("production/Contest/contestList");
         try {
-            List<Contest> list = contestService.findAllContestByPageF(pageNum,pageSize);
+//            List<Contest> Contestlist = contestService.findAllContestByPageF(pageNum,pageSize);
             PageInfo pageInfo = contestService.findAllUserByPageS(pageNum,pageSize);
-            logger.debug("----> sql 获得比赛列表 ->> list :" + list);
-            mav.addObject("pageList",list);
+
+            //  start 处理 tags
+            ContestServiceAppoint.TagTotags(pageInfo);
+            //  end 处理 tags
+
+//            logger.debug("----> sql 获得比赛列表 ->> list :" + list);
+//            mav.addObject("pageList",list);
             mav.addObject("pageInfo",pageInfo);
         }catch (Exception e){
             e.printStackTrace();

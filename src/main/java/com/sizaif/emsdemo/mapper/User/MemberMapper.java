@@ -38,7 +38,7 @@ public interface MemberMapper {
      * @param
      * @return
      */
-    int UpdateMember(Member member);
+    int UpdateMemberSelective(Member member);
 
 
     /**

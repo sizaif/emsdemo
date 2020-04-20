@@ -16,7 +16,7 @@ public interface ContestService {
 
     List<Contest> findAllContestByPageF(int pageNum, int pageSize);
 
-    PageInfo<Contest> findAllUserByPageS(int pageNum, int pageSize);
+    PageInfo<ContestVO> findAllUserByPageS(int pageNum, int pageSize);
 
     /**
      * ↓↓↓↓↓↓↓↓

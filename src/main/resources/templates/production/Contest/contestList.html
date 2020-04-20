@@ -1,41 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>赛事列表</title>
-
-    <!-- Bootstrap -->
-    <link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link th:href="@{/vendors/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
-    <!-- NProgress -->
-    <link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
-    <!-- iCheck -->
-    <link th:href="@{/vendors/iCheck/skins/flat/green.css}" rel="stylesheet">
-    <!--layui-->
-    <link th:href="@{/vendors/layui/css/layui.css}" rel="stylesheet">
-    <!-- Switchery -->
-    <link th:href="@{/vendors/switchery/dist/switchery.min.css}" rel="stylesheet">
-
-    <!--bootstrap-material-design-dist-->
-    <!--<link th:href="@{/vendors/bootstrap-material-design-dist/css/bootstrap-material-design.css}" rel="stylesheet">-->
-
-    <!-- Datatables -->
-    <link th:href="@{/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css}" rel="stylesheet">
-
-    <!-- Custom Theme Style -->
-    <link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
-
-</head>
+<html xmlns:th="http://www.thymeleaf.org" th:with="title='赛事列表'">
+<!--head-->
+<header th:replace="~{production/Commons/header::headerFragment(${title})}"></header>
+<!--head-->
 
 <body class="nav-md">
 <div class="container body">
@@ -54,7 +21,7 @@
             <div class="">
                 <div class="page-title">
                     <div class="title_left">
-                        <h3>Users
+                        <h3>Contest
                             <small>赛事表</small>
                         </h3>
                     </div>
@@ -103,62 +70,139 @@
 
                                 </p>
                                 <p>
-
-                                    <button id="printBtn" class="btn btn-info " type="button"><i
-                                            class="fa fa-print"></i> 打印
+                                    <button id="printBtn" class="btn btn-default " type="button"><span
+                                            class="glyphicon glyphicon-print"></span> 打印
                                     </button>
-                                                       
-                                    <button id="dowloadBtn" class="btn btn-info " type="button"><i
-                                            class="fa fa-file-excel-o"></i>excel下载
+                                    <button id="dowloadBtn" class="btn btn-default " type="button"><span
+                                            class="glyphicon glyphicon-save"></span> excel下载
                                     </button>
-                                    <button id="dowloadpdfBtn" class="btn btn-info " type="button"><i
-                                            class="fa fa-file-pdf-o"></i>pdf下载
-                                    </button>
-                                                       
-                                    <button id="refreshBt" class="btn btn-info " type="button"><i
-                                            class="fa fa-refresh"></i> 刷新
+                                    <button id="dowloadpdfBtn" class="btn btn-default " type="button"><span
+                                            class="glyphicon glyphicon-save-file"></span> pdf下载
+                                    </button>   
+                                    <button id="refreshBt" class="btn btn-default " type="button"><i
+                                            class="glyphicon glyphicon-refresh"></i> 刷新
                                     </button>
                                 </p>
 
-                                <div >
-                                    <div class="dashboard-widget-content">
-                                        <ul class="">
-                                            <li class="" th:each="item:${pageInfo.list}">
 
+                                <!--分页-->
+                                <div style="display: block;
+                                        width: 710px;
+                                        height: 40px;
+                                        line-height: 40px;
+                                        padding-left: 0px;
+                                        padding: 5px 5px 5px 15px;
+                                        border-radius: 3px;
+                                        margin: 20px auto 40px auto !important;
+                                        text-align: center;">
 
-                                                <div class="">
-                                                        <h2 class="title" th:text="${item.getTitle()}"></h2>
+                                    <ul class="pagination">
+                                        <form class="layui-form col-md-3">
+                                            <li class="layui-form-item">
+                                                <div class="layui-input-block">
+                                                    <select name="datatable_length" lay-filter="pagesize">
+                                                        <option  value="">--分页大小--</option>
+                                                        <option value="5">5</option>
+                                                        <option value="10">10</option>
+                                                        <option value="25">25</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
+                                                </div>
+                                            </li>
+                                        </form>
+                                        <li class="page-item"><a class="page-link" style="background: #EE9C54;color: #fff;"><span th:text="第+${pageInfo.pageNum}+页" ></span></a></li>
+                                        <li class="page-item"><a class="page-link" style="background: #ee98ec;color: #fff;" th:href="@{/contest/toContestList}">首页</a></li>
+                                        <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.getPrePage()})}">前一页</a></li>
 
+                                        <li th:each="num:${pageInfo.navigatepageNums}" class="page-item">
+                                            <a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${num})}" th:text="${num}"></a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.getNextPage()})}">下一页</a></li>
+                                        <li class="page-item"><a class="page-link" style="background: #ee98ec;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.pages})}">尾页</a></li>
+                                    </ul>
+                                </div>
+                                <!--分页-->
 
-                                                        <span th:text="${item.getStartTime()}"></span>
+                                <div class="">
+                                    <!--class="dashboard-widget-content"-->
+                                    <div >
+                                        <ul class="list-unstyled timeline">
+                                            <li th:each="item:${pageInfo.list}">
 
-                                                        <ul>
-                                                            <li th:text="${item.getCid()}"></li>
-                                                            <li th:text="${item.getLength()}"></li>
-                                                            <li th:text="${item.getEndTime()}"></li>
-                                                        </ul>
-                                                        <div>
+                                                <div class="block">
+                                                    <div class="tags">
 
-                                                            <a class="btn btn-info btn-xs ">
-                                                                <i class="fa fa-edit (alias)"> 报名</i>
-                                                            </a>
+                                                        <a href="" class="tag" style="font-size: 15px;" th:each="tag:${item.getTags()}">
+                                                            <span th:text="${tag}"></span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="block_content">
+                                                        <h2 class="title" ><a style="color: #ee39e5" th:text="${item.getTitle()}"></a></h2>
+                                                        <div class="byline">
+                                                            <span style="color: #e93e0b;" th:text="${item.getStartTime()}"> </span><a style="color: #1eca21;"> <i class="fa fa-hand-o-left"></i> 开始时间</a>
+                                                            <span></span>
+                                                            <a style="color: #1eca21;">结束时间 <i class="fa fa-hand-o-right"></i> </a><span style="color: #e93e0b;" th:text="${item.getEndTime()}"> </span>
                                                         </div>
+                                                        <p class="excerpt">
+                                                        <ul>
+                                                            <li >
+                                                                <a>序号: <span th:text="${item.getCid()}"></span></a>
+                                                            </li>
+                                                            <li >
+                                                                <a>时长: <span th:text="${item.getLength()}"></span></a>
+                                                            </li>
+                                                            <li ></li>
+                                                        </ul>
+                                                        </p>
+                                                        <a class="btn btn-info btn-xs ">
+                                                            <i class="fa fa-edit (alias)"> 报名</i>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </li>
                                         </ul>
                                     </div>
-                                    <ul class="pagination">
-                                        <li class="page-item"><a class="page-link"><span th:text="第+${pageInfo.pageNum}+页"></span></a></li>
-                                        <li class="page-item"><a class="page-link" th:href="@{/contest/toContestList}">首页</a></li>
-                                        <li class="page-item"><a class="page-link" th:href="@{/contest/toContestList(pageNum=${pageInfo.getPrePage()})}">前一页</a></li>
 
-                                        <li th:each="num:${pageInfo.navigatepageNums}" class="page-item">
-                                            <a class="page-link" th:href="@{/contest/toContestList(pageNum=${num})}" th:text="${num}"></a></li>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" th:href="@{/contest/toContestList(pageNum=${pageInfo.getNextPage()})}">下一页</a></li>
-                                        <li class="page-item"><a class="page-link" th:href="@{/contest/toContestList(pageNum=${pageInfo.pages})}">尾页</a></li>
-                                    </ul>
+                                    <!--分页-->
+                                    <div style="display: block;
+                                        width: 710px;
+                                        height: 40px;
+                                        line-height: 40px;
+                                        padding-left: 0px;
+                                        padding: 5px 5px 5px 15px;
+                                        border-radius: 3px;
+                                        margin: 20px auto 40px auto !important;
+                                        text-align: center;">
 
+                                        <ul class="pagination">
+                                            <form class="layui-form col-md-3">
+                                                <li class="layui-form-item">
+                                                    <div class="layui-input-block">
+                                                        <select name="datatable_length" lay-filter="pagesize">
+                                                            <option  value="">--分页大小--</option>
+                                                            <option value="5">5</option>
+                                                            <option value="10">10</option>
+                                                            <option value="25">25</option>
+                                                            <option value="50">50</option>
+                                                            <option value="100">100</option>
+                                                        </select>
+                                                    </div>
+                                                </li>
+                                            </form>
+                                            <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=1,pageSize=10)}">前一页</a></li>
+                                            <li class="page-item"><a class="page-link" style="background: #EE9C54;color: #fff;"><span th:text="第+${pageInfo.pageNum}+页" ></span></a></li>
+                                            <li class="page-item"><a class="page-link" style="background: #ee98ec;color: #fff;" th:href="@{/contest/toContestList}">首页</a></li>
+                                            <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.getPrePage()})}">前一页</a></li>
+
+                                            <li th:each="num:${pageInfo.navigatepageNums}" class="page-item">
+                                                <a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${num})}" th:text="${num}"></a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.getNextPage()})}">下一页</a></li>
+                                            <li class="page-item"><a class="page-link" style="background: #ee98ec;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.pages})}">尾页</a></li>
+                                        </ul>
+                                    </div>
+                                    <!--分页-->
                                     <!--<button class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-folder"> 查看</i></button>-->
 
 
@@ -167,28 +211,7 @@
 
                                 </div>
 
-                                <!-- modals -->
-                                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
 
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal1"><span aria-hidden="true">×</span>
-                                                </button>
-                                                <h4 class="modal-title" id="myModalLabel">用户详细信息</h4>
-                                            </div>
-                                            <div class="modal-body">\
-                                                <p>
-                                                    未完待续,
-                                                    此处存放Member 详细信息
-                                                </p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
                             </div>
                         </div>
@@ -248,7 +271,20 @@
 <!-- Custom Theme Scripts -->
 <script th:src="@{/build/js/custom.min.js}"></script>
 
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
 
+        // 监听select
+        form.on('select(pagesize)', function(data){
+            // href 跳转设置分页大小
+            window.location.href="/contest/toContestList?"+"pageNum="+1+"&pageSize="+data.value;
+        });
+
+        form.render();
+
+    });
+</script>
 
 </body>
 </html>

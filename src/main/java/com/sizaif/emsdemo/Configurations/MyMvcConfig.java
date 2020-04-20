@@ -24,7 +24,6 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
         registry.addViewController("/home").setViewName("production/index");
 
-        registry.addViewController("/tables_dynamic.html").setViewName("production/tables_dynamic");
 //        registry.addViewController("/nav.html").setViewName("nav");
 
         //用户表管理

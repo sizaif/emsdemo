@@ -113,7 +113,7 @@
 
 
     <!--动态SQL更新-->
-    <update id="UpdateMember" parameterType="com.sizaif.emsdemo.pojo.User.Member" >
+    <update id="UpdateMemberSelective" parameterType="com.sizaif.emsdemo.pojo.User.Member" >
         update saishiguanli.member
         <trim prefix="set" suffixOverrides=",">
             <if test="memberRankId!=null">memberRank_id=#{memberRankId},</if>

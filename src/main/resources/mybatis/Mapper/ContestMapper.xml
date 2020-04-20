@@ -162,12 +162,20 @@
         where Cid = #{id}
     </update>
 
-    <!--=Start findAll 查找所有比赛列表-->
+    <!--=Start findAll 查找所有比赛列表 返回contest 类型-->
     <select id="getAllContest" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from saishiguanli.contest
     </select>
+
+    <select id="getAllContestVO" resultMap="ContestVoMap">
+        select
+        <include refid="Base_Column_List" />
+        from saishiguanli.contest
+    </select>
+
+
 
     <select id="findByType" resultMap="BaseResultMap">
         SELECT
@@ -184,6 +192,21 @@
         where Cid = #{id}
     </delete>
 
+    <!--contestVO 映射表-->
+    <resultMap id="ContestVoMap" type="com.sizaif.emsdemo.dto.ContestVO">
+        <id column="cid" property="Cid"  />
+        <result column="title" property="Title"  />
+        <result column="level" property="Level"  />
+        <result column="memo" property="Memo"  />
+        <result column="creatorId" property="CreatorId"  />
+        <result column="createDate" property="CreateDate"  />
+        <result column="modifyDate" property="ModifyDate"  />
+        <result column="startTime" property="StartTime"  />
+        <result column="endTime" property="EndTime"  />
+        <result column="isEnabled" property="isEnabled"  />
+        <result column="length" property="Length"  />
+        <result column="type" property="Type"  />
+    </resultMap>
     <!--单人赛比赛映射表-->
     <resultMap id="ContestMemberResultMap" type="com.sizaif.emsdemo.dto.ContestVO">
         <id column="cid" property="Cid"  />

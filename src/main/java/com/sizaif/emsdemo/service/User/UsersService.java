@@ -3,6 +3,7 @@ package com.sizaif.emsdemo.service.User;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.pojo.User.Member;
+import com.sizaif.emsdemo.pojo.User.UserRoleKey;
 import com.sizaif.emsdemo.pojo.User.Users;
 import org.apache.catalina.User;
 
@@ -32,4 +33,12 @@ public interface UsersService {
     Users queryUserByName(String record);
 
     SystemResult UpdateUserInfo(Users users);
+
+    /**
+     *  对用户角色表进行更新
+     *
+     * @param userRoleKey
+     * @return
+     */
+    SystemResult UpdateUserRole(UserRoleKey userRoleKey);
 }

@@ -29,6 +29,12 @@ public interface ContestMapper {
      */
     List<Contest> getAllContest();
 
+    /**
+     * 查询所有比赛返回类型为 ContestVO
+     * @return
+     */
+    List<ContestVO> getAllContestVO();
+
 
     /**
      * 通过比赛类别查询

@@ -1,10 +1,10 @@
 
 
 $(function(){
-    layui.use(['layer','form'], function(){
+    layui.use(['layer','form','laydate'], function(){
         var layer = layui.layer;
         var form  = layui.form;
-
+        var laydate = layui.laydate;
 
         //监听提交
         form.on('submit(UserSumbit)', function(data){
@@ -15,57 +15,90 @@ $(function(){
                 layer.closeAll();
             },function() {
                 // layer.closeAll();//关闭所有弹框
+                console.log("data--"+data);
                 formSubmit(data);
             });
             return false;
         });
 
+        // form.on('select(role_select)',function (data) {
+        //     var role_select = data.value;
+        //     console.log("role_selevt-->"+role_select);
+        //     if(role_select==null || roleIds==''){
+        //         layer.alert("请您给该用户添加对应的角色！");
+        //     }
+        // });
+
         form.render();
     });
 });
+// 检查选中的角色
+function checkRole(){
+
+    // 留坑
+    // console.log($("#UserForm").serialize());
+
+    //
+    // //选中的角色
+    // var array = new Array();
+    // var roleCheckd=$(".layui-form-selected");
+    //
+    // //获取选中的权限id
+    // for(var i=0;i<roleCheckd.length;i++){
+    //     array.push($(roleCheckd.get(i)).prev().val());
+    // }
+    //校验是否授权
+    var roleIds =document.getElementById("roleDiv").value;
+    $("#roleIds").val(roleIds);
+    // console.log("roleIds-->"+roleIds);
+    return true;
+}
 //提交数据
 function formSubmit(obj) {
-    console.log("SSSSS--->"+obj)
-    if($("#flag").val() == "update"){
-        // console.log($("#UserForm").serialize());
-        $.ajax({
-            type: "POST",
-            data: $("#UserForm").serialize(),
-            url: "/users//updateUMRInfo",
-            success: function (data) {
-                if (data == "200") {
-                    layer.alert("操作成功",function(){
-                        layer.closeAll();
-                        load();
-                    });
-                } else {
-                    layer.alert(data);
+
+    if(checkRole()){
+        if($("#flag").val() == "update"){
+            // console.log($("#UserForm").serialize());
+            $.ajax({
+                type: "POST",
+                data: $("#UserForm").serialize(),
+                url: "/users/updateUMRInfo",
+                success: function (data) {
+                    if (data == "200") {
+                        layer.alert("操作成功",function(){
+                            layer.closeAll();
+                            // load();
+                        });
+                    } else {
+                        layer.alert("SSSS");
+                    }
+                },
+                error: function (data) {
+                    layer.alert("操作请求错误，请您联系技术人员");
                 }
-            },
-            error: function (data) {
-                layer.alert("操作请求错误，请您联系技术人员");
-            }
-        });
-    }else if(obj.flag == "add"){
-        $.ajax({
-            type: "POST",
-            data: $("#RoleForm").serialize(),
-            url: "/users//addUMRInfo",
-            success: function (data) {
-                if (data == "200") {
-                    layer.alert("操作成功",function(){
-                        layer.closeAll();
-                        load();
-                    });
-                } else {
-                    layer.alert(data);
+            });
+        }else if(obj.flag == "add"){
+            $.ajax({
+                type: "POST",
+                data: $("#RoleForm").serialize(),
+                url: "/users//addUMRInfo",
+                success: function (data) {
+                    if (data == "200") {
+                        layer.alert("操作成功",function(){
+                            layer.closeAll();
+                            load();
+                        });
+                    } else {
+                        layer.alert(data);
+                    }
+                },
+                error: function (data) {
+                    layer.alert("操作请求错误，请您联系技术人员");
                 }
-            },
-            error: function (data) {
-                layer.alert("操作请求错误，请您联系技术人员");
-            }
-        });
+            });
+        }
     }
+
 }
 // 切换是否启用
 function switchEnable(id,name,flag) {
@@ -198,20 +231,81 @@ function edit(obj) {
             layui.form.render('select');
         });
 
+
+        layui.use(['laydate','layer'], function(){
+            var laydate = layui.laydate;
+            var layer =layui.layer;
+            laydate.render({
+                elem: '#birth',
+                type: 'datetime',
+                value:obj.birth
+            });
+            layer.open({
+                type:1,
+                title: "编辑用户详细信息",
+                fixed:false,
+                resize :false,
+                offset:'auto',
+                shadeClose: true,
+                btn: '关闭',
+                area: ['600px', '720px'],
+                content:$('#eidtUser'),
+                end: function(){
+                    location.reload();
+                }
+            });
+        });
+
+    }
+}
+
+// 添加
+function add(obj) {
+
+    var existRole='';
+    $("#roleDiv").empty();
+    // 全部角色信息 显示角色数据
+    $.get("/auth/getRoles",function(data){
+        console.log(data);
+
+        var jsonobj= eval('(' + data + ')');
+        $.each(jsonobj,function (index, item) {
+
+            var div=$("<option  name='roleId' value="+item.id+" title="+item.descpt+">"+
+                "<span>"+item.descpt+"</span>"+
+                "</option>");
+            if(existRole!='' && existRole.indexOf(item.id)>=0){
+
+                div=$("<option   name='roleId' value="+item.id+" title="+item.descpt+" selected >"+
+                    "<span>"+item.descpt+"</span>"+
+                    "</option>");
+            }
+            $("#roleDiv").append(div);
+        });
+        layui.form.render('select');
+    });
+
+    layui.use(['laydate','layer'], function(){
+        var laydate = layui.laydate;
+        var layer =layui.layer;
+        laydate.render({
+            elem: '#birth'
+            ,type: 'datetime'
+        });
         layer.open({
             type:1,
-            title: "编辑用户详细信息",
+            title: "添加一个用户以及信息",
             fixed:false,
             resize :false,
             offset:'auto',
             shadeClose: true,
             btn: '关闭',
-            area: ['600px', '720px'],
+            area: ['600px', '740px'],
             content:$('#eidtUser'),
             end: function(){
                 location.reload();
             }
         });
+    });
 
-    }
 }

@@ -7,6 +7,7 @@ import com.sizaif.emsdemo.dto.IndexDto;
 import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.pojo.User.Member;
 
+import com.sizaif.emsdemo.pojo.User.UserRoleKey;
 import com.sizaif.emsdemo.pojo.User.Users;
 import com.sizaif.emsdemo.service.User.MemberService;
 import com.sizaif.emsdemo.service.User.UsersService;
@@ -15,7 +16,6 @@ import com.sizaif.emsdemo.utils.FileUtils;
 import com.sizaif.emsdemo.utils.JsonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.catalina.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 @Api("用户管理类")
@@ -153,46 +152,69 @@ public class UserController {
 
 
     @RequestMapping("/updateUMRInfo")
-    public String UpdateMemberInfo1(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+    @ResponseBody
+    public String UpdateMemberInfo1(@RequestParam("roleIds") String roleIds, Users users, Member member){
 
+        /**
+         * userUsers {id=2, isEnabled=null, isLocked=null, createDate='null',
+         * modifyDate='null', lastLoginDate='null', lastLoginIp='null',
+         * lockDate='null', name='test01', password='1', role='2'
+         * }
+         * Member{id=2, memberRankId=0, address='china', birth='null',
+         * email='abc@test.com', gender=0, phone='11112',
+         * truename='张翰', school='ludong', image='null'
+         * } roleIds: 2
+         */
+
+        logger.debug("User,Member,user_role update-->  user"+users.toString()+" member:->"+member.toString()+" roleIds: "+roleIds);
         //调用service对user进行处理
         try {
-            Member hmap = UsersServiceAppoint.MemberHttpWriteToMap(httpServletRequest,httpServletResponse);
 
-            Users users = UsersServiceAppoint.UsersHttpWriteToMap(httpServletRequest,httpServletResponse);
-            UsersServiceAppoint.UsersOtherInfo(users,httpServletRequest);
-            SystemResult UpdateUserResult = usersService.UpdateUserInfo(users);
+            users.setModifyDate(DateUtils.DatetoString(new Date()));
 
-            if(UpdateUserResult.getStatus() == 200){
-                //修改User成功
-                System.out.println(UpdateUserResult.getMsg());
+            /**
+             * 对密码加密
+             */
 
+            try {
 
-                SystemResult UpdateMemberResult = memberService.UpdateMember(hmap);
+                logger.debug(" 开始 对user表进行更新");
+                SystemResult userresult = usersService.UpdateUserInfo(users);
+                if(userresult.getStatus()==200){
+                    logger.debug(" 开始 对member表进行更新");
+                    SystemResult memberresult = memberService.UpdateMember(member);
+                    if(memberresult.getStatus()==200){
+                        logger.debug("开始 对user_role表进行更新");
 
-                if(UpdateMemberResult.getStatus() == 200){
+                        String[] arrays = roleIds.split(",");
 
-                    //修改Member成功
-                    System.out.println(UpdateMemberResult.getMsg());
+//                        logger.debug("arrays.length:"+arrays.length);
+                        int count = 0;
+                        for (String roleid : arrays) {
 
-                    /**
-                     *  修改用户 和 用户信息成功后 设置 根据Role 角色设定权限
-                     *  修改user_permissions表
-                     */
-
+                            logger.debug("AAAAAA");
+                            UserRoleKey userRoleKey = new UserRoleKey();
+                            userRoleKey.setUserId(users.getId());
+                            userRoleKey.setRoleId(Integer.valueOf(roleid));
+                            SystemResult updateUserRoleresult = usersService.UpdateUserRole(userRoleKey);
+                            if( updateUserRoleresult.getStatus() == 200 )
+                                count++;
+                        }
+                        if(count == arrays.length){
+                            logger.debug("user_role 关系表更新成功");
+                            return "200";
+                        }
+                    }
                 }
-                else{
-                    //修改Member失败
-                    System.out.println(UpdateMemberResult.getMsg());
-                }
-            }else {
-                //修改User失败
-                System.out.println(UpdateUserResult.getMsg());
+            }catch(Exception e){
+                e.printStackTrace();
             }
+            return "100";
+
         }catch(Exception e){
             e.printStackTrace();
         }
-        return "redirect:/users/toUserList";
+        return "100";
     }
 
     /**
@@ -344,6 +366,7 @@ public class UserController {
             user.setId(id);
             // 是否锁定状态
             user.setLocked(isLocked);
+            user.setLockDate(DateUtils.DatetoString(new Date()));
             user.setModifyDate(DateUtils.DatetoString(new Date()));
             logger.debug(user.toString());
             SystemResult systemResult = usersService.UpdateUserInfo(user);

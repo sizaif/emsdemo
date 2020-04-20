@@ -41,9 +41,20 @@ public class ContestVO {
 
     private String Tag;
 
+    private List<String> tags;
+
     private List<Member> memberList;
 
     private List<Team> teamList;
+
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
 
     public int getCid() {
         return Cid;
@@ -181,6 +192,7 @@ public class ContestVO {
                 ", EndTime='" + EndTime + '\'' +
                 ", Type='" + Type + '\'' +
                 ", Tag='" + Tag + '\'' +
+                ", tags=" + tags +
                 ", memberList=" + memberList +
                 ", teamList=" + teamList +
                 '}';

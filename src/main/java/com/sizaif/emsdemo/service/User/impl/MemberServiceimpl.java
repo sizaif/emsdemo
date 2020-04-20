@@ -71,7 +71,7 @@ public class MemberServiceimpl implements MemberService {
     public SystemResult UpdateMember(Member member) {
 
 
-        int su = memberMapper.UpdateMember(member);
+        int su = memberMapper.UpdateMemberSelective(member);
         if(su > 0){
             return  new SystemResult(200,"Update MemberInfo sucessful");
         }

@@ -39,10 +39,10 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public PageInfo<Contest> findAllUserByPageS(int pageNum, int pageSize) {
+    public PageInfo<ContestVO> findAllUserByPageS(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        List<Contest> contestList = contestMapper.getAllContest();
-        return new PageInfo<Contest>(contestList);
+        List<ContestVO> contestList = contestMapper.getAllContestVO();
+        return new PageInfo<ContestVO>(contestList);
     }
 
     @Override

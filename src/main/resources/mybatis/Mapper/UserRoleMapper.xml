@@ -41,7 +41,7 @@
     <!--end -->
 
   <!--=Start findByUserId 根据用户获取用户角色中间表 -->
-  <select id="findByUserId" resultType="UserRoleKey">
+  <select id="findByUserId" resultMap="BaseResultMap" parameterType="int">
     SELECT
     user_id,role_id
     FROM users_role WHERE user_id=#{userId}
