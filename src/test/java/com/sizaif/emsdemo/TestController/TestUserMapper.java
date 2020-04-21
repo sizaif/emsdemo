@@ -101,10 +101,17 @@ public class TestUserMapper {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void Test() throws Exception{
+        PageInfo pageInfo = contestService.findAllUserByPageS(1,5,"level","nation");
+        System.out.println(pageInfo.getList());
+    }
+
     @Test
     public void Test2() throws Exception{
 
-        PageInfo pageInfo = contestService.findAllUserByPageS(1,5);
+        PageInfo pageInfo = contestService.findAllUserByPageS(1,5,"level","nation");
         for (Object contestVO : pageInfo.getList()) {
 //            System.out.println(contestVO);
             try {

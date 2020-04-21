@@ -70,7 +70,7 @@
 
                                 </p>
                                 <p>
-                                    <button id="printBtn" class="btn btn-default " type="button"><span
+                                    <button id="printBtn" class="btn btn-default " type="button" th:onclick="windowprint()"><span
                                             class="glyphicon glyphicon-print"></span> 打印
                                     </button>
                                     <button id="dowloadBtn" class="btn btn-default " type="button"><span
@@ -85,6 +85,54 @@
                                 </p>
 
 
+                                <form class="layui-form  form-horizontal">
+                                    <div class="layui-input-inline">
+                                        <label class="layui-input-inline">赛事级别：</label>
+                                        <div class="layui-input-block">
+                                            <select name="" lay-filter="contestlevel" class="layui-input">
+                                                <option value="">请选择</option>
+                                                <option value="world">国际级</option>
+                                                <option value="nation">国家级</option>
+                                                <option value="province">省部级级</option>
+                                                <option value="college">校级</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <label class="layui-input-inline">赛事类型：</label>
+                                        <div class="layui-input-block">
+                                            <select name="" lay-filter="contesttype" class="layui-input">
+                                                <option value="">请选择</option>
+                                                <option value="单人赛">单人赛</option>
+                                                <option value="组队赛">组队赛</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <label class="layui-input-inline">分页大小：</label>
+                                        <div class="layui-input-block">
+                                            <select name="" lay-filter="pagesize"  class="layui-input">
+                                                <option value="">--分页大小--</option>
+                                                <option value="5">5</option>
+                                                <option value="10">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <label class="layui-input-inline">报名分类：</label>
+                                        <div class="layui-input-block">
+                                            <select name="" lay-filter="signup"  class="layui-input">
+                                                <option value="all">--显示全部--</option>
+                                                <option value="signed">已报名</option>
+                                                <option value="all">全部</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
                                 <!--分页-->
                                 <div style="display: block;
                                         width: 710px;
@@ -96,21 +144,8 @@
                                         margin: 20px auto 40px auto !important;
                                         text-align: center;">
 
+
                                     <ul class="pagination">
-                                        <form class="layui-form col-md-3">
-                                            <li class="layui-form-item">
-                                                <div class="layui-input-block">
-                                                    <select name="datatable_length" lay-filter="pagesize">
-                                                        <option  value="">--分页大小--</option>
-                                                        <option value="5">5</option>
-                                                        <option value="10">10</option>
-                                                        <option value="25">25</option>
-                                                        <option value="50">50</option>
-                                                        <option value="100">100</option>
-                                                    </select>
-                                                </div>
-                                            </li>
-                                        </form>
                                         <li class="page-item"><a class="page-link" style="background: #EE9C54;color: #fff;"><span th:text="第+${pageInfo.pageNum}+页" ></span></a></li>
                                         <li class="page-item"><a class="page-link" style="background: #ee98ec;color: #fff;" th:href="@{/contest/toContestList}">首页</a></li>
                                         <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.getPrePage()})}">前一页</a></li>
@@ -124,15 +159,14 @@
                                 </div>
                                 <!--分页-->
 
-                                <div class="">
+                                <div class="" >
                                     <!--class="dashboard-widget-content"-->
-                                    <div >
+                                    <div  id = "contestpage">
                                         <ul class="list-unstyled timeline">
                                             <li th:each="item:${pageInfo.list}">
 
                                                 <div class="block">
                                                     <div class="tags">
-
                                                         <a href="" class="tag" style="font-size: 15px;" th:each="tag:${item.getTags()}">
                                                             <span th:text="${tag}"></span>
                                                         </a>
@@ -152,7 +186,12 @@
                                                             <li >
                                                                 <a>时长: <span th:text="${item.getLength()}"></span></a>
                                                             </li>
-                                                            <li ></li>
+                                                            <li >
+                                                                a>级别: <span th:text="${item.getLevel()}"></span></a>
+                                                            </li>
+                                                            <li >
+                                                                    a>类别: <span th:text="${item.getType()}"></span></a>
+                                                            </li>
                                                         </ul>
                                                         </p>
                                                         <a class="btn btn-info btn-xs ">
@@ -176,20 +215,6 @@
                                         text-align: center;">
 
                                         <ul class="pagination">
-                                            <form class="layui-form col-md-3">
-                                                <li class="layui-form-item">
-                                                    <div class="layui-input-block">
-                                                        <select name="datatable_length" lay-filter="pagesize">
-                                                            <option  value="">--分页大小--</option>
-                                                            <option value="5">5</option>
-                                                            <option value="10">10</option>
-                                                            <option value="25">25</option>
-                                                            <option value="50">50</option>
-                                                            <option value="100">100</option>
-                                                        </select>
-                                                    </div>
-                                                </li>
-                                            </form>
                                             <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=1,pageSize=10)}">前一页</a></li>
                                             <li class="page-item"><a class="page-link" style="background: #EE9C54;color: #fff;"><span th:text="第+${pageInfo.pageNum}+页" ></span></a></li>
                                             <li class="page-item"><a class="page-link" style="background: #ee98ec;color: #fff;" th:href="@{/contest/toContestList}">首页</a></li>
@@ -247,7 +272,9 @@
 <!-- Switchery -->
 <script th:src="@{/vendors/switchery/dist/switchery.min.js}"></script>
 
-
+<!--pdfmake-->
+<script th:src="@{vendors/pdfmake/pdfmake.js}"></script>
+<script th:src="@{vendors/pdfmake/vfs_fonts.js}"></script>
 
 
 <!-- Datatables -->
@@ -271,20 +298,18 @@
 <!-- Custom Theme Scripts -->
 <script th:src="@{/build/js/custom.min.js}"></script>
 
+<script th:src="@{/src/js/contest.js}"></script>
+
 <script>
-    layui.use('form', function(){
-        var form = layui.form;
 
-        // 监听select
-        form.on('select(pagesize)', function(data){
-            // href 跳转设置分页大小
-            window.location.href="/contest/toContestList?"+"pageNum="+1+"&pageSize="+data.value;
-        });
+    function windowprint() {
 
-        form.render();
+        var f = document.getElementById("contestpage");
+        f.style.display = "";
+        window.print();
+        f.style.display = "none";
+    }
 
-    });
 </script>
-
 </body>
 </html>

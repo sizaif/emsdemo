@@ -169,21 +169,17 @@
         from saishiguanli.contest
     </select>
 
-    <select id="getAllContestVO" resultMap="ContestVoMap">
-        select
-        <include refid="Base_Column_List" />
-        from saishiguanli.contest
-    </select>
-
-
-
-    <select id="findByType" resultMap="BaseResultMap">
+    <!--start 查询所有比赛列表 带有筛选的, 返回类型 contestVO-->
+    <select id="getAllContestVO" resultMap="ContestVoMap" parameterType="map">
         SELECT
-          <include refid="Base_Column_List" />
-        FROM
-          saishiguanli.contest
-        WHERE
-          type = #{Type}
+        <include refid="Base_Column_List" />
+        FROM saishiguanli.contest
+        <if test="level != null" >
+            WHERE saishiguanli.contest.level = #{level}
+        </if>
+        <if test="type != null" >
+            WHERE saishiguanli.contest.type = #{type}
+        </if>
     </select>
 
 

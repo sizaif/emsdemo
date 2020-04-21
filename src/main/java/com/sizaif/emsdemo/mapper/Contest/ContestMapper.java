@@ -5,6 +5,7 @@ import com.sizaif.emsdemo.pojo.Contest.Contest;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -31,17 +32,12 @@ public interface ContestMapper {
 
     /**
      * 查询所有比赛返回类型为 ContestVO
+     *  level 筛选 级别
+     *  type 筛选 类型
      * @return
      */
-    List<ContestVO> getAllContestVO();
+    List<ContestVO> getAllContestVO(HashMap<String,Object>map);
 
-
-    /**
-     * 通过比赛类别查询
-     * @param type
-     * @return
-     */
-    List<Contest> findByType(String type);
 
 
     /**

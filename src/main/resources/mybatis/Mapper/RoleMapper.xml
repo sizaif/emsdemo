@@ -165,7 +165,7 @@
   <!--=End findRoleAndPerms 查询角色列表-->
 
   <!--=Start getRoleByUserId 根据用户id查询角色数据-->
-  <select id="getRoleByUserId" resultType="Role">
+  <select id="getRoleByUserId" resultMap="BaseResultMap">
     select
     ur.role_id id,r.role_name,r.code
     from users_role ur
@@ -181,5 +181,6 @@
     from role
   </select>
   <!--=End getRoles 查询角色列表-->
+
 
 </mapper>

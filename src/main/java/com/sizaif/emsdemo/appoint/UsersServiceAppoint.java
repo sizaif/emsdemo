@@ -2,7 +2,9 @@ package com.sizaif.emsdemo.appoint;
 
 import com.sizaif.emsdemo.dto.IndexDto;
 import com.sizaif.emsdemo.mapper.User.PermissionsMapper;
+import com.sizaif.emsdemo.mapper.User.RoleMapper;
 import com.sizaif.emsdemo.pojo.User.Member;
+import com.sizaif.emsdemo.pojo.User.Role;
 import com.sizaif.emsdemo.pojo.User.Users;
 import com.sizaif.emsdemo.utils.DateUtils;
 import com.sizaif.emsdemo.utils.IPUtils;
@@ -17,7 +19,7 @@ public class UsersServiceAppoint {
 
     @Autowired
     private static PermissionsMapper permissionsMapper;
-
+    @Autowired static RoleMapper roleMapper;
     /**
      *  将User info 写入到 导航栏dto 中
      * @param dto
@@ -126,6 +128,14 @@ public class UsersServiceAppoint {
 
     }
 
+    public static void setRoleName(Users user){
+
+        if(null != user.getRole()){
+            int roleid = Integer.parseInt(user.getRole());
+            Role role = roleMapper.selectByPrimaryKey(roleid);
+            user.setRole(role.getDescpt());
+        }
+    }
 
 
 

@@ -179,6 +179,7 @@ public class UserController {
             try {
 
                 logger.debug(" 开始 对user表进行更新");
+                UsersServiceAppoint.setRoleName(users);
                 SystemResult userresult = usersService.UpdateUserInfo(users);
                 if(userresult.getStatus()==200){
                     logger.debug(" 开始 对member表进行更新");
@@ -192,7 +193,6 @@ public class UserController {
                         int count = 0;
                         for (String roleid : arrays) {
 
-                            logger.debug("AAAAAA");
                             UserRoleKey userRoleKey = new UserRoleKey();
                             userRoleKey.setUserId(users.getId());
                             userRoleKey.setRoleId(Integer.valueOf(roleid));
@@ -268,6 +268,7 @@ public class UserController {
      * @return
      */
     @RequestMapping("/toDeleteUser/{id}")
+    @ResponseBody
     public String toDeleteUser(@PathVariable("id") Integer id){
 
         try {
@@ -281,20 +282,23 @@ public class UserController {
                 if( DeleteUser.getStatus() == 200){
                     //删除成功
                     System.out.println(DeleteUser.getMsg());
+                    return DeleteUser.getStatus().toString();
                 }
                 else {
                     //删除失败
                     System.out.println(DeleteUser.getMsg());
+                    return DeleteUser.getStatus().toString();
                 }
             }else{
                 System.out.println(DeleteMember.getMsg());
+                return DeleteMember.getStatus().toString();
             }
 
         }catch(Exception e){
             e.printStackTrace();
         }finally{
             //返回到user.html
-            return "redirect:/users/toUserList";
+            return "100";
         }
 
     }

@@ -18,7 +18,12 @@ public interface RoleMapper {
 
     int insertSelective(Role record);
 
-    Role selectByPrimaryKey(Integer id);
+	/**
+	 * 同过ID 获取role
+	 * @param id
+	 * @return
+	 */
+	Role selectByPrimaryKey(Integer id);
 
 	Role selectByCode(String record);
 
@@ -47,5 +52,7 @@ public interface RoleMapper {
 	List<Role> getRoleByUserId(Integer userId);
 
 	List<Role> getRoles();
+
+
 
 }

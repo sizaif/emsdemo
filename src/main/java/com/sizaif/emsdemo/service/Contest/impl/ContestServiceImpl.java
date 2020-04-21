@@ -12,6 +12,7 @@ import com.sizaif.emsdemo.service.Contest.ContestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -39,11 +40,26 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public PageInfo<ContestVO> findAllUserByPageS(int pageNum, int pageSize) {
+    public PageInfo<ContestVO> findAllUserByPageS(int pageNum, int pageSize,String searchtype,String searchvalue) {
         PageHelper.startPage(pageNum,pageSize);
-        List<ContestVO> contestList = contestMapper.getAllContestVO();
+        List<ContestVO> contestList = null;
+        HashMap<String, Object> hashMap = new HashMap<>();
+        if(searchtype.equals("all")){
+            hashMap.put("level",null);
+            hashMap.put("type",null);
+            contestList = contestMapper.getAllContestVO(hashMap);
+        }else if(searchtype.equals("level")){
+            hashMap.put("level",searchvalue);
+            hashMap.put("type",null);
+            contestList = contestMapper.getAllContestVO(hashMap);
+        }else if(searchtype.equals("type")){
+            hashMap.put("level",null);
+            hashMap.put("type",searchvalue);
+            contestList = contestMapper.getAllContestVO(hashMap);
+        }
         return new PageInfo<ContestVO>(contestList);
     }
+
 
     @Override
     public SystemResult addContest(Contest Contest) {

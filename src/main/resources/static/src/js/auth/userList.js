@@ -170,6 +170,86 @@ function switchLocked(id,name,flag) {
 
 }
 
+function check(obj) {
+
+        $("#id2").val(obj.users.id==null?'':obj.users.id);
+        $("#id").val(obj.users.id==null?'':obj.users.id);
+        $("#truename").val(obj.truename==null?'':obj.truename);
+        $("#school").val(obj.school==null?'':obj.school);
+        $("#mobile").val(obj.users.mobile==null?'':obj.users.mobile);
+        $("#email").val(obj.email==null?'':obj.email);
+        $("#email2").val(obj.email==null?'':obj.email);
+        $("#telephone").val(obj.phone==null?'':obj.phone);
+        $("#address").val(obj.address==null?'':obj.address);
+        $("#username").val(obj.users.name==null?'':obj.users.name);
+
+        $("#flag").val("update");
+
+
+        var existRole='';
+
+        if(obj.users.userRoles !=null ){
+            existRole+=obj.users.userRoles.roleId+',';
+            // console.log("item.roleid->"+existRole);
+
+        }
+        // console.log("existRole->" +existRole);
+        $("#roleDiv").empty();
+        // 全部角色信息 显示角色数据
+        $.get("/auth/getRoles",function(data){
+            // console.log(data);
+
+            var jsonobj= eval('(' + data + ')');
+            $.each(jsonobj,function (index, item) {
+
+                var div=$("<option  name='roleId' value="+item.id+" title="+item.descpt+">"+
+                    "<span>"+item.descpt+"</span>"+
+                    "</option>");
+                if(existRole!='' && existRole.indexOf(item.id)>=0){
+
+                    div=$("<option   name='roleId' value="+item.id+" title="+item.descpt+" selected >"+
+                        "<span>"+item.descpt+"</span>"+
+                        "</option>");
+                }
+                $("#roleDiv").append(div);
+            });
+            // 修改性别
+            if(obj.gender == 0){
+                // console.log(obj.gender);
+                $("#men").removeAttr("checked");
+                $("#women").attr("checked","checked");
+            }
+            layui.form.render('radio');
+            layui.form.render('select');
+        });
+
+
+        layui.use(['laydate','layer'], function(){
+            var laydate = layui.laydate;
+            var layer =layui.layer;
+            laydate.render({
+                elem: '#birth',
+                type: 'datetime',
+                value:obj.birth
+            });
+            layer.open({
+                type:1,
+                title: "编辑用户详细信息",
+                fixed:false,
+                resize :false,
+                offset:'auto',
+                shadeClose: true,
+                btn: '关闭',
+                area: ['600px', '720px'],
+                content:$('#eidtUser'),
+                end: function(){
+                    location.reload();
+                }
+            });
+        });
+
+
+}
 
 // 修改
 function edit(obj) {
@@ -308,4 +388,30 @@ function add(obj) {
         });
     });
 
+}
+
+// 删除
+
+function del(id,name) {
+    if(null!=id){
+        layer.confirm('您确定要 <font style=\'font-weight:bold;\' color=\'red\'>删除: </font><font style=\'font-weight:bold;\' color=\'blue\'>'+name+'</font> 用户么?', {
+            btn: ['确认','返回'] //按钮
+        },  function(){
+            $.post("/users/toDeleteUser",{"id":id},function(data){
+                if(data=="200"){
+                    //回调弹框
+                    layer.alert("删除成功！",function(){
+                        layer.closeAll();
+                        window.location.reload();
+                        //加载load方法
+                        // load();//自定义
+                    });
+                }else{
+                    layer.alert(data);//弹出错误提示
+                }
+            });
+        }, function(){
+            layer.closeAll();
+        });
+    }
 }

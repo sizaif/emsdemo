@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -33,19 +34,27 @@ public class ContestController {
      */
     @RequestMapping("/contest/toContestList")
     public ModelAndView queryAllContestlistByPage(@RequestParam(defaultValue = "1") int pageNum,
-                                                  @RequestParam(defaultValue = "5") int pageSize){
+                                                  @RequestParam(defaultValue = "5") int pageSize,
+                                                  @RequestParam(defaultValue = "all") String level,
+                                                  @RequestParam(defaultValue = "all") String type){
         logger.debug("获得比赛列表！,分页");
         ModelAndView mav = new ModelAndView("production/Contest/contestList");
         try {
-//            List<Contest> Contestlist = contestService.findAllContestByPageF(pageNum,pageSize);
-            PageInfo pageInfo = contestService.findAllUserByPageS(pageNum,pageSize);
-
+            PageInfo pageInfo = new PageInfo();
+            if (level.equals("all") && type.equals("all")){
+                // 默认
+                 pageInfo = contestService.findAllUserByPageS(pageNum,pageSize,"all",null);
+            }else if( !level.equals("all") && type.equals("all")){
+                // 通过赛事级别划分
+                pageInfo = contestService.findAllUserByPageS(pageNum,pageSize,"level",level);
+            }else if( level.equals("all") && !type.equals("all")){
+                pageInfo = contestService.findAllUserByPageS(pageNum,pageSize,"type",type);
+            }
             //  start 处理 tags
             ContestServiceAppoint.TagTotags(pageInfo);
             //  end 处理 tags
 
 //            logger.debug("----> sql 获得比赛列表 ->> list :" + list);
-//            mav.addObject("pageList",list);
             mav.addObject("pageInfo",pageInfo);
         }catch (Exception e){
             e.printStackTrace();
@@ -90,5 +99,8 @@ public class ContestController {
         }
         return  "redirect:/contest/toContestList";
     }
+
+
+
 
 }

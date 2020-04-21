@@ -16,7 +16,15 @@ public interface ContestService {
 
     List<Contest> findAllContestByPageF(int pageNum, int pageSize);
 
-    PageInfo<ContestVO> findAllUserByPageS(int pageNum, int pageSize);
+    /**
+     *   默认分页
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    PageInfo<ContestVO> findAllUserByPageS(int pageNum, int pageSize,String searchtype,String searchvalue);
+
+
 
     /**
      * ↓↓↓↓↓↓↓↓
