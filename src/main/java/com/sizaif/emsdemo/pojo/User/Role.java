@@ -43,7 +43,7 @@ public class Role {
     }
 
     public void setRoleName(String roleName) {
-        this.roleName = roleName == null ? null : roleName.trim();
+        this.roleName = roleName;
     }
 
     public String getDescpt() {
@@ -51,7 +51,7 @@ public class Role {
     }
 
     public void setDescpt(String descpt) {
-        this.descpt = descpt == null ? null : descpt.trim();
+        this.descpt = descpt;
     }
 
     public String getCode() {
@@ -59,7 +59,7 @@ public class Role {
     }
 
     public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
+        this.code = code;
     }
 
     public Integer getInsertUid() {

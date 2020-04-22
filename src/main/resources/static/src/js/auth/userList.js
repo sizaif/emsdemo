@@ -20,17 +20,116 @@ $(function(){
             });
             return false;
         });
-
-        // form.on('select(role_select)',function (data) {
-        //     var role_select = data.value;
-        //     console.log("role_selevt-->"+role_select);
-        //     if(role_select==null || roleIds==''){
-        //         layer.alert("请您给该用户添加对应的角色！");
-        //     }
-        // });
-
         form.render();
     });
+
+    // 初始化datatable
+    $('#databale2').DataTable( {
+        // 件数选择下拉框内容
+        "lengthMenu": [5,10, 25, 50, 75, 100],
+        "language": {
+            "processing": "DataTables is currently busy",
+            // 当前页显示多少条
+            "search": "搜索",
+
+            "lengthMenu": "显示 _MENU_ 数据",
+            // _START_（当前页的第一条的序号） ,_END_（当前页的最后一条的序号）,_TOTAL_（筛选后的总件数）,
+            // _MAX_(总件数),_PAGE_(当前页号),_PAGES_（总页数）
+            "info": "显示第 _PAGE_ 页,共 _PAGES_ 页",
+            // 没有数据的显示（可选），如果没指定，会用zeroRecords的内容
+            "emptyTable": "Soorry 没有找到数据",
+            // 筛选后，没有数据的表示信息，注意emptyTable优先级更高
+            "zeroRecords": "Sorry 没有搜索到",
+            // 千分位的符号，只对显示有效，默认就是","  一般不要改写
+            //"thousands": "'",
+            // 小数点位的符号，对输入解析有影响，默认就是"." 一般不要改写
+            //"decimal": "-",
+            // 翻页按钮文字控制
+            "paginate": {
+                "first": "首页",
+                "last": "尾页",
+                "next": "下一页",
+                "previous": "前一页"
+            },
+            // Client-Side用，Server-Side不用这个属性
+            "loadingRecords": "Please wait - loading..."
+        },
+        dom: "<'button-group'B>"+"<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+
+        buttons: [
+            {
+                extend: 'print',
+                text: '打印',
+                className:'glyphicon glyphicon-print'
+            },
+            {
+                extend: 'csv',
+                text: "excel",
+                className:'glyphicon glyphicon-save'
+            },
+            {
+                text: '刷新',
+                className:'glyphicon glyphicon-refresh',
+                action: function ( e, dt, node, config ) {
+                    window.location.reload();
+                }
+            }
+        ],
+        ajax: {
+            url: '/users/myData',
+            dataSrc: ''
+        },
+        columns: [
+            {
+                data:'users.id',
+                title: "序列"
+            },
+            {
+                data:'users.name',
+                title: "用户名"
+            },
+            {
+                data:'truename',
+                title: "姓名"
+            },
+            {
+                data:'image',
+                title: "头像",
+                render: function (data, type, row, meta) {
+                    // <img th:src="@{/images/}+${jsonuserlist.getImage()}" class="avatar" alt="Avatar">
+                    return "<img src='/images/" + row.image + "' class='avatar' alt='Avatar' ></img>"
+                }
+            },
+            {
+                data:'users.role',
+                title: "用户组"
+            },
+            {
+                data:'users.createDate',
+                title: "创建时间"
+            },
+            {
+                data:'users.modifyDate',
+                title: "修改时间"
+            },
+            {
+                data:'users.lastLoginDate',
+                title: "上次登陆时间"
+            },
+            {
+                data:'users.lastLoginIp',
+                title: "上次登录IP"
+            },
+            {
+                data:'users.lockDate',
+                title: "锁定时间"
+            }
+            // {data:'users.name'},
+
+        ]
+    } );
 });
 // 检查选中的角色
 function checkRole(){

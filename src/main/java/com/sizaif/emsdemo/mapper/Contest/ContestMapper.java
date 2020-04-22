@@ -54,4 +54,17 @@ public interface ContestMapper {
      */
     List<ContestVO> findContestByTeamId(int teamId);
 
+    /**
+     *  通过比赛ID 获取 参加当前比赛的所有人员
+     * @param contestid
+     * @return
+     */
+    List<ContestVO> findMembersByContestId(int contestid);
+
+    /**
+     *  通过比赛ID 获取 参加当前比赛的所有团队
+     * @param contestid
+     * @return
+     */
+    List<ContestVO> findTeamsByContestId(int contestid);
 }

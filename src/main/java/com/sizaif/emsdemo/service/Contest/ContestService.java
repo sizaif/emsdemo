@@ -4,6 +4,7 @@ package com.sizaif.emsdemo.service.Contest;
 import com.github.pagehelper.PageInfo;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.dto.ContestVO;
+import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.pojo.Contest.Contest;
 import com.sizaif.emsdemo.pojo.Contest.ContestMemberkey;
 import com.sizaif.emsdemo.pojo.Contest.ContestTeamKey;
@@ -130,6 +131,11 @@ public interface ContestService {
      *  SQL: Contest_Team
      *  Alias: 组队赛报名表
      */
+
+    List<ContestVO> getMebersByCid(Integer id);
+
+
+    List<ContestVO> getTeamsByCid(Integer id);
 
 }
 

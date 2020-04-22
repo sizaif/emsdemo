@@ -32,4 +32,18 @@ public interface ContestTeamMapper {
     List<ContestTeamKey> findByContest(int contestId);
 
 
+    /**
+     *  通过 cid 和 tid 查找
+     * @param contestTeamKey
+     * @return
+     */
+    ContestTeamKey getCTByPrimaryKey(ContestTeamKey contestTeamKey);
+
+    /**
+     *  根据isEnabled 查找
+     * @param contestTeamKey
+     * @return
+     */
+    List<ContestTeamKey> getCTByisEnabled(ContestTeamKey contestTeamKey);
+
 }

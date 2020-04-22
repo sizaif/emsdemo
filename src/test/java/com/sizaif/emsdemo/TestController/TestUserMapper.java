@@ -3,12 +3,15 @@ package com.sizaif.emsdemo.TestController;
 import com.github.pagehelper.PageInfo;
 import com.sizaif.emsdemo.mapper.Contest.ContestMapper;
 import com.sizaif.emsdemo.mapper.User.MemberMapper;
+import com.sizaif.emsdemo.mapper.User.RoleMapper;
 import com.sizaif.emsdemo.mapper.User.UserMapper;
+import com.sizaif.emsdemo.pojo.User.Role;
 import com.sizaif.emsdemo.pojo.User.Users;
 import com.sizaif.emsdemo.service.Auth.AuthService;
 import com.sizaif.emsdemo.service.Contest.ContestService;
 import com.sizaif.emsdemo.service.User.MemberService;
 import com.sizaif.emsdemo.service.User.UsersService;
+import org.apache.catalina.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,7 +43,8 @@ public class TestUserMapper {
     private AuthService authServicee;
     @Autowired
     private WebApplicationContext wac;
-
+    @Autowired
+    private RoleMapper roleMapper;
     private MockMvc mockMvc;
 
 
@@ -104,8 +108,17 @@ public class TestUserMapper {
 
     @Test
     public void Test() throws Exception{
-        PageInfo pageInfo = contestService.findAllUserByPageS(1,5,"level","nation");
-        System.out.println(pageInfo.getList());
+        Users user = new Users();
+        user.setRole("5");
+        System.out.println(user.toString());
+        if(null != user.getRole()){
+            int roleid = Integer.parseInt(user.getRole());
+            Role role = roleMapper.selectByPrimaryKey(roleid);
+            user.setRole(role.getDescpt());
+        }else{
+            user.setRole("普通用户");
+        }
+        System.out.println(user.toString());
     }
 
     @Test

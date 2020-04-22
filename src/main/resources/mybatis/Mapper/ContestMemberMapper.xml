@@ -11,6 +11,19 @@
         <id column="isEnabled" property="isEnabled" jdbcType="INTEGER" />
     </resultMap>
 
+    <select id="getCMByPrimaryKey" parameterType="com.sizaif.emsdemo.pojo.Contest.ContestMemberkey" resultMap="BaseResultMap">
+        SELECT  saishiguanli.contest_member.*
+        FROM saishiguanli.contest_member
+        WHERE saishiguanli.contest_member.contest_id = #{contestId}
+        AND saishiguanli.contest_member.member_id = #[memberId];
+    </select>
+    <select id="getCMByisEnabled" parameterType="com.sizaif.emsdemo.pojo.Contest.ContestMemberkey" resultMap="BaseResultMap">
+        SELECT  saishiguanli.contest_member.*
+        FROM saishiguanli.contest_member
+        WHERE saishiguanli.contest_member.isEnabled = #{isEnabled}
+    </select>
+
+
     <insert id="insert" parameterType="com.sizaif.emsdemo.pojo.Contest.ContestMemberkey" >
         insert into saishiguanli.contest_member
           (contest_id, member_id,isEnabled)

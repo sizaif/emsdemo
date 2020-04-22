@@ -11,7 +11,17 @@ package com.sizaif.emsdemo.pojo.Contest;
 public class ContestTeamKey {
     private Integer contestId;
     private Integer teamId;
-    private Integer isEnabled;
+    private boolean isEnabled;
+
+
+    public ContestTeamKey() {
+    }
+
+    public ContestTeamKey(Integer contestId, Integer teamId, boolean isEnabled) {
+        this.contestId = contestId;
+        this.teamId = teamId;
+        this.isEnabled = isEnabled;
+    }
 
     public Integer getContestId() {
         return contestId;
@@ -21,25 +31,25 @@ public class ContestTeamKey {
         this.contestId = contestId;
     }
 
-    public Integer getteamId() {
+    public Integer getTeamId() {
         return teamId;
     }
 
-    public void setteamId(Integer teamId) {
+    public void setTeamId(Integer teamId) {
         this.teamId = teamId;
     }
 
-    public Integer getIsEnabled() {
+    public boolean isEnabled() {
         return isEnabled;
     }
 
-    public void setIsEnabled(Integer isEnabled) {
-        this.isEnabled = isEnabled;
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 
     @Override
     public String toString() {
-        return "Contestteamkey{" +
+        return "ContestTeamKey{" +
                 "contestId=" + contestId +
                 ", teamId=" + teamId +
                 ", isEnabled=" + isEnabled +

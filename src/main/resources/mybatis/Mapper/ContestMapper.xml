@@ -272,4 +272,21 @@
         LEFT JOIN saishiguanli.team t ON t.id = ct.team_id
         WHERE t.id = #{id}
     </select>
+
+
+    <select id="findMembersByContestId" parameterType="int" resultMap="ContestMemberResultMap">
+        SELECT c.*,m.*
+        FROM saishiguanli.contest c
+        LEFT JOIN saishiguanli.contest_member cm ON cm.contest_id = c.cid
+        LEFT JOIN saishiguanli.member m ON m.id = cm.member_id
+        WHERE c.cid = #{id}
+    </select>
+    
+    <select id="findTeamsByContestId" parameterType="int" resultMap="ContestTeamResultMap">
+        SELECT c.*,t.*
+        FROM saishiguanli.contest c
+        LEFT JOIN saishiguanli.contest_team ct ON ct.contest_id = c.cid
+        LEFT JOIN saishiguanli.team t ON t.id = ct.team_id
+        WHERE c.cid = #{id}
+    </select>
 </mapper>

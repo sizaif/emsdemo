@@ -32,4 +32,20 @@ public interface ContestMemberMapper {
     List<ContestMemberkey> findByContest(int contestId);
 
 
+    /**
+     *  通过 cid 和 mid 查找
+     * @param contestMemberkey
+     * @return
+     */
+    ContestMemberkey getCMByPrimaryKey(ContestMemberkey contestMemberkey);
+
+    /**
+     *  根据isEnabled 查找
+     * @param contestMemberkey
+     * @return
+     */
+    List<ContestMemberkey> getCMByisEnabled(ContestMemberkey contestMemberkey);
+
+
+
 }

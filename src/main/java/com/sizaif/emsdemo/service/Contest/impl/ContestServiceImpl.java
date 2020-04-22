@@ -4,11 +4,16 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.dto.ContestVO;
+import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.mapper.Contest.ContestMapper;
+import com.sizaif.emsdemo.mapper.Contest.ContestMemberMapper;
+import com.sizaif.emsdemo.mapper.Contest.ContestTeamMapper;
 import com.sizaif.emsdemo.pojo.Contest.Contest;
 import com.sizaif.emsdemo.pojo.Contest.ContestMemberkey;
 import com.sizaif.emsdemo.pojo.Contest.ContestTeamKey;
 import com.sizaif.emsdemo.service.Contest.ContestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +31,15 @@ import java.util.List;
 @Service
 public class ContestServiceImpl implements ContestService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ContestServiceImpl.class);
 
     @Autowired
     private ContestMapper contestMapper;
+    @Autowired
+    private ContestMemberMapper contestMemberMapper;
+    @Autowired
+    private ContestTeamMapper contestTeamMapper;
+
 
 
     @Override
@@ -160,7 +171,20 @@ public class ContestServiceImpl implements ContestService {
      */
     @Override
     public SystemResult registeredContestMemberkey(ContestMemberkey contestMemberkey) {
-        return null;
+
+        logger.debug("开始对contest_member 查重");
+        // 先查重
+        ContestMemberkey existCM = contestMemberMapper.getCMByPrimaryKey(contestMemberkey);
+        if(null != existCM){
+            return new SystemResult(100,"您已报名!,不能重复报名!");
+        }else {
+            int su = contestMemberMapper.insertSelective(contestMemberkey);
+            if(su > 0 ){
+                return  new SystemResult(200,"报名成功!");
+            }else
+                return  new SystemResult(101,"报名失败,请联系管理员!, 错误代码: CMSIGN0001");
+        }
+
     }
 
     @Override
@@ -182,7 +206,18 @@ public class ContestServiceImpl implements ContestService {
      */
     @Override
     public SystemResult registeredContestTeamkey(ContestTeamKey contestTeamKey) {
-        return null;
+        logger.debug("开始对contest_team 查重");
+        // 先查重
+        ContestTeamKey existCT = contestTeamMapper.getCTByPrimaryKey(contestTeamKey);
+        if(null != existCT){
+            return new SystemResult(100,"您已报名!,不能重复报名!");
+        }else {
+            int su = contestTeamMapper.insertSelective(contestTeamKey);
+            if(su > 0 ){
+                return  new SystemResult(200,"报名成功!");
+            }else
+                return  new SystemResult(101,"报名失败,请联系管理员!, 错误代码: CTSIGN0001");
+        }
     }
 
     @Override
@@ -193,5 +228,27 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public SystemResult updateContestTeamKey(ContestTeamKey contestTeamKey) {
         return null;
+    }
+
+    /**
+     * ↑↑↑↑↑↑↑↑
+     * END   维护 赛事组队表
+     * SQL: Contest_Team
+     * Alias: 组队赛报名表
+     *
+     * @param id
+     */
+
+
+    @Override
+    public List<ContestVO> getMebersByCid(Integer id) {
+
+        List<ContestVO> membersByContestId = contestMapper.findMembersByContestId(id);
+        return  membersByContestId;
+    }
+
+    @Override
+    public List<ContestVO> getTeamsByCid(Integer id) {
+        return  contestMapper.findTeamsByContestId(id);
     }
 }
