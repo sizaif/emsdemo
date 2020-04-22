@@ -10,13 +10,13 @@ $(function(){
         form.on('submit(UserSumbit)', function(data){
 
             layer.confirm('确定提交么？', {
-                btn: ['返回','确认'] //按钮
+                btn: ['确认','返回'] //按钮
             },function(){
-                layer.closeAll();
-            },function() {
                 // layer.closeAll();//关闭所有弹框
                 console.log("data--"+data);
                 formSubmit(data);
+            },function() {
+                layer.closeAll();
             });
             return false;
         });
@@ -77,19 +77,27 @@ function formSubmit(obj) {
                     layer.alert("操作请求错误，请您联系技术人员");
                 }
             });
-        }else if(obj.flag == "add"){
+        }else if($("#flag").val() == "add"){
+            console.log($("#UserForm").serialize());
             $.ajax({
                 type: "POST",
-                data: $("#RoleForm").serialize(),
-                url: "/users//addUMRInfo",
+                data: $("#UserForm").serialize(),
+                url: "/users/addUMRInfo",
                 success: function (data) {
+                    console.log(data);
                     if (data == "200") {
-                        layer.alert("操作成功",function(){
+                        layer.alert("添加成功!", function () {
                             layer.closeAll();
-                            load();
                         });
-                    } else {
-                        layer.alert(data);
+                    } else if(data == "100"){
+                        layer.alert("账户已存在,请重试", function () {
+                            layer.closeAll();
+                        });
+                    }
+                    else if(data == "101"){
+                        layer.alert("邮箱已存在,请重试", function () {
+                            layer.closeAll();
+                        });
                     }
                 },
                 error: function (data) {
@@ -173,17 +181,34 @@ function switchLocked(id,name,flag) {
 function check(obj) {
 
         $("#id2").val(obj.users.id==null?'':obj.users.id);
-        $("#id").val(obj.users.id==null?'':obj.users.id);
-        $("#truename").val(obj.truename==null?'':obj.truename);
-        $("#school").val(obj.school==null?'':obj.school);
-        $("#mobile").val(obj.users.mobile==null?'':obj.users.mobile);
-        $("#email").val(obj.email==null?'':obj.email);
-        $("#email2").val(obj.email==null?'':obj.email);
-        $("#telephone").val(obj.phone==null?'':obj.phone);
-        $("#address").val(obj.address==null?'':obj.address);
-        $("#username").val(obj.users.name==null?'':obj.users.name);
 
-        $("#flag").val("update");
+        $("#id").val(obj.users.id==null?'':obj.users.id);
+        $("#id").attr("disabled","disabled");
+        $("#truename").val(obj.truename==null?'':obj.truename);
+        $("#truename").attr("disabled","disabled");
+        $("#school").val(obj.school==null?'':obj.school);
+        $("#school").attr("disabled","disabled");
+        $("#mobile").val(obj.users.mobile==null?'':obj.users.mobile);
+        $("#mobile").attr("disabled","disabled");
+        $("#email").val(obj.email==null?'':obj.email);
+        $("#email").attr("disabled","disabled");
+        $("#email2").val(obj.email==null?'':obj.email);
+        $("#email2").attr("disabled","disabled");
+        $("#telephone").val(obj.phone==null?'':obj.phone);
+        $("#telephone").attr("disabled","disabled");
+        $("#address").val(obj.address==null?'':obj.address);
+        $("#address").attr("disabled","disabled");
+        $("#username").val(obj.users.name==null?'':obj.users.name);
+        $("#username").attr("disabled","disabled");
+        $("#birth").attr("disabled","disabled");
+        $("#password").attr("disabled","disabled");
+        $("#password2").attr("disabled","disabled");
+        $("#roleDiv").attr("disabled","disabled");
+        $("#men").attr("disabled","disabled");
+        $("#women").attr("disabled","disabled");
+
+        $("#send").remove();
+        $("#reset").remove();
 
 
         var existRole='';
@@ -224,6 +249,7 @@ function check(obj) {
         });
 
 
+
         layui.use(['laydate','layer'], function(){
             var laydate = layui.laydate;
             var layer =layui.layer;
@@ -234,7 +260,7 @@ function check(obj) {
             });
             layer.open({
                 type:1,
-                title: "编辑用户详细信息",
+                title: "查看用户详细信息",
                 fixed:false,
                 resize :false,
                 offset:'auto',
@@ -342,6 +368,8 @@ function edit(obj) {
 // 添加
 function add(obj) {
 
+    $("#flag").val("add");
+    $("#id").remove();
     var existRole='';
     $("#roleDiv").empty();
     // 全部角色信息 显示角色数据
@@ -397,8 +425,9 @@ function del(id,name) {
         layer.confirm('您确定要 <font style=\'font-weight:bold;\' color=\'red\'>删除: </font><font style=\'font-weight:bold;\' color=\'blue\'>'+name+'</font> 用户么?', {
             btn: ['确认','返回'] //按钮
         },  function(){
-            $.post("/users/toDeleteUser",{"id":id},function(data){
-                if(data=="200"){
+            $.get("/users/toDeleteUser",{"id":id},function(data){
+                console.log(data)
+                if(data == "200"){
                     //回调弹框
                     layer.alert("删除成功！",function(){
                         layer.closeAll();

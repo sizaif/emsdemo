@@ -7,8 +7,10 @@ import com.sizaif.emsdemo.dto.IndexDto;
 import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.pojo.User.Member;
 
+import com.sizaif.emsdemo.pojo.User.Role;
 import com.sizaif.emsdemo.pojo.User.UserRoleKey;
 import com.sizaif.emsdemo.pojo.User.Users;
+import com.sizaif.emsdemo.service.Auth.AuthService;
 import com.sizaif.emsdemo.service.User.MemberService;
 import com.sizaif.emsdemo.service.User.UsersService;
 import com.sizaif.emsdemo.utils.DateUtils;
@@ -26,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.unit.DataUnit;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,6 +52,9 @@ public class UserController {
     @Autowired
     private UsersService usersService;
 
+    @Autowired
+    private AuthService authService;
+
     /**
      * 查询所有用户,
      * 并传到用户列表页面
@@ -71,6 +77,7 @@ public class UserController {
             model.addAttribute("JsonUserLists",usersLists);
             model.addAttribute("JsonMemberList",memberList);
             model.addAttribute("JsonMemberUserList",memberuserList);
+            model.addAttribute("data",JsonMemberUserList);
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
@@ -79,74 +86,72 @@ public class UserController {
         }
     }
 
-    /**
-     * 定向到添加用户界面
-     * @param model
-     * @return
-     */
-    @GetMapping("/toAddPage")
-    public String toAddPage(Model model) {
-
-        return "production/Admin/adduser";
+    @RequestMapping("/myData")
+    @ResponseBody
+    public String queryUserListJson(){
+        List<MemberVO> memberuserList = usersService.queryAllUserMemberRoleList();
+        return JsonUtils.objectToJson(memberuserList);
     }
 
-    @PostMapping("/toAddPage/addUser")
-    public String AddUser(@RequestParam("roleIds") String roleIds,HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse){
 
 
-        Member memberMap = UsersServiceAppoint.MemberHttpWriteToMap(httpServletRequest,httpServletResponse);
-        Users usersMap = UsersServiceAppoint.UsersHttpWriteToMap(httpServletRequest,httpServletResponse);
+    @RequestMapping("/addUMRInfo")
+    @ResponseBody
+    public String AddUser(@RequestParam("roleIds") String roleIds, Users users, Member member){
 
-        UsersServiceAppoint.UsersOtherInfo(usersMap,httpServletRequest);
 
-        logger.debug("设置用户[新增或更新]！user:" + usersMap+ " "+ memberMap + ",roleIds:" + roleIds);
+        /**
+         * User,Member,user_role add-->
+         * userUsers{id=0, isEnabled=null, isLocked=null, createDate='null', modifyDate='null',
+         * lastLoginDate='null', lastLoginIp='null', lockDate='null',
+         * name='1234', password='1234', role='5'}
+         * member:->Member{id=0, memberRankId=0, address='aff1asfaf', birth='2020-04-22 00:00:00', email='QA@SAX.com',
+         * gender=1, phone='121414124', truename='ASDQAQ', school='aSDAF', image='null'}
+         * roleIds: 5
+         */
 
-        System.out.println(memberMap.toString());
-        System.out.println(usersMap.toString());
-
+        users.setModifyDate(DateUtils.DatetoString(new Date()));
+        users.setCreateDate(DateUtils.DatetoString(new Date()));
+        users.setEnabled(true);
+        users.setLocked(false);
+        // 默认头像
+        member.setImage("user.png");
+        logger.debug("User,Member,user_role add-->  user"+users.toString()+" member:->"+member.toString()+" roleIds: "+roleIds);
         //调用service对user进行处理
         try {
 
-            SystemResult addUserResult = usersService.AddOneUser(usersMap,roleIds);
-            int id = usersMap.getId();
-            if(addUserResult.getStatus() == 200){
+            logger.debug(" 开始 对user表进行添加");
+            UsersServiceAppoint.setRoleName(users);
+            SystemResult addUserResult = usersService.AddOneUser(users, roleIds);
 
-                //添加成功
-                System.out.println(addUserResult.getMsg());
-
-                memberMap.setId(id);
-
-                /**
-                 *  待处理  ,后续开发更改
-                 *  设置 memberRankId
-                 */
-                memberMap.setMemberRankId(1);
-                SystemResult addMemberResult = memberService.AddOneMember(memberMap);
-                if (addMemberResult.getStatus() == 200){
-
-                    //添加成功
-                    System.out.println(addUserResult.getMsg());
-
-                    /**
-                     *  添加用户 和 用户信息成功后 设置 根据Role 角色设定权限
-                     *  修改user_permissions表
-                     */
-
-
-                }else {
-                    //添加失败
-                    System.out.println(addUserResult.getMsg());
+            if (addUserResult.getStatus() == 100)
+                return "100";
+            else if (addUserResult.getStatus() == 200) {
+                logger.debug(" 开始 对member表进行添加");
+                // 返回主键得到新插入的userID
+                int key = (int) addUserResult.getData();
+                logger.debug("得到的主键userId --> " + key);
+                // 开始插入 member  必须做
+                member.setId(key);
+                member.setMemberRankId(1);
+                logger.debug("memberMap --> " + member);
+                logger.debug("开始添加一个member");
+                SystemResult systemResult1 = memberService.AddOneMember(member);
+                if (systemResult1.getStatus() == 200) {
+                    return "200";
+                } else {
+                    // 事务回滚 删除刚才添加的user
+                    // 插入的member 存在重复的邮箱或手机号
+                    usersService.DeleteUserById(key);
+                    // 从 用户角色表中删除 关系
+                    usersService.DeleteUserRolle(key, roleIds);
+                    return "101";
                 }
             }
-            else{
-                //添加失败
-                System.out.println(addUserResult.getMsg());
-            }
-
-        }catch(Exception e){
+        }catch (Exception e){
             e.printStackTrace();
         }
-        return "redirect:/users/toUserList";
+        return "100";
     }
 
 
@@ -267,28 +272,41 @@ public class UserController {
      * @param id
      * @return
      */
-    @RequestMapping("/toDeleteUser/{id}")
+    @RequestMapping("/toDeleteUser")
     @ResponseBody
-    public String toDeleteUser(@PathVariable("id") Integer id){
+    public String toDeleteUser(@RequestParam("id") Integer id){
 
         try {
 
             // 先删除子表member
+            // 在删除 用户角色表
             // 再删除用户表
+
             SystemResult DeleteMember = memberService.DeleteOneMemberById(id);
 
             if (DeleteMember.getStatus()==200){
-                SystemResult DeleteUser = usersService.DeleteUserById(id);
-                if( DeleteUser.getStatus() == 200){
-                    //删除成功
-                    System.out.println(DeleteUser.getMsg());
-                    return DeleteUser.getStatus().toString();
+                List<Role> roleList = authService.getRoleByUser(id);
+                int count = 0;
+                for (Role role : roleList) {
+                    SystemResult re = usersService.DeleteUserRolle(id, role.getId().toString());
+                    if(re.getStatus()==200)
+                        count++;
                 }
-                else {
-                    //删除失败
-                    System.out.println(DeleteUser.getMsg());
-                    return DeleteUser.getStatus().toString();
+                // 删除用户角色关系表
+                if(count == roleList.size()){
+                    SystemResult DeleteUser = usersService.DeleteUserById(id);
+                    if( DeleteUser.getStatus() == 200){
+                        //删除成功
+                        System.out.println(DeleteUser.getMsg());
+                        return DeleteUser.getStatus().toString();
+                    }
+                    else {
+                        //删除失败
+                        System.out.println(DeleteUser.getMsg());
+                        return DeleteUser.getStatus().toString();
+                    }
                 }
+
             }else{
                 System.out.println(DeleteMember.getMsg());
                 return DeleteMember.getStatus().toString();
@@ -296,11 +314,8 @@ public class UserController {
 
         }catch(Exception e){
             e.printStackTrace();
-        }finally{
-            //返回到user.html
-            return "100";
         }
-
+        return "100";
     }
 
 

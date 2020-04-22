@@ -134,6 +134,8 @@ public class UsersServiceAppoint {
             int roleid = Integer.parseInt(user.getRole());
             Role role = roleMapper.selectByPrimaryKey(roleid);
             user.setRole(role.getDescpt());
+        }else{
+            user.setRole("普通用户");
         }
     }
 
