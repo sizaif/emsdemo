@@ -107,6 +107,11 @@ public class ContestController {
     }
 
 
+    /**
+     * 更新赛事
+     * @param contest
+     * @return
+     */
     @RequestMapping("/admin/contest/updateContest")
     @ResponseBody
     public String updateContest(Contest contest){
@@ -142,6 +147,11 @@ public class ContestController {
     }
 
 
+    /**
+     *  删除赛事
+     * @param id
+     * @return
+     */
     @RequestMapping("/admin/contest/delContest")
     @ResponseBody
     public String delContest(@RequestParam("id")Integer id){
@@ -243,5 +253,6 @@ public class ContestController {
         }
         return  null;
     }
+
 
 }

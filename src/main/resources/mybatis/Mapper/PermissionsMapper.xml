@@ -7,7 +7,7 @@
     <!--映射表-->
     <resultMap id="BaseResultMap" type="com.sizaif.emsdemo.pojo.User.Permission" >
         <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="title" property="name" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="pid" property="pid" jdbcType="INTEGER" />
         <result column="istype" property="istype" jdbcType="INTEGER" />
         <result column="descpt" property="descpt" jdbcType="VARCHAR" />

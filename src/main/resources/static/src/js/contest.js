@@ -252,3 +252,7 @@ function sign(cid,uid,type) {
         }
     });
 }
+
+function findmycontest(uid,type) {
+
+}

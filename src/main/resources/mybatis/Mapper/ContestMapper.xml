@@ -267,6 +267,7 @@
         LEFT JOIN saishiguanli.contest_member cm ON cm.contest_id = c.cid
         LEFT JOIN saishiguanli.member m ON m.id = cm.member_id
         WHERE m.id = #{id}
+        AND c.isEnabled = true
     </select>
 
     <select id="findContestByTeamId" parameterType="int" resultMap="ContestTeamResultMap">
@@ -275,6 +276,7 @@
         LEFT JOIN saishiguanli.contest_team ct ON ct.contest_id = c.cid
         LEFT JOIN saishiguanli.team t ON t.id = ct.team_id
         WHERE t.id = #{id}
+        AND c.isEnabled = true
     </select>
 
 

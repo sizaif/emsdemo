@@ -83,6 +83,9 @@
                                     <button id="refreshBt" class="btn btn-default " type="button"><i
                                             class="glyphicon glyphicon-refresh"></i> 刷新
                                     </button>
+                                    <button shiro:lacksPermission="contests" id="mycontest" class="btn btn-default " type="button"><i
+                                            class="glyphicon glyphicon-pawn"></i> 查看我的赛事
+                                    </button>
                                 </p>
 
                                 <!-- start 普通用户 select-->
@@ -215,42 +218,52 @@
                                                         </a>
                                                     </div>
                                                     <div class="block_content">
-                                                        <h2 class="title" ><a style="color: #ee39e5" th:text="${item.getTitle()}"></a></h2>
+                                                        <h2 class="title" ><label style="color: #ee39e5" th:text="${item.getTitle()}"></label></h2>
                                                         <div class="byline">
-                                                            <span style="color: #e93e0b;" th:text="${item.getStartTime()}"> </span><a style="color: #1eca21;"> <i class="fa fa-hand-o-left"></i> 开始时间</a>
-                                                            <span></span>
-                                                            <a style="color: #1eca21;">结束时间 <i class="fa fa-hand-o-right"></i> </a><span style="color: #e93e0b;" th:text="${item.getEndTime()}"> </span>
+                                                            <label><i class="glyphicon glyphicon-calendar" style="color: #a6ecee"></i><span style="color: #e93e0b;" th:text="${item.getStartTime()}"> </span></label>
+                                                            <label style="color: #1eca21;"> <i class="fa fa-hand-o-left"></i> 开始时间</label>
+                                                            <label style="color: #1eca21;">结束时间 <i class="fa fa-hand-o-right"></i> </label>
+                                                            <label><i class="glyphicon glyphicon-calendar" style="color: #a6ecee"></i><span style="color: #e93e0b;" th:text="${item.getEndTime()}"> </span></label>
                                                         </div>
                                                         <p class="excerpt">
                                                         <ul>
                                                             <li >
-                                                                <a>序号: <span th:text="${item.getCid()}"></span></a>
+                                                                <label><i class="glyphicon glyphicon-bookmark" style="color: #eee32f"></i>序号:<span th:text="${item.getCid()}"></span> </label>
                                                             </li>
                                                             <li >
-                                                                <a>时长: <span th:text="${item.getLength()}"></span></a>
+                                                                <label><i class="glyphicon glyphicon-time" style="color: #eeb95f"></i>时长: <span th:text="${item.getLength()}"></span></label>
                                                             </li>
                                                             <li >
-                                                                <a th:switch="${item.getLevel()}">级别:
+                                                                <label th:switch="${item.getLevel()}"><i class="fa fa-sitemap"></i>级别:
                                                                     <span th:case="world" >国际级</span>
                                                                     <span th:case="nation" >国家级</span>
                                                                     <span th:case="province" >省级</span>
                                                                     <span th:case="college" >校级</span>
-                                                                </a>
+                                                                </label>
+                                                            </li>
+                                                            <li th:switch="${item.getIsEnabled()}">
+                                                                <label><i class="fa fa-toggle-on"></i>状态:</label>
+                                                                <input th:case="1" type="checkbox" class="js-switch" checked />
+                                                                <input th:case="0" type="checkbox" class="js-switch" />
                                                             </li>
                                                             <li >
-                                                                <a>类别: <span th:text="${item.getType()}"></span></a>
+                                                                <label><i class=" fa fa-soccer-ball-o (alias)"></i>类别: <span th:text="${item.getType()}"></span></label>
                                                             </li>
                                                         </ul>
                                                         </p>
 <!--                                                        shiro:lacksPermission="contests"-->
-                                                        <a  class="btn btn-success btn-xs " >
-                                                            <i class="fa fa-pencil"  th:onclick="sign([[${item.getCid()}]],[[${session.IndexDto.uid]],[[${item.getType()}]])"> 报名</i>
+                                                        <a  class="btn btn-success" th:onclick="sign([[${item.getCid()}]],[[${session.IndexDto.uid}]],[[${item.getType()}]])">
+                                                            <i class="glyphicon glyphicon-check" > 报名</i>
                                                         </a>
-                                                        <a shiro:hasPermission="contests" class="btn btn-info btn-xs " th:onclick="edit([[${item}]])">
-                                                            <i class="fa fa-edit (alias)"> 编辑</i>
+                                                        <a shiro:hasPermission="contests" class="btn btn-default" th:onclick="edit([[${item}]])">
+                                                            <i class="glyphicon glyphicon-edit"> 编辑</i>
                                                         </a>
-                                                        <a shiro:hasPermission="contests" class="btn btn-danger btn-xs " th:onclick="del([[${item.getCid()}]],[[${item.getTitle()}]])">
-                                                            <i class="fa fa-trash"> 删除</i>
+                                                        <a shiro:hasPermission="contests" class="btn btn-default" th:onclick="del([[${item.getCid()}]],[[${item.getTitle()}]])">
+                                                            <i class="glyphicon glyphicon-trash"> 删除</i>
+                                                        </a>
+                                                        <a shiro:hasPermission="contests" id="infolist" class="btn btn-default " >
+                                                            <i class="glyphicon glyphicon-search"></i> 查看已报名人员
+
                                                         </a>
                                                     </div>
                                                 </div>
