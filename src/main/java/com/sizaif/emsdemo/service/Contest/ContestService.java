@@ -23,7 +23,7 @@ public interface ContestService {
      * @param pageSize
      * @return
      */
-    PageInfo<ContestVO> findAllUserByPageS(int pageNum, int pageSize,String searchtype,String searchvalue);
+    PageInfo<ContestVO> findAllUserByPageS(int pageNum, int pageSize,String searchtype,String searchvalue,boolean isEnabled);
 
 
 
@@ -136,6 +136,8 @@ public interface ContestService {
 
 
     List<ContestVO> getTeamsByCid(Integer id);
+
+
 
 }
 

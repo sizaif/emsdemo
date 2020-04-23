@@ -51,21 +51,47 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public PageInfo<ContestVO> findAllUserByPageS(int pageNum, int pageSize,String searchtype,String searchvalue) {
+    public PageInfo<ContestVO> findAllUserByPageS(int pageNum, int pageSize,String searchtype,String searchvalue,boolean isEnabled) {
         PageHelper.startPage(pageNum,pageSize);
         List<ContestVO> contestList = null;
         HashMap<String, Object> hashMap = new HashMap<>();
-        if(searchtype.equals("all")){
+        if(searchtype.equals("all") && isEnabled == true){
+            // 管理员模式
             hashMap.put("level",null);
             hashMap.put("type",null);
+            // 查询所有的赛事
+            hashMap.put("isEnabled",null);
             contestList = contestMapper.getAllContestVO(hashMap);
-        }else if(searchtype.equals("level")){
-            hashMap.put("level",searchvalue);
-            hashMap.put("type",null);
-            contestList = contestMapper.getAllContestVO(hashMap);
-        }else if(searchtype.equals("type")){
+        } else if (searchtype.equals("all") && isEnabled == false) {
+            // 普通列表模式
             hashMap.put("level",null);
-            hashMap.put("type",searchvalue);
+            hashMap.put("type",null);
+            // 查询所有的已启用的赛事
+            hashMap.put("isEnabled",true);
+            contestList = contestMapper.getAllContestVO(hashMap);
+        }else if(searchtype.equals("level") && isEnabled == true){
+            hashMap.put("level", searchvalue);
+            hashMap.put("type", null);
+            // 管理员分类查询
+            hashMap.put("isEnabled", null);
+            contestList = contestMapper.getAllContestVO(hashMap);
+        } else if (searchtype.equals("level") && isEnabled == false) {
+            hashMap.put("level", searchvalue);
+            hashMap.put("type", null);
+            // 只查询已启用的赛事
+            hashMap.put("isEnabled", true);
+            contestList = contestMapper.getAllContestVO(hashMap);
+        } else if(searchtype.equals("type") && isEnabled == true){
+            hashMap.put("level", null);
+            hashMap.put("type", searchvalue);
+            // 管理员分类查询
+            hashMap.put("isEnabled", null);
+            contestList = contestMapper.getAllContestVO(hashMap);
+        } else if (searchtype.equals("type") && isEnabled == false) {
+            hashMap.put("level", null);
+            hashMap.put("type", searchvalue);
+            // 只查询已启用的赛事
+            hashMap.put("isEnabled", true);
             contestList = contestMapper.getAllContestVO(hashMap);
         }
         return new PageInfo<ContestVO>(contestList);
@@ -123,6 +149,16 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public SystemResult delContest(int id) {
         try {
+
+            // 先删除关系表
+            List<ContestMemberkey> byContest = contestMemberMapper.findByContest(id);
+            for (ContestMemberkey contestMemberkey : byContest) {
+                contestMemberMapper.deleteByPrimaryKey(contestMemberkey);
+            }
+            List<ContestTeamKey> byContest2 = contestTeamMapper.findByContest(id);
+            for (ContestTeamKey contestTeamKey : byContest2) {
+                contestTeamMapper.deleteByPrimaryKey(contestTeamKey);
+            }
             int su = contestMapper.deleteByPrimaryKey(id);
             if( su > 0 ){
 
@@ -251,4 +287,5 @@ public class ContestServiceImpl implements ContestService {
     public List<ContestVO> getTeamsByCid(Integer id) {
         return  contestMapper.findTeamsByContestId(id);
     }
+
 }

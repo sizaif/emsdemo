@@ -159,7 +159,7 @@
                 tag = #{Tag},
             </if>
         </set>
-        where Cid = #{id}
+        where Cid = #{Cid}
     </update>
 
     <!--=Start findAll 查找所有比赛列表 返回contest 类型-->
@@ -180,6 +180,10 @@
         <if test="type != null" >
             WHERE saishiguanli.contest.type = #{type}
         </if>
+        <if test="isEnabled != null" >
+            WHERE  saishiguanli.contest.isEnabled = #{isEnabled}
+        </if>
+
     </select>
 
 

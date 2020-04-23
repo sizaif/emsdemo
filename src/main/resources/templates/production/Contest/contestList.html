@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:with="title='赛事列表'">
+<html xmlns:th="http://www.thymeleaf.org" th:with="title='赛事列表'"
+      xmlns:shiro="http://www.thymeleaf.org/thymeleaf-extras-shiro">
 <!--head-->
 <header th:replace="~{production/Commons/header::headerFragment(${title})}"></header>
 <!--head-->
@@ -84,8 +85,8 @@
                                     </button>
                                 </p>
 
-
-                                <form class="layui-form  form-horizontal">
+                                <!-- start 普通用户 select-->
+                                <form shiro:lacksPermission="contests" class="layui-form  form-horizontal">
                                     <div class="layui-input-inline">
                                         <label class="layui-input-inline">赛事级别：</label>
                                         <div class="layui-input-block">
@@ -133,6 +134,48 @@
                                         </div>
                                     </div>
                                 </form>
+                                <!-- End select-->
+
+                                <!-- start 管理用户 select-->
+                                <form shiro:hasPermission="contests" class="layui-form  form-horizontal">
+                                    <div class="layui-input-inline">
+                                        <label class="layui-input-inline">赛事级别：</label>
+                                        <div class="layui-input-block">
+                                            <select name="" lay-filter="contestlevel_admin" class="layui-input">
+                                                <option value="">请选择</option>
+                                                <option value="world">国际级</option>
+                                                <option value="nation">国家级</option>
+                                                <option value="province">省部级级</option>
+                                                <option value="college">校级</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <label class="layui-input-inline">赛事类型：</label>
+                                        <div class="layui-input-block">
+                                            <select name="" lay-filter="contesttype_admin" class="layui-input">
+                                                <option value="">请选择</option>
+                                                <option value="单人赛">单人赛</option>
+                                                <option value="组队赛">组队赛</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <label class="layui-input-inline">分页大小：</label>
+                                        <div class="layui-input-block">
+                                            <select name="" lay-filter="pagesize_admin"  class="layui-input">
+                                                <option value="">--分页大小--</option>
+                                                <option value="5">5</option>
+                                                <option value="10">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- End select-->
                                 <!--分页-->
                                 <div style="display: block;
                                         width: 710px;
@@ -168,7 +211,7 @@
                                                 <div class="block">
                                                     <div class="tags">
                                                         <a href="" class="tag" style="font-size: 15px;" th:each="tag:${item.getTags()}">
-                                                            <span th:text="${tag}"></span>
+                                                            <span class="fa fa-tag" th:text="${tag}"></span>
                                                         </a>
                                                     </div>
                                                     <div class="block_content">
@@ -187,15 +230,27 @@
                                                                 <a>时长: <span th:text="${item.getLength()}"></span></a>
                                                             </li>
                                                             <li >
-                                                                a>级别: <span th:text="${item.getLevel()}"></span></a>
+                                                                <a th:switch="${item.getLevel()}">级别:
+                                                                    <span th:case="world" >国际级</span>
+                                                                    <span th:case="nation" >国家级</span>
+                                                                    <span th:case="province" >省级</span>
+                                                                    <span th:case="college" >校级</span>
+                                                                </a>
                                                             </li>
                                                             <li >
-                                                                    a>类别: <span th:text="${item.getType()}"></span></a>
+                                                                <a>类别: <span th:text="${item.getType()}"></span></a>
                                                             </li>
                                                         </ul>
                                                         </p>
-                                                        <a class="btn btn-info btn-xs ">
-                                                            <i class="fa fa-edit (alias)"> 报名</i>
+<!--                                                        shiro:lacksPermission="contests"-->
+                                                        <a  class="btn btn-success btn-xs " >
+                                                            <i class="fa fa-pencil"  th:onclick="sign([[${item.getCid()}]],[[${session.IndexDto.uid]],[[${item.getType()}]])"> 报名</i>
+                                                        </a>
+                                                        <a shiro:hasPermission="contests" class="btn btn-info btn-xs " th:onclick="edit([[${item}]])">
+                                                            <i class="fa fa-edit (alias)"> 编辑</i>
+                                                        </a>
+                                                        <a shiro:hasPermission="contests" class="btn btn-danger btn-xs " th:onclick="del([[${item.getCid()}]],[[${item.getTitle()}]])">
+                                                            <i class="fa fa-trash"> 删除</i>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -203,8 +258,8 @@
                                         </ul>
                                     </div>
 
-                                    <!--分页-->
-                                    <div style="display: block;
+                                    <!--分页 普通用户-->
+                                    <div shiro:lacksPermission="contests" style="display: block;
                                         width: 710px;
                                         height: 40px;
                                         line-height: 40px;
@@ -228,6 +283,31 @@
                                         </ul>
                                     </div>
                                     <!--分页-->
+                                    <!--分页 管理用户-->
+                                    <div shiro:hasPermission="contests" style="display: block;
+                                        width: 710px;
+                                        height: 40px;
+                                        line-height: 40px;
+                                        padding-left: 0px;
+                                        padding: 5px 5px 5px 15px;
+                                        border-radius: 3px;
+                                        margin: 20px auto 40px auto !important;
+                                        text-align: center;">
+
+                                        <ul class="pagination">
+                                            <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=1,pageSize=10,isEnabled=true)}">前一页</a></li>
+                                            <li class="page-item"><a class="page-link" style="background: #EE9C54;color: #fff;"><span th:text="第+${pageInfo.pageNum}+页" ></span></a></li>
+                                            <li class="page-item"><a class="page-link" style="background: #ee98ec;color: #fff;" th:href="@{/contest/toContestList(isEnabled=true)}">首页</a></li>
+                                            <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.getPrePage()},isEnabled=true)}">前一页</a></li>
+
+                                            <li th:each="num:${pageInfo.navigatepageNums}" class="page-item">
+                                                <a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${num},isEnabled=true)}" th:text="${num}"></a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.getNextPage()},isEnabled=true)}">下一页</a></li>
+                                            <li class="page-item"><a class="page-link" style="background: #ee98ec;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.pages},isEnabled=true)}">尾页</a></li>
+                                        </ul>
+                                    </div>
+                                    <!--分页-->
                                     <!--<button class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-folder"> 查看</i></button>-->
 
 
@@ -242,7 +322,78 @@
                         </div>
                     </div>
 
+                    <div id="eidtContest" class="layer_self_wrap" style="width:500px;display:none;">
+                        <form id="ContestForm" class="layui-form" novalidate >
+                            <input type="hidden" id="flag" name="flag">
+                            <input id="Cid" name="Cid" type="hidden"  >
+                            <div class=" layui-form-item item">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Title">标题 <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input  id="Title" class="form-control col-md-7 col-xs-12"  name="Title"  type="text" required lay-verify="required">
+                                </div>
+                            </div>
+                            <div class=" layui-form-item item">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Memo">注释 <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="Memo"  id="Memo" name="Memo"  class="form-control col-md-7 col-xs-12" required lay-verify="required">
+                                </div>
+                            </div>
+                            <div class=" layui-form-item item">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="StartTime">开始日期: <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input  type="text"  id="StartTime" name="StartTime"  class="form-control col-md-7 col-xs-12" required lay-verify="required">
+                                </div>
+                            </div>
+                            <div class=" layui-form-item item">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="EndTime">结束时间: <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input  id="EndTime" type="text" name="EndTime"  class="optional form-control col-md-7 col-xs-12" required lay-verify="required">
+                                </div>
+                            </div>
 
+                            <div class=" layui-form-item item">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12 ">是否启用: </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div>
+                                        <input  id="isEnabled" type="checkbox" lay-skin="switch" lay-text="启用|关闭" checked>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item item">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">赛事类型</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12 " >
+                                    <select id="Type" name="Type" lay-verify="required" lay-filter="type_select">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item item">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">赛事级别</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12 " >
+                                    <select id="Level" name="Level" lay-verify="required" lay-filter="level_select">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="item control-group form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">标签: </label>
+                                <div class="col-md-7 col-sm-9 col-xs-12">
+                                    <input id="tags_1" type="text"  name="Tag" class="tags form-control"  value="" />
+                                    <div id="suggestions-container" style="position: relative; float: left; width: 250px; margin: 10px;"></div>
+                                </div>
+                            </div>
+
+                            <div class="ln_solid"></div>
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-3" id ="buttons">
+                                    <button id ="reset" type="reset" class="layui-btn layui-btn-primary layui-btn-radius btn">重置</button>
+                                    <button id="send" class="btn-round btn btn-success" lay-submit lay-filter="ContestSumbit">立即提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -269,6 +420,10 @@
 <script th:src="@{/vendors/iCheck/icheck.min.js}"></script>
 <!--layui-->
 <script th:src="@{/vendors/layui/layui.js}"></script>
+
+<!-- jQuery Tags Input-->
+<script th:src="@{/vendors/jquery.tagsinput/src/jquery.tagsinput.js}"></script>
+
 <!-- Switchery -->
 <script th:src="@{/vendors/switchery/dist/switchery.min.js}"></script>
 

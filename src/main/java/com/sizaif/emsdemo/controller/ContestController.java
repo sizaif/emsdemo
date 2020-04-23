@@ -10,6 +10,7 @@ import com.sizaif.emsdemo.pojo.Contest.ContestTeamKey;
 import com.sizaif.emsdemo.service.Contest.ContestService;
 import com.sizaif.emsdemo.utils.DateUtils;
 import com.sizaif.emsdemo.utils.JsonUtils;
+import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,19 +41,20 @@ public class ContestController {
     public ModelAndView queryAllContestlistByPage(@RequestParam(defaultValue = "1") int pageNum,
                                                   @RequestParam(defaultValue = "5") int pageSize,
                                                   @RequestParam(defaultValue = "all") String level,
-                                                  @RequestParam(defaultValue = "all") String type){
+                                                  @RequestParam(defaultValue = "all") String type,
+                                                  @RequestParam(defaultValue = "false") Boolean isEnabled){
         logger.debug("获得比赛列表！,分页");
         ModelAndView mav = new ModelAndView("production/Contest/contestList");
         try {
             PageInfo pageInfo = new PageInfo();
             if (level.equals("all") && type.equals("all")){
                 // 默认
-                 pageInfo = contestService.findAllUserByPageS(pageNum,pageSize,"all",null);
+                 pageInfo = contestService.findAllUserByPageS(pageNum,pageSize,"all",null,isEnabled);
             }else if( !level.equals("all") && type.equals("all")){
                 // 通过赛事级别划分
-                pageInfo = contestService.findAllUserByPageS(pageNum,pageSize,"level",level);
+                pageInfo = contestService.findAllUserByPageS(pageNum,pageSize,"level",level,isEnabled);
             }else if( level.equals("all") && !type.equals("all")){
-                pageInfo = contestService.findAllUserByPageS(pageNum,pageSize,"type",type);
+                pageInfo = contestService.findAllUserByPageS(pageNum,pageSize,"type",type,isEnabled);
             }
             //  start 处理 tags
             ContestServiceAppoint.TagTotags(pageInfo);
@@ -72,12 +74,12 @@ public class ContestController {
      * @param model
      * @return
      */
-    @RequestMapping("/admin/toAddContestPage")
+    @RequestMapping("/admin/contest/toAddContestPage")
     public String toAddPage(Model model){
         return "production/Admin/addContest";
     }
 
-    @RequestMapping("/admin/addContest")
+    @RequestMapping("/admin/contest/addContest")
     //@ResponseBody
     public String addContest(Contest contest) {
 
@@ -105,12 +107,59 @@ public class ContestController {
     }
 
 
-    @RequestMapping("/admin/updateContest")
+    @RequestMapping("/admin/contest/updateContest")
     @ResponseBody
     public String updateContest(Contest contest){
+
+
+        /**
+         *开始更新contest-->+ Contest{Cid=7, CreatorId=0, isEnabled=0,
+         * Title='testsizaif', Memo='testsizaif', Length='1天0时0分',
+         * Level='college', CreateDate='null', ModifyDate='2020-04-23 17:20:57',
+         * StartTime='2020-04-15 00:00:00', EndTime='2020-04-16 00:00:00',
+         * Type='组队赛', Tag='null'}
+         */
+
+        contest.setModifyDate(DateUtils.DatetoString(new Date()));
+        // 设置时长
+        contest.setLength(DateUtils.DataLength(contest.getStartTime(),contest.getEndTime()));
+
+
+        logger.debug("开始更新contest-->+ "+contest.toString());
+
+        try {
+            SystemResult systemResult = contestService.updateContes(contest);
+            if( systemResult.getStatus() == 200){
+                // 更新成功
+                return "200";
+            }else{
+                return systemResult.getMsg();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return null;
     }
 
+
+    @RequestMapping("/admin/contest/delContest")
+    @ResponseBody
+    public String delContest(@RequestParam("id")Integer id){
+
+        logger.debug("开始删除赛事");
+
+        try {
+            SystemResult systemResult = contestService.delContest(id);
+            if(systemResult.getStatus() == 200){
+                return "200";
+            }else {
+                return "100";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * 赛事报名,  包括单人赛报名, 和组队赛报名两种方式
@@ -121,13 +170,13 @@ public class ContestController {
      */
     @RequestMapping("/contest/signup")
     @ResponseBody
-    public String signup(@RequestParam("type") String type,
+    public String signup(@RequestParam("cid")Integer contestid,
                          @RequestParam("uid") Integer userid,
-                         @RequestParam("cid")Integer contestid){
+                         @RequestParam("type") String type){
 
         logger.debug("开始进行报名---> 报名方式: "+ type);
 
-        if(type.equals("alone")){
+        if(type.equals("单人赛")){
             ContestMemberkey contestMemberkey = new ContestMemberkey(userid,contestid,true);
             SystemResult membersignresult = contestService.registeredContestMemberkey(contestMemberkey);
             if (membersignresult.getStatus()==100){
@@ -140,7 +189,7 @@ public class ContestController {
             else if(membersignresult.getStatus()== 101){
                 return membersignresult.getMsg();
             }
-        }else if( type.equals("team")){
+        }else if( type.equals("组队赛")){
             ContestTeamKey contestTeamKey = new ContestTeamKey(userid,contestid,true);
             SystemResult teamsignresult = contestService.registeredContestTeamkey(contestTeamKey);
             if (teamsignresult.getStatus()==100){

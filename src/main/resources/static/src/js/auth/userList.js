@@ -398,9 +398,8 @@ function edit(obj) {
 
         $("#flag").val("update");
 
-
+        // start 初始化 全部角色信息 全部角色信息 显示角色数据
         var existRole='';
-
         if(obj.users.userRoles !=null ){
             existRole+=obj.users.userRoles.roleId+',';
             // console.log("item.roleid->"+existRole);
@@ -408,7 +407,6 @@ function edit(obj) {
         }
         // console.log("existRole->" +existRole);
         $("#roleDiv").empty();
-        // 全部角色信息 显示角色数据
         $.get("/auth/getRoles",function(data){
             // console.log(data);
 
@@ -426,17 +424,21 @@ function edit(obj) {
                 }
                 $("#roleDiv").append(div);
             });
-            // 修改性别
+
+            // start 初始化 性别
             if(obj.gender == 0){
                 // console.log(obj.gender);
                 $("#men").removeAttr("checked");
                 $("#women").attr("checked","checked");
             }
             layui.form.render('radio');
+            // end 初始化 性别
+
             layui.form.render('select');
         });
+        // end 初始化 全部角色信息
 
-
+        // start  初始化 出生日期 弹窗
         layui.use(['laydate','layer'], function(){
             var laydate = layui.laydate;
             var layer =layui.layer;
@@ -460,6 +462,7 @@ function edit(obj) {
                 }
             });
         });
+        // end  初始化 出生日期 弹窗
 
     }
 }
@@ -470,8 +473,9 @@ function add(obj) {
     $("#flag").val("add");
     $("#id").remove();
     var existRole='';
+    // start 全部角色信息 显示角色数据
     $("#roleDiv").empty();
-    // 全部角色信息 显示角色数据
+
     $.get("/auth/getRoles",function(data){
         console.log(data);
 
@@ -491,7 +495,9 @@ function add(obj) {
         });
         layui.form.render('select');
     });
+    // end 全部角色信息 显示角色数据
 
+    // start 初始化出生日期 和弹窗
     layui.use(['laydate','layer'], function(){
         var laydate = layui.laydate;
         var layer =layui.layer;
@@ -514,6 +520,7 @@ function add(obj) {
             }
         });
     });
+    // end 初始化出生日期 和弹窗
 
 }
 

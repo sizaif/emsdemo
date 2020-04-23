@@ -64,7 +64,7 @@
                             </div>
                             <div class="x_content">
 
-                                <form class="form-horizontal form-label-left layui-form" novalidate th:action="@{/admin/addContest}" method="post">
+                                <form class="form-horizontal form-label-left layui-form" novalidate th:action="@{/admin/contest/addContest}" method="post">
 
                                     <input  type="hidden"  name="CreatorId" th:value="${session.IndexDto.getUid()}">
 
@@ -112,7 +112,7 @@
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" >级别 <span class="required">*</span></label>
                                         <div class="col-md-2 col-sm-2 col-xs-2">
                                             <select name="Level" class="form-control">
-                                                <option value="world">世界级</option>
+                                                <option value="world">国际级</option>
                                                 <option value="nation">国家级</option>
                                                 <option value="province">省级</option>
                                                 <option value="college">校级</option>

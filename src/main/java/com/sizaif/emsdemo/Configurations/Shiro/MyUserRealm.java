@@ -88,7 +88,6 @@ public class MyUserRealm extends AuthorizingRealm{
         logger.info("用户登录认证：验证当前Subject时获取到token为：" + ReflectionToStringBuilder
                 .toString(userToken, ToStringStyle.MULTI_LINE_STYLE));
 
-
         // 连接数据库
         Users users = usersService.queryUserByName(userToken.getUsername());
         logger.debug("用户登录认证！用户信息user：" + users);
