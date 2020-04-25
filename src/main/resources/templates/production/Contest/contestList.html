@@ -74,13 +74,13 @@
                                     <button id="printBtn" class="btn btn-default " type="button" th:onclick="windowprint()"><span
                                             class="glyphicon glyphicon-print"></span> 打印
                                     </button>
-                                    <button id="dowloadBtn" class="btn btn-default " type="button"><span
-                                            class="glyphicon glyphicon-save"></span> excel下载
-                                    </button>
-                                    <button id="dowloadpdfBtn" class="btn btn-default " type="button"><span
-                                            class="glyphicon glyphicon-save-file"></span> pdf下载
-                                    </button>   
-                                    <button id="refreshBt" class="btn btn-default " type="button"><i
+<!--                                    <button id="dowloadBtn" class="btn btn-default " type="button"><span-->
+<!--                                            class="glyphicon glyphicon-save"></span> excel下载-->
+<!--                                    </button>-->
+<!--                                    <button id="dowloadpdfBtn" class="btn btn-default " type="button"><span-->
+<!--                                            class="glyphicon glyphicon-save-file"></span> pdf下载-->
+<!--                                    </button>   -->
+                                    <button id="refreshBt" class="btn btn-default " type="button" th:onclick="refresh()"><i
                                             class="glyphicon glyphicon-refresh"></i> 刷新
                                     </button>
                                     <button shiro:lacksPermission="contests" id="mycontest" class="btn btn-default " type="button"><i
@@ -261,7 +261,8 @@
                                                         <a shiro:hasPermission="contests" class="btn btn-default" th:onclick="del([[${item.getCid()}]],[[${item.getTitle()}]])">
                                                             <i class="glyphicon glyphicon-trash"> 删除</i>
                                                         </a>
-                                                        <a shiro:hasPermission="contests" id="infolist" class="btn btn-default " >
+                                                        <a shiro:hasPermission="contests" id="infolist" class="btn btn-default "
+                                                           th:href="@{/admin/contest/toMemberListPage(type=${item.getType()},cid=${item.getCid()})}">
                                                             <i class="glyphicon glyphicon-search"></i> 查看已报名人员
 
                                                         </a>
@@ -466,7 +467,7 @@
 <!-- Custom Theme Scripts -->
 <script th:src="@{/build/js/custom.min.js}"></script>
 
-<script th:src="@{/src/js/contest.js}"></script>
+<script th:src="@{/src/js/contest/contest.js}"></script>
 
 <script>
 
@@ -476,6 +477,10 @@
         f.style.display = "";
         window.print();
         f.style.display = "none";
+    }
+    function refresh()
+    {
+        window.location.reload();
     }
 
 </script>

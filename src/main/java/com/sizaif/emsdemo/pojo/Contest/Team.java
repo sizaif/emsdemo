@@ -22,7 +22,7 @@ public class Team {
 
     private String modifyDate;
 
-    private int isEnabled;
+    private boolean isEnabled;
 
     public int getId() {
         return id;
@@ -72,12 +72,12 @@ public class Team {
         this.modifyDate = modifyDate;
     }
 
-    public int getIsEnabled() {
+    public boolean isEnabled() {
         return isEnabled;
     }
 
-    public void setIsEnabled(int isEnabled) {
-        this.isEnabled = isEnabled;
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 
     @Override

@@ -17,6 +17,7 @@ public interface ContestMemberMapper {
 
     int insertSelective(ContestMemberkey record);
 
+    int updateSelective(ContestMemberkey record);
     /**
      * 通过用户Id查找
      * @param memberId

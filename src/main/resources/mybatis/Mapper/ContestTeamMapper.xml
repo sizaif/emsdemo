@@ -60,6 +60,17 @@
         </trim>
     </insert>
 
+    <!-- 动态update-->
+    <update id="updateSelective" parameterType="com.sizaif.emsdemo.pojo.Contest.ContestMemberkey">
+        UPDATE contest_team
+        <trim prefix="set" suffixOverrides=",">
+            <if test="contestId!=null">contest_id = #{contestId},</if>
+            <if test="teamId!=null">team_id = #{teamId},</if>
+            <if test="isEnabled!=null">isEnabled = #{isEnabled},</if>
+        </trim>
+        where contest_id = #{contestId}
+        AND team_id = #{teamId}
+    </update>
     <select id="findByteam" resultMap="BaseResultMap" parameterType="int">
         SELECT contest_id,team_id,isEnabled
         FROM saishiguanli.contest_team

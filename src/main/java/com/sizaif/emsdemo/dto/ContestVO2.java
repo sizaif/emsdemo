@@ -2,21 +2,20 @@ package com.sizaif.emsdemo.dto;
 
 import com.sizaif.emsdemo.pojo.Contest.ContestMemberkey;
 import com.sizaif.emsdemo.pojo.Contest.ContestTeamKey;
-import com.sizaif.emsdemo.pojo.User.Member;
 import com.sizaif.emsdemo.pojo.Contest.Team;
+import com.sizaif.emsdemo.pojo.User.Member;
 
 import java.util.List;
 
 /**
  * @author ：sizaif
- * @date ：Created in 2020/4/14 22:58
- * @description：赛事以及赛事成员表赛事队伍表
+ * @date ：Created in 2020/4/25 14:14
+ * @description：contest member team
  * @modified By：sizaif
- * @version: 1.0$
+ * @version: v1.0$
  */
 
-public class ContestVO {
-
+public class ContestVO2 {
     private int Cid;
 
     private int CreatorId;
@@ -45,18 +44,13 @@ public class ContestVO {
 
     private List<String> tags;
 
-    private List<MemberVO> memberList;
+    private Member memberList;
 
-    private List<Team> teamList;
+    private Team teamList;
 
+    private ContestMemberkey cmk;
 
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
+    private ContestTeamKey ctk;
 
     public int getCid() {
         return Cid;
@@ -162,26 +156,49 @@ public class ContestVO {
         Tag = tag;
     }
 
-    public List<MemberVO> getMemberList() {
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public Member getMemberList() {
         return memberList;
     }
 
-    public void setMemberList(List<MemberVO> memberList) {
+    public void setMemberList(Member memberList) {
         this.memberList = memberList;
     }
 
-    public List<Team> getTeamList() {
+    public Team getTeamList() {
         return teamList;
     }
 
-    public void setTeamList(List<Team> teamList) {
+    public void setTeamList(Team teamList) {
         this.teamList = teamList;
     }
 
+    public ContestMemberkey getCmk() {
+        return cmk;
+    }
+
+    public void setCmk(ContestMemberkey cmk) {
+        this.cmk = cmk;
+    }
+
+    public ContestTeamKey getCtk() {
+        return ctk;
+    }
+
+    public void setCtk(ContestTeamKey ctk) {
+        this.ctk = ctk;
+    }
 
     @Override
     public String toString() {
-        return "ContestVO{" +
+        return "ContestVO2{" +
                 "Cid=" + Cid +
                 ", CreatorId=" + CreatorId +
                 ", isEnabled=" + isEnabled +
@@ -198,6 +215,8 @@ public class ContestVO {
                 ", tags=" + tags +
                 ", memberList=" + memberList +
                 ", teamList=" + teamList +
+                ", cmk=" + cmk +
+                ", ctk=" + ctk +
                 '}';
     }
 }

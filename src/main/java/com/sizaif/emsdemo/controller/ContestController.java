@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.appoint.ContestServiceAppoint;
 import com.sizaif.emsdemo.dto.ContestVO;
+import com.sizaif.emsdemo.dto.ContestVO2;
 import com.sizaif.emsdemo.pojo.Contest.Contest;
 import com.sizaif.emsdemo.pojo.Contest.ContestMemberkey;
 import com.sizaif.emsdemo.pojo.Contest.ContestTeamKey;
@@ -21,8 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 
@@ -217,23 +217,85 @@ public class ContestController {
         return "102";
     }
 
-    @RequestMapping("/contest/getContestsById")
+
+    /**
+     *  到审核用户报名界面
+     * @param cid
+     * @param type
+     * @return
+     */
+    @RequestMapping("/admin/contest/toMemberListPage")
+    public ModelAndView toContestMemberListPage(@RequestParam("cid") Integer cid,
+                                          @RequestParam("type") String type){
+        logger.debug("根据赛事id查询报名的用户或组队：");
+        ModelAndView mav=new ModelAndView("production/Contest/contestMemberList");
+
+        mav.addObject("cid",cid);
+        if(type.equals("单人赛")){
+            mav.addObject("type","alone");
+            ContestVO contestByMember = contestService.getMebersByCid(cid);
+            mav.addObject("data",contestByMember);
+        } else if(type.equals("组队赛")){
+            mav.addObject("type","team");
+            ContestVO contestByTeam = contestService.getTeamsByCid(cid);
+            mav.addObject("data",contestByTeam);
+        }
+        return mav;
+    }
+
+    /**
+     * 查看已报名的赛事
+     * @param type
+     * @param id
+     * @return
+     */
+    @RequestMapping("/admin/contest/getContestsByUid")
     @ResponseBody
     public String getContestByUid(@RequestParam("type") String type,
                                   @RequestParam("id") Integer id){
 
         logger.debug("通过 id 查询已报名的赛事列表");
 
-        if(type.equals("alone")){
+        if(type.equals("单人赛")){
 
             List<ContestVO> contestByMember = contestService.getContestByMember(id);
             return JsonUtils.objectToJson(contestByMember);
-        }else if(type.equals("team")){
+        }else if(type.equals("组队赛")){
             List<ContestVO> contestByTeam = contestService.getContestByTeam(id);
             return JsonUtils.objectToJson(contestByTeam);
         }
         return null;
     }
+
+    /**
+     *  审核用户/组队 参赛状态
+     * @param type
+     * @param cid
+     * @return
+     */
+    @RequestMapping("/admin/contest/checkCmtEnabled")
+    @ResponseBody
+    public String getCMTInfoByCid(@RequestParam("type") String type,
+                                  @RequestParam("cid") Integer cid,
+                                  @RequestParam("id") Integer id,
+                                  @RequestParam("isEnabled") boolean isEnabled){
+
+        logger.debug("通过 赛事id , 用户/组队id  改变 赛事报名状态");
+
+        if(type.equals("alone")){
+
+            // 相反状态
+            ContestMemberkey cmk = new ContestMemberkey(cid,id,!isEnabled);
+            SystemResult systemResult = contestService.updateContestMemberKey(cmk);
+            return systemResult.getStatus().toString();
+        }else if(type.equals("team")){
+            ContestTeamKey ctk = new ContestTeamKey(cid,id,!isEnabled);
+            SystemResult systemResult = contestService.updateContestTeamKey(ctk);
+            return systemResult.getStatus().toString();
+        }
+        return null;
+    }
+
 
     /**
      *  通过ID 获取团队/单人 的成员列表

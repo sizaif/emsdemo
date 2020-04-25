@@ -17,6 +17,8 @@ public interface ContestTeamMapper {
 
     int insertSelective(ContestTeamKey record);
 
+    int updateSelective(ContestTeamKey record);
+
     /**
      * 通过队伍Id查找
      * @param TeamId

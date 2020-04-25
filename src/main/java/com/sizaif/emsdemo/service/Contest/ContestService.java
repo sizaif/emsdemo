@@ -4,6 +4,7 @@ package com.sizaif.emsdemo.service.Contest;
 import com.github.pagehelper.PageInfo;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.dto.ContestVO;
+import com.sizaif.emsdemo.dto.ContestVO2;
 import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.pojo.Contest.Contest;
 import com.sizaif.emsdemo.pojo.Contest.ContestMemberkey;
@@ -90,7 +91,7 @@ public interface ContestService {
 
     SystemResult deleteContestMemberKey(ContestMemberkey contestMemberkey);
 
-    SystemResult updateContestMemberKey();
+    SystemResult updateContestMemberKey(ContestMemberkey contestMemberkey);
 
 
 
@@ -132,12 +133,10 @@ public interface ContestService {
      *  Alias: 组队赛报名表
      */
 
-    List<ContestVO> getMebersByCid(Integer id);
+    ContestVO getMebersByCid(Integer id);
 
 
-    List<ContestVO> getTeamsByCid(Integer id);
-
-
+    ContestVO getTeamsByCid(Integer id);
 
 }
 

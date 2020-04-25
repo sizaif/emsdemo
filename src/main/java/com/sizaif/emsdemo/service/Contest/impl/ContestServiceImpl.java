@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.dto.ContestVO;
+import com.sizaif.emsdemo.dto.ContestVO2;
 import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.mapper.Contest.ContestMapper;
 import com.sizaif.emsdemo.mapper.Contest.ContestMemberMapper;
@@ -229,8 +230,13 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public SystemResult updateContestMemberKey() {
-        return null;
+    public SystemResult updateContestMemberKey(ContestMemberkey contestMemberkey) {
+        int su = contestMemberMapper.updateSelective(contestMemberkey);
+        if( su > 0 ){
+            return  new SystemResult(200,"跟新状态成功");
+        }
+        else
+            return  new SystemResult(100,"跟新状态失败");
     }
 
     /**
@@ -263,7 +269,12 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public SystemResult updateContestTeamKey(ContestTeamKey contestTeamKey) {
-        return null;
+        int su = contestTeamMapper.updateSelective(contestTeamKey);
+        if( su > 0 ){
+            return  new SystemResult(200,"跟新状态成功");
+        }
+        else
+            return  new SystemResult(100,"跟新状态失败");
     }
 
     /**
@@ -277,14 +288,14 @@ public class ContestServiceImpl implements ContestService {
 
 
     @Override
-    public List<ContestVO> getMebersByCid(Integer id) {
+    public ContestVO getMebersByCid(Integer id) {
 
-        List<ContestVO> membersByContestId = contestMapper.findMembersByContestId(id);
+        ContestVO membersByContestId = contestMapper.findMembersByContestId(id);
         return  membersByContestId;
     }
 
     @Override
-    public List<ContestVO> getTeamsByCid(Integer id) {
+    public ContestVO getTeamsByCid(Integer id) {
         return  contestMapper.findTeamsByContestId(id);
     }
 

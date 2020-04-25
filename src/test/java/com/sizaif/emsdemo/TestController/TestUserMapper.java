@@ -2,6 +2,7 @@ package com.sizaif.emsdemo.TestController;
 
 import com.github.pagehelper.PageInfo;
 import com.sizaif.emsdemo.dto.ContestVO;
+import com.sizaif.emsdemo.dto.ContestVO2;
 import com.sizaif.emsdemo.mapper.Contest.ContestMapper;
 import com.sizaif.emsdemo.mapper.User.MemberMapper;
 import com.sizaif.emsdemo.mapper.User.RoleMapper;
@@ -109,14 +110,9 @@ public class TestUserMapper {
 
     @Test
     public void Test() throws Exception{
-        List<ContestVO> contestByMemberId = contestMapper.findContestByMemberId(2);
-        if(contestByMemberId.size()>0){
-            for (ContestVO contestVO : contestByMemberId) {
-                System.out.println(contestVO.toString());
-            }
-        }else{
-            System.out.println("  空");
-        }
+        ContestVO contestByMemberId = contestMapper.findMembersByContestId(2);
+        System.out.println(contestByMemberId.getMemberList());
+
     }
 
     @Test
