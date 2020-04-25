@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sizaif.emsdemo.mapper.Announce.AnnounceMapper">
+
+    <!--映射表-->
+    <resultMap id="BaseResultMap" type="com.sizaif.emsdemo.pojo.Announce.Announce" >
+        <id column="id" property="id"  />
+        <id column="memo" property="memo"  />
+        <id column="creatorId" property="creatorId"  />
+        <id column="creatorName" property="creatorName"  />
+        <id column="createDate" property="createDate" />
+        <id column="modifyDate" property="modifyDate" />
+        <id column="isEnabled" property="isEnabled"  />
+    </resultMap>
+
+
+    <!--动态insert-->
+    <insert id="insertSelective" parameterType="com.sizaif.emsdemo.pojo.Announce.Announce" >
+        insert into announce
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="memo != null" >
+                memo,
+            </if>
+            <if test="creatorId != null" >
+                creatorId,
+            </if>
+            <if test="creatorName != null" >
+                creatorName,
+            </if>
+            <if test="createDate != null" >
+                createDate,
+            </if>
+            <if test="modifyDate != null" >
+                modifyDate,
+            </if>
+            <if test="isEnabled != null" >
+                isEnabled,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="memo != null" >
+                #{memo},
+            </if>
+            <if test="creatorId != null" >
+                #{creatorId},
+            </if>
+            <if test="creatorName != null" >
+                #{creatorName},
+            </if>
+            <if test="createDate != null" >
+                #{createDate},
+            </if>
+            <if test="modifyDate != null" >
+                #{modifyDate},
+            </if>
+            <if test="isEnabled != null" >
+                #{isEnabled},
+            </if>
+        </trim>
+    </insert>
+
+    <!--    动态update -->
+    <update id="updateSelective" parameterType="com.sizaif.emsdemo.pojo.Announce.Announce">
+        UPDATE contest_member
+        <trim prefix="set" suffixOverrides=",">
+            <if test="memo != null" >
+                memo = #{ memo},
+            </if>
+            <if test="creatorId != null" >
+                creatorId = #{creatorId},
+            </if>
+            <if test="creatorName != null" >
+                creatorName = #{creatorName},
+            </if>
+            <if test="createDate != null" >
+                createDate = #{createDate},
+            </if>
+            <if test="modifyDate != null" >
+                modifyDate = #{modifyDate},
+            </if>
+            <if test="isEnabled != null" >
+                isEnabled = #{isEnabled},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getAllAnnounce" resultMap="BaseResultMap" parameterType="com.sizaif.emsdemo.pojo.Announce.Announce">
+        select * from announce
+        <if test="isEnabled!=null">
+            Where isEnabled = #{isEnabled}
+        </if>
+    </select>
+</mapper>

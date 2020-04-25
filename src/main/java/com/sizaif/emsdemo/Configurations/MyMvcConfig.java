@@ -22,7 +22,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
 //        registry.addViewController("/usr/login/lang").setViewName("production/login");
 //        registry.addViewController("/index").setViewName("login");
 
-        registry.addViewController("/home").setViewName("production/index");
+//        registry.addViewController("/home").setViewName("production/index");
 
 //        registry.addViewController("/nav.html").setViewName("nav");
 

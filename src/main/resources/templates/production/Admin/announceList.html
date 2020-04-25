@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:with="title='公告管理'">
+<!--head-->
+<header th:replace="~{production/Commons/header::headerFragment(${title})}"></header>
+<!--head-->
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+
+        <!-- menu_main -->
+        <div th:replace="~{production/Commons/common::menu_main}"></div>
+        <!-- menu_main-->
+
+        <!-- top navigation -->
+        <div th:replace="~{production/Commons/common::top_navigation}"></div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+            <div class="">
+                <div class="page-title">
+                    <div class="title_left">
+                        <h3>Announce
+                            <small>公告管理</small>
+                        </h3>
+                    </div>
+
+                    <div class="title_right">
+                        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search for...">
+                                <span class="input-group-btn">
+                          <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>操作
+                                    <small>公告列表 </small>
+                                </h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                           aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Settings 1</a>
+                                            </li>
+                                            <li><a href="#">Settings 2</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <p>
+                                    <button id="adduser" class="btn btn-default " th:onclick="add()"><span
+                                            class="glyphicon glyphicon-bullhorn"></span> 添加</button>
+                                    <button id="printBtn" class="btn btn-default " type="button" th:onclick="windowsprint()"><span
+                                            class="glyphicon glyphicon-print"></span> 打印
+                                    <!--</button>-->
+                                    <!--<button id="dowloadBtn" class="btn btn-default " type="button"><span-->
+                                            <!--class="glyphicon glyphicon-save"></span> excel下载-->
+                                    <!--</button>-->
+                                    <!--<button id="dowloadpdfBtn" class="btn btn-default " type="button"><span-->
+                                            <!--class="glyphicon glyphicon-save-file"></span> pdf下载-->
+                                    <!--</button>   -->
+                                    <!--<button id="refreshBt" class="btn btn-default " type="button"><i-->
+                                            <!--class="glyphicon glyphicon-refresh"></i> 刷新-->
+                                    </button>
+                                </p>
+
+                                <table id="datatable" class="table table-striped table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>序列</th>
+                                        <th>添加者ID</th>
+                                        <th>添加人</th>
+                                        <th>添加时间</th>
+                                        <th>是否启用</th>
+                                        <th>内容</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="annlist:${AnnounceList}">
+                                        <td th:text="${annlist.getId()}"></td>
+                                        <td th:text="${annlist.getCreatorId()}"></td>
+                                        <td th:text="${annlist.getCreatorName()}"></td>
+                                        <td th:text="${annlist.getCreateDate()}"></td>
+                                        <td th:switch="${annlist.getIsEnabled()}" >
+                                            <div>
+                                                <input  th:case="true" type="checkbox" checked  class="js-switch" th:onchange="switchEnable()">
+                                            </div>
+                                            <div>
+                                                <input  th:case="false" type="checkbox"  class="js-switch" th:onchange="switchEnable()">
+                                            </div>
+                                        </td>
+                                        <td th:text="${annlist.getMemo()}"></td>
+
+                                        <td>
+                                            <a class="btn btn-info btn-xs btn-round" th:onclick="edit()" >
+                                                <i class="glyphicon glyphicon-pencil">编辑</i></a>
+                                            <a class="btn btn-danger btn-xs btn-round" th:onclick="del()">
+                                                <i class="glyphicon glyphicon-trash">删除</i></a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+
+
+                                <div id="eidtUser" class="layer_self_wrap" style="width:500px;display:none;">
+                                    <form id="UserForm" class="layui-form" novalidate >
+                                        <input type="hidden" id="flag" name="flag">
+                                        <input id="roleIds" type="hidden" name="roleIds"/>
+                                        <input id="id" name="id" type="hidden"  >
+                                        <div class=" layui-form-item item">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="truename">姓名 <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input  id="truename" class="form-control col-md-7 col-xs-12"  name="truename" placeholder="姓名"  type="text" required lay-verify="required">
+                                            </div>
+                                        </div>
+                                        <div class=" layui-form-item item">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">邮箱 <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="email"  id="email" name="email"  class="form-control col-md-7 col-xs-12" required lay-verify="required">
+                                            </div>
+                                        </div>
+                                        <div class=" layui-form-item item">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">确认邮箱 <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="email" id="email2" name="confirm_email" data-validate-linked="email"  class="form-control col-md-7 col-xs-12" required lay-verify="required">
+                                            </div>
+                                        </div>
+                                        <div class=" layui-form-item item">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="school">学校 <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input   id="school" name="school"   class="form-control col-md-7 col-xs-12" required lay-verify="required">
+                                            </div>
+                                        </div>
+                                        <div class=" layui-form-item item">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="address">地址 <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input  type="text"  id="address" name="address"  class="form-control col-md-7 col-xs-12" required lay-verify="required">
+                                            </div>
+                                        </div>
+                                        <div class=" layui-form-item item">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="birth">出生日期: <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input  type="text"  id="birth" name="birth"  class="form-control col-md-7 col-xs-12" required lay-verify="required">
+                                            </div>
+                                        </div>
+                                        <div class=" layui-form-item item">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="username">用户名 <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input  id="username" type="text" name="name"  class="optional form-control col-md-7 col-xs-12" required lay-verify="required">
+                                            </div>
+                                        </div>
+                                        <hr class="layui-bg-red">
+                                        <div class=" layui-form-item item">
+                                            <label for="password" class="control-label col-md-3">密码* </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <!--data-validate-length="5,11"-->
+                                                <input id="password" type="password" name="password"  class="form-control col-md-7 col-xs-12" required lay-verify="required" onclick="new PNotify({
+                                                      title: '注意!',
+                                                      text: '警告!!!! --> 这样做会重置此账户的密码!',
+                                                      hide: false,
+                                                      styling: 'bootstrap3'
+                                                  });">
+                                            </div>
+                                        </div>
+                                        <div class=" layui-form-item item">
+                                            <label for="password2" class="control-label col-md-3 col-sm-3 col-xs-12">重复密码*  </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input id="password2" type="password" name="password2" data-validate-linked="password" class="form-control col-md-7 col-xs-12" required lay-verify="required">
+                                            </div>
+                                        </div>
+                                        <hr class="layui-bg-red">
+                                        <div class=" layui-form-item item">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12 ">性别</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div id="gender">
+                                                    <input  id="men"  type="radio" name="gender" value="1" title="男" checked>
+                                                    <input  id="women"  type="radio" name="gender" value="0" title="女">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class=" layui-form-item item">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone">手机号 <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="tel"  id="telephone" name="phone"  class="form-control col-md-7 col-xs-12" required lay-verify="required">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item item">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">用户组</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 " >
+                                                <select id="roleDiv" name="role" lay-verify="required" lay-filter="role_select">
+                                                    <!--<option  >- 请选择 -</option>-->
+                                                    <!--<option   th:value="0">运动员</option>-->
+                                                    <!--<option   th:value="1">检录员</option>-->
+                                                    <!--<option   th:value="2">场务员</option>-->
+                                                    <!--<option   th:value="3">裁判员</option>-->
+                                                    <!--<option   th:value="4">超级管理员</option>-->
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="ln_solid"></div>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-md-offset-3" id ="buttons">
+                                                <button id ="reset" type="reset" class="layui-btn layui-btn-primary layui-btn-radius btn">重置</button>
+                                                <button id="send" class="btn-round btn btn-success" lay-submit lay-filter="UserSumbit">立即提交</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer th:replace="~{production/Commons/common::footer_content}"></footer>
+        <!-- /footer content -->
+    </div>
+</div>
+
+
+<!-- jQuery -->
+<script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+<!-- Bootstrap -->
+<script th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+<!-- FastClick -->
+<script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
+<!-- NProgress -->
+<script th:src="@{/vendors/nprogress/nprogress.js}"></script>
+<!-- validator -->
+<script th:src="@{/vendors/validator/validator.js}"></script>
+<!-- iCheck -->
+<script th:src="@{/vendors/iCheck/icheck.min.js}"></script>
+<!-- Switchery -->
+<script th:src="@{/vendors/switchery/dist/switchery.min.js}"></script>
+<!--layui-->
+<script th:src="@{/vendors/layui/layui.js}"></script>
+<!-- PNotify -->
+<script th:src="@{/vendors/pnotify/dist/pnotify.js}"></script>
+<script th:src="@{/vendors/pnotify/dist/pnotify.buttons.js}"></script>
+<script th:src="@{/vendors/pnotify/dist/pnotify.nonblock.js}"></script>
+
+<!-- Datatables -->
+<script th:src="@{/vendors/datatables.net/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
+<script th:src="@{/vendors/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
+<script th:src="@{/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js}"></script>
+<script th:src="@{/vendors/datatables.net-buttons/js/buttons.flash.min.js}"></script>
+<script th:src="@{/vendors/datatables.net-buttons/js/buttons.html5.min.js}"></script>
+<script th:src="@{/vendors/datatables.net-buttons/js/buttons.print.min.js}"></script>
+<script th:src="@{/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js}"></script>
+<script th:src="@{/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
+<script th:src="@{/vendors/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js}"></script>
+<script th:src="@{/vendors/datatables.net-scroller/js/dataTables.scroller.min.js}"></script>
+<script th:src="@{/vendors/jszip/dist/jszip.min.js}"></script>
+<script th:src="@{/vendors/pdfmake/build/pdfmake.min.js}"></script>
+<script th:src="@{/vendors/pdfmake/build/vfs_fonts.js}"></script>
+
+
+
+<!-- Custom Theme Scripts -->
+<script th:src="@{/build/js/custom.min.js}"></script>
+
+<script>
+
+
+
+</script>
+
+</body>
+</html>

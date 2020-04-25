@@ -93,8 +93,8 @@ public class ContestController {
             contest.setModifyDate(DateUtils.DatetoString(new Date()));
             // 设置时长
             contest.setLength(DateUtils.DataLength(contest.getStartTime(),contest.getEndTime()));
-            // 设置默认启用
-            contest.setIsEnabled(1);
+            // 设置默认未启用
+            contest.setIsEnabled(0);
            systemResult = contestService.addContest(contest);
 
 //            mav.addObject("msg",systemResult1.getMsg());

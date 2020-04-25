@@ -4,9 +4,11 @@ import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.appoint.UsersServiceAppoint;
 import com.sizaif.emsdemo.dto.IndexDto;
 import com.sizaif.emsdemo.mapper.User.RoleMapper;
+import com.sizaif.emsdemo.pojo.Announce.Announce;
 import com.sizaif.emsdemo.pojo.User.Member;
 import com.sizaif.emsdemo.pojo.User.Role;
 import com.sizaif.emsdemo.pojo.User.Users;
+import com.sizaif.emsdemo.service.Announce.AnnounceService;
 import com.sizaif.emsdemo.service.User.MemberService;
 import com.sizaif.emsdemo.service.User.UsersService;
 
@@ -28,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -41,13 +44,35 @@ public class LogController {
     private MemberService memberService;
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private AnnounceService announceService;
 
-
-
-    @RequestMapping({"/","index","index.html","/usr/login/lang","/toLogin"})
+    /**
+     * 初始化跳转
+     * @param model
+     * @return
+     */
+    @RequestMapping({"/","index","/home","index.html","/usr/login/lang","/toLogin"})
     public String Index(Model model){
         model.addAttribute("msg","welcome!");
-        return "production/commons/login";
+
+        Subject currentUser = SecurityUtils.getSubject();
+        Users users = (Users) currentUser.getPrincipal();
+
+        // 若不存在
+        if( users == null){
+            return "production/commons/login";
+        }else{
+//            logger.debug(users.toString());
+            // 已经登录
+            // 查询公告
+
+            List<Announce> allAnnounce = announceService.getAllAnnounce("true");
+            model.addAttribute("Announce",allAnnounce);
+            return "production/index";
+        }
+
+
     }
 
     @RequestMapping("/login")

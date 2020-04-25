@@ -7,8 +7,10 @@ import com.sizaif.emsdemo.mapper.Contest.ContestMapper;
 import com.sizaif.emsdemo.mapper.User.MemberMapper;
 import com.sizaif.emsdemo.mapper.User.RoleMapper;
 import com.sizaif.emsdemo.mapper.User.UserMapper;
+import com.sizaif.emsdemo.pojo.Announce.Announce;
 import com.sizaif.emsdemo.pojo.User.Role;
 import com.sizaif.emsdemo.pojo.User.Users;
+import com.sizaif.emsdemo.service.Announce.AnnounceService;
 import com.sizaif.emsdemo.service.Auth.AuthService;
 import com.sizaif.emsdemo.service.Contest.ContestService;
 import com.sizaif.emsdemo.service.User.MemberService;
@@ -47,6 +49,9 @@ public class TestUserMapper {
     private WebApplicationContext wac;
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private AnnounceService announceService;
+
     private MockMvc mockMvc;
 
 
@@ -110,9 +115,12 @@ public class TestUserMapper {
 
     @Test
     public void Test() throws Exception{
-        ContestVO contestByMemberId = contestMapper.findMembersByContestId(2);
-        System.out.println(contestByMemberId.getMemberList());
-
+        Announce announce1 = new Announce();
+        System.out.println(announce1.toString());
+        List<Announce> allAnnounce = announceService.getAllAnnounce("all");
+        for (Announce announce : allAnnounce) {
+            System.out.println(announce.toString());
+        }
     }
 
     @Test
