@@ -63,7 +63,7 @@
 
     <!--    动态update -->
     <update id="updateSelective" parameterType="com.sizaif.emsdemo.pojo.Announce.Announce">
-        UPDATE contest_member
+        UPDATE announce
         <trim prefix="set" suffixOverrides=",">
             <if test="memo != null" >
                 memo = #{ memo},
@@ -93,4 +93,8 @@
             Where isEnabled = #{isEnabled}
         </if>
     </select>
+    <delete id="deleteByPrimaryKey" parameterType="com.sizaif.emsdemo.pojo.Announce.Announce">
+       delete from saishiguanli.announce
+        where id = #{id}
+    </delete>
 </mapper>
