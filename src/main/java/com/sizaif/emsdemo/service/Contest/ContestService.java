@@ -4,8 +4,6 @@ package com.sizaif.emsdemo.service.Contest;
 import com.github.pagehelper.PageInfo;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.dto.ContestVO;
-import com.sizaif.emsdemo.dto.ContestVO2;
-import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.pojo.Contest.Contest;
 import com.sizaif.emsdemo.pojo.Contest.ContestMemberkey;
 import com.sizaif.emsdemo.pojo.Contest.ContestTeamKey;
@@ -24,7 +22,7 @@ public interface ContestService {
      * @param pageSize
      * @return
      */
-    PageInfo<ContestVO> findAllUserByPageS(int pageNum, int pageSize,String searchtype,String searchvalue,boolean isEnabled);
+    PageInfo<ContestVO> findAllUserByPageS(int pageNum, int pageSize,String searchtype,String searchvalue,Integer isEnabled);
 
 
 

@@ -13,28 +13,28 @@ import java.util.List;
  */
 
 public class TeamVO {
-    private int id;
+    private Integer id;
 
     private String name;
 
     private String school;
 
-    private int captainId;
+    private Integer captainId;
 
     private String createDate;
 
     private String modifyDate;
 
-    private int isEnabled;
+    private Integer isEnabled;
 
     // 队伍下的成员信息
-    private List<Member> teamMember;
+    private List<MemberVO> teamMember;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -54,11 +54,11 @@ public class TeamVO {
         this.school = school;
     }
 
-    public int getCaptainId() {
+    public Integer getCaptainId() {
         return captainId;
     }
 
-    public void setCaptainId(int captainId) {
+    public void setCaptainId(Integer captainId) {
         this.captainId = captainId;
     }
 
@@ -78,20 +78,20 @@ public class TeamVO {
         this.modifyDate = modifyDate;
     }
 
-    public List<Member> getTeamMember() {
-        return teamMember;
-    }
-
-    public void setTeamMember(List<Member> teamMember) {
-        this.teamMember = teamMember;
-    }
-
-    public int getIsEnabled() {
+    public Integer getIsEnabled() {
         return isEnabled;
     }
 
-    public void setIsEnabled(int isEnabled) {
+    public void setIsEnabled(Integer isEnabled) {
         this.isEnabled = isEnabled;
+    }
+
+    public List<MemberVO> getTeamMember() {
+        return teamMember;
+    }
+
+    public void setTeamMember(List<MemberVO> teamMember) {
+        this.teamMember = teamMember;
     }
 
     @Override

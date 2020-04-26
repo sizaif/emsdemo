@@ -4,14 +4,16 @@ import com.github.pagehelper.PageInfo;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.appoint.ContestServiceAppoint;
 import com.sizaif.emsdemo.dto.ContestVO;
-import com.sizaif.emsdemo.dto.ContestVO2;
+import com.sizaif.emsdemo.mapper.Team.TeamMapper;
 import com.sizaif.emsdemo.pojo.Contest.Contest;
 import com.sizaif.emsdemo.pojo.Contest.ContestMemberkey;
 import com.sizaif.emsdemo.pojo.Contest.ContestTeamKey;
+import com.sizaif.emsdemo.pojo.Contest.Team;
+import com.sizaif.emsdemo.pojo.User.Member;
 import com.sizaif.emsdemo.service.Contest.ContestService;
+import com.sizaif.emsdemo.service.User.MemberService;
 import com.sizaif.emsdemo.utils.DateUtils;
 import com.sizaif.emsdemo.utils.JsonUtils;
-import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
 
+import static com.sizaif.emsdemo.config.UserConfig.*;
+
 @Controller
 
 public class ContestController {
@@ -32,7 +36,10 @@ public class ContestController {
 
     @Autowired
     private ContestService contestService;
-
+    @Autowired
+    private MemberService memberService;
+    @Autowired
+    private TeamMapper teamMapper;
     /**
      * 到比赛列表
      * @return
@@ -42,13 +49,14 @@ public class ContestController {
                                                   @RequestParam(defaultValue = "5") int pageSize,
                                                   @RequestParam(defaultValue = "all") String level,
                                                   @RequestParam(defaultValue = "all") String type,
-                                                  @RequestParam(defaultValue = "false") Boolean isEnabled){
-        logger.debug("获得比赛列表！,分页");
+                                                  @RequestParam(defaultValue = "0") Integer isEnabled){
+
+        logger.debug("获得比赛列表！,分页"+pageNum+"   "+pageSize+"   "+level+"  "+type+" "+isEnabled);
         ModelAndView mav = new ModelAndView("production/Contest/contestList");
         try {
             PageInfo pageInfo = new PageInfo();
             if (level.equals("all") && type.equals("all")){
-                // 默认
+                // 默认  管理员可以查询所以有 enabled = 1
                  pageInfo = contestService.findAllUserByPageS(pageNum,pageSize,"all",null,isEnabled);
             }else if( !level.equals("all") && type.equals("all")){
                 // 通过赛事级别划分
@@ -79,6 +87,11 @@ public class ContestController {
         return "production/Admin/addContest";
     }
 
+    /**
+     * 添加赛事
+     * @param contest
+     * @return
+     */
     @RequestMapping("/admin/contest/addContest")
     //@ResponseBody
     public String addContest(Contest contest) {
@@ -186,8 +199,8 @@ public class ContestController {
 
         logger.debug("开始进行报名---> 报名方式: "+ type);
 
-        if(type.equals("单人赛")){
-            ContestMemberkey contestMemberkey = new ContestMemberkey(userid,contestid,true);
+        if(type.equals(membertype)){
+            ContestMemberkey contestMemberkey = new ContestMemberkey(contestid,userid,2);
             SystemResult membersignresult = contestService.registeredContestMemberkey(contestMemberkey);
             if (membersignresult.getStatus()==100){
                 // 重复报名
@@ -199,8 +212,8 @@ public class ContestController {
             else if(membersignresult.getStatus()== 101){
                 return membersignresult.getMsg();
             }
-        }else if( type.equals("组队赛")){
-            ContestTeamKey contestTeamKey = new ContestTeamKey(userid,contestid,true);
+        }else if( type.equals(teamtype)){
+            ContestTeamKey contestTeamKey = new ContestTeamKey(contestid,userid,2);
             SystemResult teamsignresult = contestService.registeredContestTeamkey(contestTeamKey);
             if (teamsignresult.getStatus()==100){
                 // 重复报名
@@ -231,11 +244,11 @@ public class ContestController {
         ModelAndView mav=new ModelAndView("production/Contest/contestMemberList");
 
         mav.addObject("cid",cid);
-        if(type.equals("单人赛")){
+        if(type.equals(contestalonetype)){
             mav.addObject("type","alone");
             ContestVO contestByMember = contestService.getMebersByCid(cid);
             mav.addObject("data",contestByMember);
-        } else if(type.equals("组队赛")){
+        } else if(type.equals(contestteamtype)){
             mav.addObject("type","team");
             ContestVO contestByTeam = contestService.getTeamsByCid(cid);
             mav.addObject("data",contestByTeam);
@@ -249,22 +262,38 @@ public class ContestController {
      * @param id
      * @return
      */
-    @RequestMapping("/admin/contest/getContestsByUid")
-    @ResponseBody
-    public String getContestByUid(@RequestParam("type") String type,
+    @RequestMapping("/contest/getContestsByUid")
+    public ModelAndView getContestByUid(@RequestParam("type") String type,
                                   @RequestParam("id") Integer id){
 
+        ModelAndView mav = new ModelAndView("production/Contest/MycontestList");
         logger.debug("通过 id 查询已报名的赛事列表");
 
-        if(type.equals("单人赛")){
-
+        mav.addObject("type",type);
+        // 账户类型
+        if(type.equals(membertype)){
             List<ContestVO> contestByMember = contestService.getContestByMember(id);
-            return JsonUtils.objectToJson(contestByMember);
-        }else if(type.equals("组队赛")){
+
+            logger.debug(contestByMember.toString());
+            if(contestByMember.size()>0)
+                mav.addObject("info",contestByMember.get(0).getMemberList().get(0));
+            else{
+                Member member = memberService.QueryOneMemberInfoByID(id);
+                mav.addObject("info",member);
+            }
+            mav.addObject("data",contestByMember);
+
+        }else if(type.equals(teamtype)){
             List<ContestVO> contestByTeam = contestService.getContestByTeam(id);
-            return JsonUtils.objectToJson(contestByTeam);
+            if(contestByTeam.size()>0){
+                mav.addObject("info",contestByTeam.get(0).getTeamList().get(0));
+            }else{
+                Team team = teamMapper.selectByPrimaryKey(id);
+                mav.addObject("info",team);
+            }
+            mav.addObject("data",contestByTeam);
         }
-        return null;
+        return mav;
     }
 
     /**
@@ -278,18 +307,17 @@ public class ContestController {
     public String getCMTInfoByCid(@RequestParam("type") String type,
                                   @RequestParam("cid") Integer cid,
                                   @RequestParam("id") Integer id,
-                                  @RequestParam("isEnabled") boolean isEnabled){
+                                  @RequestParam("isEnabled") Integer isEnabled){
 
         logger.debug("通过 赛事id , 用户/组队id  改变 赛事报名状态");
 
         if(type.equals("alone")){
-
             // 相反状态
-            ContestMemberkey cmk = new ContestMemberkey(cid,id,!isEnabled);
+            ContestMemberkey cmk = new ContestMemberkey(cid,id,isEnabled);
             SystemResult systemResult = contestService.updateContestMemberKey(cmk);
             return systemResult.getStatus().toString();
         }else if(type.equals("team")){
-            ContestTeamKey ctk = new ContestTeamKey(cid,id,!isEnabled);
+            ContestTeamKey ctk = new ContestTeamKey(cid,id,isEnabled);
             SystemResult systemResult = contestService.updateContestTeamKey(ctk);
             return systemResult.getStatus().toString();
         }
@@ -305,7 +333,7 @@ public class ContestController {
      */
     @RequestMapping("/contest/getInfosById")
     @ResponseBody
-    public String getMebersByCid(@RequestParam("type") String type,
+    public String getMebersByCId(@RequestParam("type") String type,
                                  @RequestParam("id") Integer id){
         logger.debug("开始进行查询用户/团队信息---> "+ type);
         if(type.equals("alone")){

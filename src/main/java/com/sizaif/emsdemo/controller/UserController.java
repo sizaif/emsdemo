@@ -5,6 +5,7 @@ import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.appoint.UsersServiceAppoint;
 import com.sizaif.emsdemo.dto.IndexDto;
 import com.sizaif.emsdemo.dto.MemberVO;
+import com.sizaif.emsdemo.pojo.Contest.Team;
 import com.sizaif.emsdemo.pojo.User.Member;
 
 import com.sizaif.emsdemo.pojo.User.Role;
@@ -40,6 +41,8 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 
+import static com.sizaif.emsdemo.config.UserConfig.membertype;
+
 @Api("用户管理类")
 @Controller
 @RequestMapping("/users")
@@ -56,7 +59,7 @@ public class UserController {
     private AuthService authService;
 
     /**
-     * 查询所有用户,
+     * 查询所有用户,  不包含团队账户
      * 并传到用户列表页面
      * @param model
      * @return
@@ -112,6 +115,8 @@ public class UserController {
 
         users.setModifyDate(DateUtils.DatetoString(new Date()));
         users.setCreateDate(DateUtils.DatetoString(new Date()));
+        // 设置账号类型
+        users.setType(membertype);
         users.setEnabled(true);
         users.setLocked(false);
         // 默认头像
@@ -240,6 +245,12 @@ public class UserController {
          }
     }
 
+    /**
+     *  更新个人账户 信息
+     * @param httpServletRequest
+     * @param httpServletResponse
+     * @return
+     */
     @RequestMapping("/toUpdateMemberInfo")
     public String UpdateMemberInfo2(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
 
@@ -409,7 +420,7 @@ public class UserController {
     private String path;
 
     /**
-     * 图片文件上传
+     * 个人头像上传
      * @param id
      * @param file
      * @param httpServletRequest
@@ -469,7 +480,8 @@ public class UserController {
              */
             Member afterUpdateImageMember = memberService.QueryOneMemberInfoByID(curru.getId());
             IndexDto indexDto = new IndexDto();
-            UsersServiceAppoint.WriteUsersInfoToDto(indexDto,curru,afterUpdateImageMember);
+            Team team = new Team();
+            UsersServiceAppoint.WriteUsersInfoToDto(indexDto,curru,afterUpdateImageMember,team);
 
             Session session =  currentUser.getSession();
             HttpSession httpSession = httpServletRequest.getSession();

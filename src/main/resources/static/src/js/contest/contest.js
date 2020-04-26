@@ -236,23 +236,33 @@ function edit(obj) {
 
 
 // 报名
-function sign(cid,uid,type) {
+function sign(cid,uid,mytype,contesttype) {
 
-    $.get("/contest/signup",{"cid":cid,"uid":uid,"type":type},function(data){
-        if(data == "100"){
-            layer.alert("您已经报名,请不要重复报名!",{
-                icon: 5,
-                skin: 'layer-ext-moon'
-            });
-        }else if(data == "200"){
-            layer.alert("报名成功!",{
-                icon: 6,
-                skin: 'layer-ext-moon'
-            });
-        }
-    });
-}
-
-function findmycontest(uid,type) {
+    console.log(cid+ " "+ uid+" "+mytype+ " "+contesttype);
+    if(mytype =="个人账户" && contesttype != "个人赛"){
+        layer.alert("个人账户不可以参加团队赛!,请使用组队账户登录",{
+            icon: 5,
+            skin: 'layer-ext-moon'
+        });
+    }else if(mytype == "组队账户" && contesttype != "组队赛"){
+        layer.alert("组队账户不可以参加个人赛赛!,请使用个人账户登录",{
+            icon: 5,
+            skin: 'layer-ext-moon'
+        });
+    }else{
+        $.get("/contest/signup",{"cid":cid,"uid":uid,"type":mytype},function(data){
+            if(data == "100"){
+                layer.alert("您已经报名,请不要重复报名!",{
+                    icon: 5,
+                    skin: 'layer-ext-moon'
+                });
+            }else if(data == "200"){
+                layer.alert("报名成功!",{
+                    icon: 6,
+                    skin: 'layer-ext-moon'
+                });
+            }
+        });
+    }
 
 }

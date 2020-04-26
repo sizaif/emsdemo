@@ -16,10 +16,13 @@ public class Users implements Serializable {
     private String password;
     private String role;
 
+    //账号类型
+    private String type;
+
     public Users() {
     }
 
-    public Users(int id, Boolean isEnabled, Boolean isLocked, String createDate, String modifyDate, String lastLoginDate, String lastLoginIp, String lockDate, String name, String password, String role) {
+    public Users(int id, Boolean isEnabled, Boolean isLocked, String createDate, String modifyDate, String lastLoginDate, String lastLoginIp, String lockDate, String name, String password, String role, String type) {
         this.id = id;
         this.isEnabled = isEnabled;
         this.isLocked = isLocked;
@@ -31,6 +34,15 @@ public class Users implements Serializable {
         this.name = name;
         this.password = password;
         this.role = role;
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int getId() {
@@ -135,6 +147,7 @@ public class Users implements Serializable {
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

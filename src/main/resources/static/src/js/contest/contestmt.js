@@ -10,7 +10,8 @@ function check(cid,uid,type,isEnabled) {
 
 
     console.log(cid+" "+uid+" "+type);
-    var static = isEnabled == false? "审核通过":"取消已报名状态";
+    var static = isEnabled == 1 ? "审核通过":"取消已报名状态";
+
     if(type == "alone"){
 
         layer.confirm('确定 <font style=\'font-weight:bold;\' color=\'blue\'>'+static+'</font>'+'?', {

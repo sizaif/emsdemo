@@ -3,8 +3,10 @@ package com.sizaif.emsdemo.controller;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.appoint.UsersServiceAppoint;
 import com.sizaif.emsdemo.dto.IndexDto;
+import com.sizaif.emsdemo.mapper.Team.TeamMapper;
 import com.sizaif.emsdemo.mapper.User.RoleMapper;
 import com.sizaif.emsdemo.pojo.Announce.Announce;
+import com.sizaif.emsdemo.pojo.Contest.Team;
 import com.sizaif.emsdemo.pojo.User.Member;
 import com.sizaif.emsdemo.pojo.User.Role;
 import com.sizaif.emsdemo.pojo.User.Users;
@@ -33,6 +35,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.sizaif.emsdemo.config.UserConfig.membertype;
+import static com.sizaif.emsdemo.config.UserConfig.teamtype;
+
 @Controller
 public class LogController {
 
@@ -46,6 +51,9 @@ public class LogController {
     private RoleMapper roleMapper;
     @Autowired
     private AnnounceService announceService;
+    @Autowired
+    private TeamMapper teamMapper;
+
 
     /**
      * 初始化跳转
@@ -101,15 +109,23 @@ public class LogController {
             users.setLastLoginDate(DateUtils.DatetoString(new Date()));
 
             usersService.UpdateUserInfo(users);
+            // 取得账户类型
+            String type = users.getType();
 
-            Member members = memberService.QueryOneMemberInfoByID(users.getId());
+            Member members = new Member();
+            Team team = new Team();
 
+            if(type.equals(membertype)){
+                 members = memberService.QueryOneMemberInfoByID(users.getId());
+            }else if(type.equals(teamtype)){
+                 team = teamMapper.selectByPrimaryKey(users.getId());
+            }
             /**
              * 将信息放入到IndexDto中
              * 放入Session/Cookie
              */
             IndexDto indexDto = new IndexDto();
-            UsersServiceAppoint.WriteUsersInfoToDto(indexDto,users,members);
+            UsersServiceAppoint.WriteUsersInfoToDto(indexDto,users,members,team);
 
             Session session =  currentUser.getSession();
             httpSession.setAttribute("IndexDto",indexDto);

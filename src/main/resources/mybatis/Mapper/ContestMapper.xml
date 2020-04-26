@@ -5,7 +5,7 @@
 <mapper namespace="com.sizaif.emsdemo.mapper.Contest.ContestMapper">
 
     <!--映射表-->
-    <resultMap id="BaseResultMap" type="Contest" >
+    <resultMap id="BaseResultMap" type="com.sizaif.emsdemo.pojo.Contest.Contest" >
         <id column="cid" property="Cid" />
         <result column="title" property="Title"/>
         <result column="level" property="Level"  />
@@ -169,13 +169,29 @@
         from saishiguanli.contest
     </select>
 
+    <!--contestVO 映射表-->
+    <resultMap id="ContestVoMap" type="com.sizaif.emsdemo.dto.ContestVO">
+        <id column="cid" property="Cid"  />
+        <result column="title" property="Title" />
+        <result column="level" property="Level" />
+        <result column="tag" property="Tag" />
+        <result column="memo" property="Memo" />
+        <result column="length" property="Length" />
+        <result column="creatorId" property="CreatorId" />
+        <result column="createDate" property="CreateDate" />
+        <result column="modifyDate" property="ModifyDate" />
+        <result column="startTime" property="StartTime" />
+        <result column="endTime" property="EndTime" />
+        <result column="isEnabled" property="isEnabled" />
+        <result column="type" property="Type" />
+    </resultMap>
     <!--start 查询所有比赛列表 带有筛选的, 返回类型 contestVO-->
     <select id="getAllContestVO" resultMap="ContestVoMap" parameterType="map">
         SELECT
-        <include refid="Base_Column_List" />
-        FROM saishiguanli.contest
-        <if test="level != null" >
-            WHERE saishiguanli.contest.level = #{level}
+        contest.*
+        FROM contest
+        <if test="level != null">
+            WHERE contest.level = #{level}
         </if>
         <if test="type != null" >
             WHERE saishiguanli.contest.type = #{type}
@@ -183,7 +199,6 @@
         <if test="isEnabled != null" >
             WHERE  saishiguanli.contest.isEnabled = #{isEnabled}
         </if>
-
     </select>
 
 
@@ -192,21 +207,7 @@
         where Cid = #{id}
     </delete>
 
-    <!--contestVO 映射表-->
-    <resultMap id="ContestVoMap" type="com.sizaif.emsdemo.dto.ContestVO">
-        <id column="cid" property="Cid"  />
-        <result column="title" property="Title"  />
-        <result column="level" property="Level"  />
-        <result column="memo" property="Memo"  />
-        <result column="creatorId" property="CreatorId"  />
-        <result column="createDate" property="CreateDate"  />
-        <result column="modifyDate" property="ModifyDate"  />
-        <result column="startTime" property="StartTime"  />
-        <result column="endTime" property="EndTime"  />
-        <result column="isEnabled" property="isEnabled"  />
-        <result column="length" property="Length"  />
-        <result column="type" property="Type"  />
-    </resultMap>
+
     <!--单人赛比赛映射表-->
     <!-- 折中一下  把 审核是否通过 放到 memberVo 的 isEnabled 里-->
     <resultMap id="ContestMemberResultMap" type="com.sizaif.emsdemo.dto.ContestVO" >
@@ -248,11 +249,11 @@
 <!--        <result column="modifyDate" property="ModifyDate"  />-->
 <!--        <result column="startTime" property="StartTime"  />-->
 <!--        <result column="endTime" property="EndTime"  />-->
-<!--        <result column="cEnabled" property="isEnabled"  />-->
+        <result column="c_Enabled" property="isEnabled"  />
 <!--        <result column="length" property="Length"  />-->
         <result column="type" property="Type"  />
 <!--        <result column="tag" property="Tag"  />-->
-        <collection property="teamList" ofType="com.sizaif.emsdemo.pojo.Contest.Team">
+        <collection property="teamList" ofType="com.sizaif.emsdemo.dto.TeamVO">
             <id column="t_id" property="id"/>
             <result column="t_name" property="name"/>
             <result column="t_school" property="school"/>
@@ -264,7 +265,15 @@
     </resultMap>
     
     <select id="findContestByMemberId" parameterType="int" resultMap="ContestMemberResultMap">
-        SELECT c.*,m.*
+        SELECT
+        c.cid c_id,
+        c.title c_title,
+        c.level c_level,
+        c.type c_type,
+        m.id m_id,
+        m.truename m_truename,
+        m.school m_school,
+        cm.isEnabled c_Enabled
         FROM saishiguanli.contest c
         LEFT JOIN saishiguanli.contest_member cm ON cm.contest_id = c.cid
         LEFT JOIN saishiguanli.member m ON m.id = cm.member_id
@@ -273,7 +282,15 @@
     </select>
 
     <select id="findContestByTeamId" parameterType="int" resultMap="ContestTeamResultMap">
-        SELECT c.*,t.*
+        SELECT
+        c.cid c_id,
+        c.title c_title,
+        c.level c_level,
+        c.type c_type,
+        t.id t_id,
+        t.name t_name,
+        t.school t_school,
+        ct.isEnabled c_Enabled
         FROM saishiguanli.contest c
         LEFT JOIN saishiguanli.contest_team ct ON ct.contest_id = c.cid
         LEFT JOIN saishiguanli.team t ON t.id = ct.team_id

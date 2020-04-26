@@ -14,10 +14,10 @@
 
 
     <select id="getCTByPrimaryKey" parameterType="com.sizaif.emsdemo.pojo.Contest.ContestTeamKey" resultMap="BaseResultMap">
-        SELECT  saishiguanli.contest_team.*
-        FROM saishiguanli.contest_team
-        WHERE saishiguanli.contest_team.contest_id = #{contestId}
-        AND saishiguanli.contest_team.team_id = #[teamId];
+        SELECT  contest_team.*
+        FROM contest_team
+        WHERE contest_team.contest_id = #{contestId}
+        AND contest_team.team_id= #{teamId};
     </select>
     <select id="getCTByisEnabled" parameterType="com.sizaif.emsdemo.pojo.Contest.ContestTeamKey" resultMap="BaseResultMap">
         SELECT  saishiguanli.contest_team.*

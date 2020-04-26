@@ -2,20 +2,19 @@ package com.sizaif.emsdemo.TestController;
 
 import com.github.pagehelper.PageInfo;
 import com.sizaif.emsdemo.dto.ContestVO;
-import com.sizaif.emsdemo.dto.ContestVO2;
+import com.sizaif.emsdemo.dto.TeamVO;
 import com.sizaif.emsdemo.mapper.Contest.ContestMapper;
 import com.sizaif.emsdemo.mapper.User.MemberMapper;
 import com.sizaif.emsdemo.mapper.User.RoleMapper;
 import com.sizaif.emsdemo.mapper.User.UserMapper;
 import com.sizaif.emsdemo.pojo.Announce.Announce;
-import com.sizaif.emsdemo.pojo.User.Role;
+import com.sizaif.emsdemo.pojo.Contest.Team;
 import com.sizaif.emsdemo.pojo.User.Users;
 import com.sizaif.emsdemo.service.Announce.AnnounceService;
 import com.sizaif.emsdemo.service.Auth.AuthService;
 import com.sizaif.emsdemo.service.Contest.ContestService;
 import com.sizaif.emsdemo.service.User.MemberService;
 import com.sizaif.emsdemo.service.User.UsersService;
-import org.apache.catalina.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -115,18 +115,21 @@ public class TestUserMapper {
 
     @Test
     public void Test() throws Exception{
-        Announce announce1 = new Announce();
-        System.out.println(announce1.toString());
-        List<Announce> allAnnounce = announceService.getAllAnnounce("all");
-        for (Announce announce : allAnnounce) {
-            System.out.println(announce.toString());
-        }
+        List<ContestVO> contestByMember = contestService.getContestByMember(1);
+
+        System.out.println(contestByMember.size());
+
     }
 
     @Test
     public void Test2() throws Exception{
 
-        PageInfo pageInfo = contestService.findAllUserByPageS(1,5,"level","nation",false);
+//        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
+//        List<ContestVO> allContestVO = contestMapper.getAllContestVO(stringObjectHashMap);
+//        for (ContestVO contestVO : allContestVO) {
+//            System.out.println(contestVO);
+//        }
+        PageInfo pageInfo = contestService.findAllUserByPageS(1,5,"all",null,1);
         for (Object contestVO : pageInfo.getList()) {
 //            System.out.println(contestVO);
             try {

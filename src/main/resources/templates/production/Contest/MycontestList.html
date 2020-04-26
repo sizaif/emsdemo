@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:with="title='参赛人员管理'">
+<html xmlns:th="http://www.thymeleaf.org" th:with="title='我的赛事'">
 <!--head-->
 <header th:replace="~{production/Commons/header::headerFragment(${title})}"></header>
 <!--head-->
@@ -21,9 +21,15 @@
             <div class="">
                 <div class="page-title">
                     <div class="title_left">
-                        <h3>[[${data.getTitle()}]]
-                            <small>[[${data.getType()}]]</small>
-                        </h3>
+                        <div th:switch="${type}">
+                            <h3 th:case="组队账户">[[${info.getName()}]]
+                                <small>[[${info.getSchool()}]]</small>
+                            </h3>
+                            <h3 th:case="个人账户">[[${info.getTruename()}]]
+                                <small>[[${info.getSchool()}]]</small>
+                            </h3>
+                        </div>
+
                     </div>
 
                     <div class="title_right">
@@ -45,8 +51,8 @@
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>审核
-                                    <small>已报名名单</small>
+                                <h2>查看
+                                    <small>我的赛事</small>
                                 </h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -85,49 +91,40 @@
                                 <table id="datatable" class="table table-striped table-bordered">
                                     <thead>
                                     <tr>
-                                        <th th:switch="${type}">
-                                            <span th:case="alone">参赛用户ID</span>
-                                            <span th:case="team">参赛组队ID</span>
-                                        </th>
-                                        <th th:switch="${type}">
-                                            <span th:case="alone">参赛用户姓名</span>
-                                            <span th:case="team">参赛组队名称</span>
-                                        </th>
-                                        <th><span>学校</span></th>
-                                        <th><span>操作</span></th>
+                                        <th ><span>赛事ID</span></th>
+                                        <th ><span>赛事名称</span></th>
+                                        <th ><span>赛事级别</span></th>
+                                        <th ><span>状态</span></th>
                                     </tr>
                                     </thead>
-                                    <tbody th:switch="${type}">
-                                        <div th:case="alone">
-                                            <tr  th:each="datalist:${data.getMemberList()}">
-                                                <td th:text="${datalist.getId()}"></td>
-                                                <td th:text="${datalist.getTruename()}"></td>
-                                                <td th:text="${datalist.getSchool()}"></td>
+                                    <tbody>
+                                        <tr th:each="datalist:${data}">
+                                                <td th:text="${datalist.getCid()}"></td>
+                                                <td th:text="${datalist.getTitle()}"></td>
+                                                <td th:switch="${datalist.getLevel()}">
+                                                    <span th:case="world">国际级</span>
+                                                    <span th:case="nation">国家级</span>
+                                                    <span th:case="province">省级</span>
+                                                    <span th:case="college">校级</span>
+                                                </td>
                                                 <td th:switch="${datalist.getIsEnabled()}">
-                                                    <div>
-                                                        <input  th:case="true" type="checkbox" checked  class="js-switch" th:onchange="check([[${data.getCid()}]],[[${datalist.getId()}]],[[${type}]],[[${datalist.getIsEnabled()}]])" >
+                                                    <div th:case="1">
+                                                        <i class="layui-icon layui-icon-face-smile" style="font-size: 30px; color:#a6ee52"></i>
+                                                        <button    class="btn-success"  th:text="审核通过">
+                                                        </button>
                                                     </div>
-                                                    <div>
-                                                        <input  th:case="false" type="checkbox" class="js-switch" th:onchange="check([[${data.getCid()}]],[[${datalist.getId()}]],[[${type}]],[[${datalist.getIsEnabled()}]])" >
+                                                    <div th:case="0">
+                                                        <i class="layui-icon layui-icon-face-cry" style="font-size: 30px; color:#ee463b"></i>
+                                                        <button    class="btn-warning" th:text="审核失败">
+                                                        </button>
                                                     </div>
-                                                </td>
-                                            </tr>
-                                        </div>
-                                        <div th:case="team">
-                                            <tr  th:each="dataList2:${data.getTeamList()}">
-                                                <td th:text="${dataList2.getId()}"></td>
-                                                <td th:text="${dataList2.getName()}"></td>
-                                                <td th:text="${dataList2.getSchool()}"></td>
-                                                <td th:switch="${dataList2.getIsEnabled()}">
-                                                    <div>
-                                                        <input  th:case="1" type="checkbox" checked  class="js-switch" th:onchange="check([[${data.getCid()}]],[[${datalist.getId()}]],[[${type}]],0)" >
-                                                    </div>
-                                                    <div>
-                                                        <input  th:case="0" type="checkbox"   class="js-switch" th:onchange="check([[${data.getCid()}]],[[${datalist2.getId()}]],[[${type}]],1)" >
+                                                    <div th:case="2">
+                                                        <i class="layui-icon layui-icon-face-surprised" style="font-size: 30px; color:#7bbdee"></i>
+                                                        <button    class="btn-info"  th:text="正在审核中">
+                                                        </button>
                                                     </div>
                                                 </td>
-                                            </tr>
-                                        </div>
+                                        </tr>
 
                                     </tbody>
 

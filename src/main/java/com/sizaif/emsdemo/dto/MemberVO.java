@@ -24,14 +24,15 @@ public class MemberVO {
     private String image;
 
     // 可以存放 member 是否启用 也可以存放 参加某个赛事时 是否报名成功
-    private boolean isEnabled;
+    private Integer isEnabled;
 
     private UserVO users;
 
     public MemberVO() {
     }
 
-    public MemberVO(int id, int memberRankId, String address, String birth, String email, int gender, String phone, String truename, String school, String image, boolean isEnabled, UserVO users) {
+
+    public MemberVO(int id, int memberRankId, String address, String birth, String email, int gender, String phone, String truename, String school, String image, Integer isEnabled, UserVO users) {
         this.id = id;
         this.memberRankId = memberRankId;
         this.address = address;
@@ -46,12 +47,12 @@ public class MemberVO {
         this.users = users;
     }
 
-    public boolean isEnabled() {
+    public Integer getIsEnabled() {
         return isEnabled;
     }
 
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
+    public void setIsEnabled(Integer isEnabled) {
+        this.isEnabled = isEnabled;
     }
 
     public int getId() {

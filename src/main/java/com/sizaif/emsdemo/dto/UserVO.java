@@ -27,12 +27,14 @@ public class UserVO implements Serializable {
     private String password;
     private String role;
 
+    private String type;
+
     private UserRoleKey userRoles;
 
     public UserVO() {
     }
 
-    public UserVO(int id, Boolean isEnabled, Boolean isLocked, String createDate, String modifyDate, String lastLoginDate, String lastLoginIp, String lockDate, String name, String password, String role, UserRoleKey userRoles) {
+    public UserVO(int id, Boolean isEnabled, Boolean isLocked, String createDate, String modifyDate, String lastLoginDate, String lastLoginIp, String lockDate, String name, String password, String role, String type, UserRoleKey userRoles) {
         this.id = id;
         this.isEnabled = isEnabled;
         this.isLocked = isLocked;
@@ -44,7 +46,16 @@ public class UserVO implements Serializable {
         this.name = name;
         this.password = password;
         this.role = role;
+        this.type = type;
         this.userRoles = userRoles;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int getId() {
@@ -157,6 +168,7 @@ public class UserVO implements Serializable {
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", type='" + type + '\'' +
                 ", userRoles=" + userRoles +
                 '}';
     }

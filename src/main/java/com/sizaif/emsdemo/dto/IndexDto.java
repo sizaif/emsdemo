@@ -15,6 +15,10 @@ public class IndexDto {
     private String uImage;
     // 密码
     private String passWord;
+
+    // 账号类型
+    private String type;
+
     // 用户是否登录
     private boolean isLogin;
 
@@ -64,5 +68,13 @@ public class IndexDto {
 
     public void setLogin(boolean login) {
         isLogin = login;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

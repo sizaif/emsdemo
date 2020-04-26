@@ -4,8 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.dto.ContestVO;
-import com.sizaif.emsdemo.dto.ContestVO2;
-import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.mapper.Contest.ContestMapper;
 import com.sizaif.emsdemo.mapper.Contest.ContestMemberMapper;
 import com.sizaif.emsdemo.mapper.Contest.ContestTeamMapper;
@@ -52,47 +50,51 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public PageInfo<ContestVO> findAllUserByPageS(int pageNum, int pageSize,String searchtype,String searchvalue,boolean isEnabled) {
+    public PageInfo<ContestVO> findAllUserByPageS(int pageNum, int pageSize,String searchtype,String searchvalue,Integer isEnabled) {
+
+        logger.debug(" 分页服务层 ");
+
         PageHelper.startPage(pageNum,pageSize);
         List<ContestVO> contestList = null;
         HashMap<String, Object> hashMap = new HashMap<>();
-        if(searchtype.equals("all") && isEnabled == true){
+        if(searchtype.equals("all") && isEnabled == 1){
             // 管理员模式
             hashMap.put("level",null);
             hashMap.put("type",null);
             // 查询所有的赛事
             hashMap.put("isEnabled",null);
+
             contestList = contestMapper.getAllContestVO(hashMap);
-        } else if (searchtype.equals("all") && isEnabled == false) {
+        } else if (searchtype.equals("all") && isEnabled == 0) {
             // 普通列表模式
             hashMap.put("level",null);
             hashMap.put("type",null);
             // 查询所有的已启用的赛事
-            hashMap.put("isEnabled",true);
+            hashMap.put("isEnabled",1);
             contestList = contestMapper.getAllContestVO(hashMap);
-        }else if(searchtype.equals("level") && isEnabled == true){
+        }else if(searchtype.equals("level") && isEnabled == 1){
             hashMap.put("level", searchvalue);
             hashMap.put("type", null);
             // 管理员分类查询
             hashMap.put("isEnabled", null);
             contestList = contestMapper.getAllContestVO(hashMap);
-        } else if (searchtype.equals("level") && isEnabled == false) {
+        } else if (searchtype.equals("level") && isEnabled == 0) {
             hashMap.put("level", searchvalue);
             hashMap.put("type", null);
             // 只查询已启用的赛事
-            hashMap.put("isEnabled", true);
+            hashMap.put("isEnabled", 1);
             contestList = contestMapper.getAllContestVO(hashMap);
-        } else if(searchtype.equals("type") && isEnabled == true){
+        } else if(searchtype.equals("type") && isEnabled == 1){
             hashMap.put("level", null);
             hashMap.put("type", searchvalue);
             // 管理员分类查询
             hashMap.put("isEnabled", null);
             contestList = contestMapper.getAllContestVO(hashMap);
-        } else if (searchtype.equals("type") && isEnabled == false) {
+        } else if (searchtype.equals("type") && isEnabled == 0) {
             hashMap.put("level", null);
             hashMap.put("type", searchvalue);
             // 只查询已启用的赛事
-            hashMap.put("isEnabled", true);
+            hashMap.put("isEnabled", 1);
             contestList = contestMapper.getAllContestVO(hashMap);
         }
         return new PageInfo<ContestVO>(contestList);
@@ -226,7 +228,12 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public SystemResult deleteContestMemberKey(ContestMemberkey contestMemberkey) {
-        return null;
+
+        int su = contestMemberMapper.deleteByPrimaryKey(contestMemberkey);
+        if(su > 0 ){
+            return  new SystemResult(200,"删除关系成功!");
+        }else
+            return  new SystemResult(101,"删除关系失败");
     }
 
     @Override
@@ -256,7 +263,7 @@ public class ContestServiceImpl implements ContestService {
         }else {
             int su = contestTeamMapper.insertSelective(contestTeamKey);
             if(su > 0 ){
-                return  new SystemResult(200,"报名成功!");
+                return  new SystemResult(200,"报名成功! 等带管理员审核");
             }else
                 return  new SystemResult(101,"报名失败,请联系管理员!, 错误代码: CTSIGN0001");
         }
@@ -264,7 +271,11 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public SystemResult deleteContestTeamKey(ContestTeamKey contestTeamKey) {
-        return null;
+        int su = contestTeamMapper.deleteByPrimaryKey(contestTeamKey);
+        if(su > 0 ){
+            return  new SystemResult(200,"删除关系成功!");
+        }else
+            return  new SystemResult(101,"删除关系失败");
     }
 
     @Override

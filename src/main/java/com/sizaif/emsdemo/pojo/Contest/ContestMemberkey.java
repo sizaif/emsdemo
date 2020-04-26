@@ -12,14 +12,22 @@ public class ContestMemberkey {
 
     private Integer contestId;
     private Integer memberId;
-    private boolean isEnabled;
+    private Integer isEnabled;
 
     public ContestMemberkey() {
     }
 
-    public ContestMemberkey(Integer contestId, Integer memberId, boolean isEnabled) {
+    public ContestMemberkey(Integer contestId, Integer memberId, Integer isEnabled) {
         this.contestId = contestId;
         this.memberId = memberId;
+        this.isEnabled = isEnabled;
+    }
+
+    public Integer getIsEnabled() {
+        return isEnabled;
+    }
+
+    public void setIsEnabled(Integer isEnabled) {
         this.isEnabled = isEnabled;
     }
 
@@ -39,13 +47,7 @@ public class ContestMemberkey {
         this.memberId = memberId;
     }
 
-    public boolean isEnabled() {
-        return isEnabled;
-    }
 
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
-    }
 
     @Override
     public String toString() {

@@ -4,14 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sizaif.emsdemo.mapper.Team.TeamMapper">
     <!--映射表-->
-    <resultMap id="BaseResultMap" type="Contest" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="name" property="name" jdbcType="VARCHAR" />
-        <result column="school" property="school" jdbcType="VARCHAR" />
-        <result column="captain_id" property="captainId" jdbcType="VARCHAR" />
-        <result column="createDate" property="createDate" jdbcType="TIMESTAMP" />
-        <result column="modifyDate" property="modifyDate" jdbcType="TIMESTAMP" />
-        <result column="isEnabled" property="isEnabled" jdbcType="INTEGER" />
+    <resultMap id="BaseResultMap" type="com.sizaif.emsdemo.pojo.Contest.Team" >
+        <id column="id" property="id"/>
+        <result column="name" property="name"  />
+        <result column="school" property="school"  />
+        <result column="captain_id" property="captainId"  />
+        <result column="createDate" property="createDate"  />
+        <result column="modifyDate" property="modifyDate" />
+        <result column="isEnabled" property="isEnabled"  />
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -22,7 +22,7 @@
         select
         <include refid="Base_Column_List" />
         from saishiguanli.team
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id}
     </select>
 
     <!--动态插入-->

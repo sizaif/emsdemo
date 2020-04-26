@@ -83,9 +83,10 @@
                                     <button id="refreshBt" class="btn btn-default " type="button" th:onclick="refresh()"><i
                                             class="glyphicon glyphicon-refresh"></i> 刷新
                                     </button>
-                                    <button shiro:lacksPermission="contests" id="mycontest" class="btn btn-default " type="button"><i
+<!--                                    shiro:lacksPermission="contests"-->
+                                    <a id="mycontest" class="btn btn-default " type="button" th:href="@{/contest/getContestsByUid(id=${session.IndexDto.getUid()},type=${session.IndexDto.getType()})}"><i
                                             class="glyphicon glyphicon-pawn"></i> 查看我的赛事
-                                    </button>
+                                    </a>
                                 </p>
 
                                 <!-- start 普通用户 select-->
@@ -180,7 +181,8 @@
                                 </form>
                                 <!-- End select-->
                                 <!--分页-->
-                                <div style="display: block;
+                                <!--分页 普通用户-->
+                                <div shiro:lacksPermission="contests" style="display: block;
                                         width: 710px;
                                         height: 40px;
                                         line-height: 40px;
@@ -190,8 +192,8 @@
                                         margin: 20px auto 40px auto !important;
                                         text-align: center;">
 
-
                                     <ul class="pagination">
+                                        <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=1,pageSize=10)}">前一页</a></li>
                                         <li class="page-item"><a class="page-link" style="background: #EE9C54;color: #fff;"><span th:text="第+${pageInfo.pageNum}+页" ></span></a></li>
                                         <li class="page-item"><a class="page-link" style="background: #ee98ec;color: #fff;" th:href="@{/contest/toContestList}">首页</a></li>
                                         <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.getPrePage()})}">前一页</a></li>
@@ -204,6 +206,32 @@
                                     </ul>
                                 </div>
                                 <!--分页-->
+                                <!--分页 管理用户-->
+                                <div shiro:hasPermission="contests" style="display: block;
+                                        width: 710px;
+                                        height: 40px;
+                                        line-height: 40px;
+                                        padding-left: 0px;
+                                        padding: 5px 5px 5px 15px;
+                                        border-radius: 3px;
+                                        margin: 20px auto 40px auto !important;
+                                        text-align: center;">
+
+                                    <ul class="pagination">
+                                        <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=1,pageSize=10,isEnabled=1)}">前一页</a></li>
+                                        <li class="page-item"><a class="page-link" style="background: #EE9C54;color: #fff;"><span th:text="第+${pageInfo.pageNum}+页" ></span></a></li>
+                                        <li class="page-item"><a class="page-link" style="background: #ee98ec;color: #fff;" th:href="@{/contest/toContestList(isEnabled=1)}">首页</a></li>
+                                        <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.getPrePage()},isEnabled=1)}">前一页</a></li>
+
+                                        <li th:each="num:${pageInfo.navigatepageNums}" class="page-item">
+                                            <a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${num},isEnabled=1)}" th:text="${num}"></a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.getNextPage()},isEnabled=1)}">下一页</a></li>
+                                        <li class="page-item"><a class="page-link" style="background: #ee98ec;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.pages},isEnabled=1)}">尾页</a></li>
+                                    </ul>
+                                </div>
+                                <!--分页-->
+
 
                                 <div class="" >
                                     <!--class="dashboard-widget-content"-->
@@ -252,7 +280,7 @@
                                                         </ul>
                                                         </p>
 <!--                                                        shiro:lacksPermission="contests"-->
-                                                        <a  class="btn btn-success" th:onclick="sign([[${item.getCid()}]],[[${session.IndexDto.uid}]],[[${item.getType()}]])">
+                                                        <a  class="btn btn-success" th:onclick="sign([[${item.getCid()}]],[[${session.IndexDto.uid}]],[[${session.IndexDto.getType()}]],[[${item.getType()}]])">
                                                             <i class="glyphicon glyphicon-check" > 报名</i>
                                                         </a>
                                                         <a shiro:hasPermission="contests" class="btn btn-default" th:onclick="edit([[${item}]])">
@@ -271,7 +299,7 @@
                                             </li>
                                         </ul>
                                     </div>
-
+                                    <!--分页-->
                                     <!--分页 普通用户-->
                                     <div shiro:lacksPermission="contests" style="display: block;
                                         width: 710px;
@@ -309,24 +337,19 @@
                                         text-align: center;">
 
                                         <ul class="pagination">
-                                            <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=1,pageSize=10,isEnabled=true)}">前一页</a></li>
+                                            <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=1,pageSize=10,isEnabled=1)}">前一页</a></li>
                                             <li class="page-item"><a class="page-link" style="background: #EE9C54;color: #fff;"><span th:text="第+${pageInfo.pageNum}+页" ></span></a></li>
-                                            <li class="page-item"><a class="page-link" style="background: #ee98ec;color: #fff;" th:href="@{/contest/toContestList(isEnabled=true)}">首页</a></li>
-                                            <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.getPrePage()},isEnabled=true)}">前一页</a></li>
+                                            <li class="page-item"><a class="page-link" style="background: #ee98ec;color: #fff;" th:href="@{/contest/toContestList(isEnabled=1)}">首页</a></li>
+                                            <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.getPrePage()},isEnabled=1)}">前一页</a></li>
 
                                             <li th:each="num:${pageInfo.navigatepageNums}" class="page-item">
-                                                <a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${num},isEnabled=true)}" th:text="${num}"></a>
+                                                <a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${num},isEnabled=1)}" th:text="${num}"></a>
                                             </li>
-                                            <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.getNextPage()},isEnabled=true)}">下一页</a></li>
-                                            <li class="page-item"><a class="page-link" style="background: #ee98ec;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.pages},isEnabled=true)}">尾页</a></li>
+                                            <li class="page-item"><a class="page-link" style="background: #a6dcee;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.getNextPage()},isEnabled=1)}">下一页</a></li>
+                                            <li class="page-item"><a class="page-link" style="background: #ee98ec;color: #fff;" th:href="@{/contest/toContestList(pageNum=${pageInfo.pages},isEnabled=1)}">尾页</a></li>
                                         </ul>
                                     </div>
                                     <!--分页-->
-                                    <!--<button class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-folder"> 查看</i></button>-->
-
-
-                                    <!--<a class="btn btn-danger btn-xs" th:href="@{/users/toDeleteUser/}+${jsonuserlist.getUsers().getId()}">-->
-                                        <!--<i class="fa fa-trash-o"> 删除</i></a>-->
 
                                 </div>
 

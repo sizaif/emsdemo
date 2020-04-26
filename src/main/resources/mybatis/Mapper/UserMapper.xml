@@ -34,6 +34,7 @@
             <result column="uname" property="name"/>
             <result column="encodePassword" property="password"/>
             <result column="role" property="role"/>
+            <result column="type" property="type"/>
             <collection property="userRoles" javaType="com.sizaif.emsdemo.pojo.User.UserRoleKey">
                 <result column="user_id" property="userId" javaType="java.lang.Integer"/>
                 <result column="role_id" property="roleId" javaType="java.lang.Integer"/>
@@ -72,10 +73,11 @@
         <result column="uname" property="name" jdbcType="VARCHAR"/>
         <result column="encodePassword" property="password" jdbcType="VARCHAR"/>
         <result column="role" property="role" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="User_No_Password_List" >
-        users.id,users.createDate,users.modifyDate,users.isEnabled,users.isLocked,users.lastLoginDate,users.lastLoginIp,users.lockDate,users.uname,users.role
+        users.id,users.createDate,users.modifyDate,users.isEnabled,users.isLocked,users.lastLoginDate,users.lastLoginIp,users.lockDate,users.uname,users.role,users.type
     </sql>
 
     <!--关联表查询-->
@@ -84,6 +86,7 @@
         FROM member m, users,role r
         LEFT JOIN users_role ur ON ur.role_id = r.id
         WHERE m.id = users.id AND ur.user_id= users.id
+        AND users.type = "个人账户"
     </select>
 
     
@@ -99,6 +102,7 @@
         FROM member m, users,role r
         LEFT JOIN users_role ur ON ur.role_id = r.id
         WHERE m.id = users.id AND ur.user_id= users.id AND users.id = #{id}
+        AND users.type = "个人账户"
     </select>
 
     <select id="queryOneUserById" resultMap="UsersMap">
@@ -151,6 +155,9 @@
             <if test="role != null">
                 role,
             </if>
+            <if test="type != null">
+                type,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="createDate != null">
@@ -183,6 +190,9 @@
             <if test="role != null">
                 #{role},
             </if>
+            <if test="type != null">
+                #{type},
+            </if>
         </trim>
     </insert>
 
@@ -201,6 +211,7 @@
             <if test="name != null"> uname=#{name},</if>
             <if test="password != null"> encodePassword=#{password},</if>
             <if test="role != null"> role=#{role},</if>
+            <if test="type != null"> type=#{type},</if>
         </trim>
         where id = #{id}
     </update>

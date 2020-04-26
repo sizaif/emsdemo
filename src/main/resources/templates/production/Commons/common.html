@@ -18,14 +18,17 @@
                         <span class=" fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <li><a th:href="@{/users/toProfilesPage/}+${session.IndexDto.uid}">个人信息</a></li>
-                        <li>
-                            <a href="javascript:;">
-                                <span class="badge bg-red pull-right">50%</span>
-                                <span>Settings</span>
-                            </a>
+                        <li th:switch="${session.IndexDto.type}">
+                            <a th:case="个人账户" th:href="@{/users/toProfilesPage/}+${session.IndexDto.uid}">个人信息</a>
+                            <a th:case="组队账户" th:href="@{/team/toProfilesPage/}+${session.IndexDto.uid}">组队信息</a>
                         </li>
-                        <li><a href="javascript:;">Help</a></li>
+<!--                        <li>-->
+<!--                            <a href="javascript:;">-->
+<!--                                <span class="badge bg-red pull-right">50%</span>-->
+<!--                                <span>Settings</span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li><a href="javascript:;">Help</a></li>-->
                         <li><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-out pull-right"></span> 登出</a></li>
                     </ul>
                 </li>
@@ -129,9 +132,7 @@
                 <ul class="nav side-menu">
                     <li><a><i class="fa fa-home"></i> 主界面 <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a th:href="@{/home}">主界面01</a></li>
-                            <li><a href="index2.html">Dashboard2</a></li>
-                            <li><a href="index3.html">Dashboard3</a></li>
+                            <li><a th:href="@{/home}">主界面</a></li>
                         </ul>
                     </li>
                     <!--shiro:hasPermission="user:display"-->
@@ -142,10 +143,9 @@
 
                             <!--管理员列表-->
                             <li shiro:hasPermission="contests">
-                                <a  th:href="@{/contest/toContestList(isEnabled=true)}"><i class="fa fa-list"></i>赛事列表</a>
+                                <a  th:href="@{/contest/toContestList(isEnabled=1)}"><i class="fa fa-list"></i>赛事列表</a>
                             </li>
                             <!--普通列表-->
-                            <li shiro:hasPermission="contests" style="display: none"><a  th:href="@{/contest/toContestList}"><i class="fa fa-list"></i>赛事列表</a></li>
                             <li shiro:lacksPermission="contests" ><a  th:href="@{/contest/toContestList}"><i class="fa fa-list"></i>赛事列表</a></li>
                         </ul>
                     </li>
@@ -175,7 +175,8 @@
                     <li shiro:hasRole="superman">
                         <a><i class="fa fa-users"></i> 用户权限角色管理 <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a th:href="@{/users/toUserList}"><i class="fa fa-user"></i>用户表管理</a></li>
+                            <li><a th:href="@{/users/toUserList}"><i class="fa fa-user"></i>个人用户表管理</a></li>
+                            <li><a th:href="@{/team/toTeamList}"><i class="fa fa-user"></i>组队用户表管理</a></li>
                             <li><a th:href="@{/auth/toPermList}"><i class="fa  fa-lock"></i>权限表管理</a></li>
                             <li><a th:href="@{/auth/toRoleList}"><i class="fa  fa-female"></i>角色表管理</a></li>
                         </ul>
@@ -201,7 +202,7 @@
                             <li><a th:href="@{/admin/announce/toManagePage}">管理</a></li>
                         </ul>
                     </li>
-                    <li><a><i class="fa fa-bug"></i> 错误界面 <span class="fa fa-chevron-down"></span></a>
+                    <li shiro:hasPermission="system"><a><i class="fa fa-bug"></i> 错误界面 <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a th:href="@{/error_400}">400 Error</a></li>
                             <li><a th:href="@{/error_401}">401 Error</a></li>

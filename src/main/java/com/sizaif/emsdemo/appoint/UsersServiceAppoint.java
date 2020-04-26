@@ -3,6 +3,7 @@ package com.sizaif.emsdemo.appoint;
 import com.sizaif.emsdemo.dto.IndexDto;
 import com.sizaif.emsdemo.mapper.User.PermissionsMapper;
 import com.sizaif.emsdemo.mapper.User.RoleMapper;
+import com.sizaif.emsdemo.pojo.Contest.Team;
 import com.sizaif.emsdemo.pojo.User.Member;
 import com.sizaif.emsdemo.pojo.User.Role;
 import com.sizaif.emsdemo.pojo.User.Users;
@@ -25,18 +26,27 @@ public class UsersServiceAppoint {
      * @param dto
      * @param users Member
      */
-    public static void WriteUsersInfoToDto(IndexDto dto, Users users, Member member){
+    public static void WriteUsersInfoToDto(IndexDto dto, Users users, Member member,Team team){
 
         //ID;
         dto.setUid(users.getId());
         //用户名
         dto.setuName(users.getName());
         //昵称
-        dto.setuNickName(member.getTruename());
+        if(member.getTruename()!=null)
+            dto.setuNickName(member.getTruename());
+        else if(team.getName()!=null){
+            dto.setuNickName(team.getName());
+        }
+        //设置账户类型
+        dto.setType(users.getType());
 //        //密码
 //        dto.setPassWord(user.getUpwd());
         //头像
-        dto.setuImage(member.getImage());
+        if(member.getImage()!=null)
+            dto.setuImage(member.getImage());
+        else if (team.getName()!=null)
+            dto.setuImage("user.png");
     }
     public static Member MemberHttpWriteToMap(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
         Member member = new Member();

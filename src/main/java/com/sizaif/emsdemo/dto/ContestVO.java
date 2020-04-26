@@ -47,15 +47,29 @@ public class ContestVO {
 
     private List<MemberVO> memberList;
 
-    private List<Team> teamList;
+    private List<TeamVO> teamList;
 
 
-    public List<String> getTags() {
-        return tags;
+    public ContestVO() {
     }
 
-    public void setTags(List<String> tags) {
+    public ContestVO(int cid, int creatorId, int isEnabled, String title, String memo, String length, String level, String createDate, String modifyDate, String startTime, String endTime, String type, String tag, List<String> tags, List<MemberVO> memberList, List<TeamVO> teamList) {
+        Cid = cid;
+        CreatorId = creatorId;
+        this.isEnabled = isEnabled;
+        Title = title;
+        Memo = memo;
+        Length = length;
+        Level = level;
+        CreateDate = createDate;
+        ModifyDate = modifyDate;
+        StartTime = startTime;
+        EndTime = endTime;
+        Type = type;
+        Tag = tag;
         this.tags = tags;
+        this.memberList = memberList;
+        this.teamList = teamList;
     }
 
     public int getCid() {
@@ -162,6 +176,14 @@ public class ContestVO {
         Tag = tag;
     }
 
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
     public List<MemberVO> getMemberList() {
         return memberList;
     }
@@ -170,14 +192,13 @@ public class ContestVO {
         this.memberList = memberList;
     }
 
-    public List<Team> getTeamList() {
+    public List<TeamVO> getTeamList() {
         return teamList;
     }
 
-    public void setTeamList(List<Team> teamList) {
+    public void setTeamList(List<TeamVO> teamList) {
         this.teamList = teamList;
     }
-
 
     @Override
     public String toString() {
