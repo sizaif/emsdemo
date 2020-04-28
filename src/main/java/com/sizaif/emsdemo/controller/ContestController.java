@@ -4,16 +4,17 @@ import com.github.pagehelper.PageInfo;
 import com.sizaif.emsdemo.Result.SystemResult;
 import com.sizaif.emsdemo.appoint.ContestServiceAppoint;
 import com.sizaif.emsdemo.dto.ContestVO;
-import com.sizaif.emsdemo.mapper.Team.TeamMapper;
+import com.sizaif.emsdemo.dto.MemberVO;
+import com.sizaif.emsdemo.dto.TeamVO;
 import com.sizaif.emsdemo.pojo.Contest.Contest;
 import com.sizaif.emsdemo.pojo.Contest.ContestMemberkey;
 import com.sizaif.emsdemo.pojo.Contest.ContestTeamKey;
 import com.sizaif.emsdemo.pojo.Contest.Team;
 import com.sizaif.emsdemo.pojo.User.Member;
 import com.sizaif.emsdemo.service.Contest.ContestService;
+import com.sizaif.emsdemo.service.Team.TeamService;
 import com.sizaif.emsdemo.service.User.MemberService;
 import com.sizaif.emsdemo.utils.DateUtils;
-import com.sizaif.emsdemo.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class ContestController {
     @Autowired
     private MemberService memberService;
     @Autowired
-    private TeamMapper teamMapper;
+    private TeamService teamService;
     /**
      * 到比赛列表
      * @return
@@ -257,7 +258,7 @@ public class ContestController {
     }
 
     /**
-     * 查看已报名的赛事
+     * 查看我的已报名的赛事
      * @param type
      * @param id
      * @return
@@ -288,7 +289,7 @@ public class ContestController {
             if(contestByTeam.size()>0){
                 mav.addObject("info",contestByTeam.get(0).getTeamList().get(0));
             }else{
-                Team team = teamMapper.selectByPrimaryKey(id);
+                Team team = teamService.getTeamByID(id);
                 mav.addObject("info",team);
             }
             mav.addObject("data",contestByTeam);
@@ -326,22 +327,136 @@ public class ContestController {
 
 
     /**
-     *  通过ID 获取团队/单人 的成员列表
-     * @param type
-     * @param id
+     * 到赛事列表 查询参赛人员
      * @return
      */
-    @RequestMapping("/contest/getInfosById")
-    @ResponseBody
-    public String getMebersByCId(@RequestParam("type") String type,
-                                 @RequestParam("id") Integer id){
-        logger.debug("开始进行查询用户/团队信息---> "+ type);
-        if(type.equals("alone")){
-            return JsonUtils.objectToJson(contestService.getMebersByCid(id));
-        }else  if(type.equals("team")){
-            return JsonUtils.objectToJson(contestService.getTeamsByCid(id));
+    @RequestMapping("/contest/toContestInfoList")
+    public ModelAndView toTeamList(){
+
+        logger.debug("获得所有赛事的列表2");
+        ModelAndView mav = new ModelAndView("production/Contest/contestList2");
+
+        List<Contest> contests = contestService.contestList();
+
+        mav.addObject("ContestList",contests);
+
+        return mav;
+    }
+
+
+    /**
+     * 到赛事列表 查询获奖名单
+     * @return
+     */
+    @RequestMapping("/contest/toContestInfoList2")
+    public ModelAndView toTeamList2(){
+
+        logger.debug("获得所有赛事的列表3");
+        ModelAndView mav = new ModelAndView("production/Contest/contestList3");
+
+        List<Contest> contests = contestService.contestList();
+
+        mav.addObject("ContestList",contests);
+
+        return mav;
+    }
+
+    /**
+     * 根据赛事ID 和赛事类型 获取参赛的成员列表 或者 组队列表信息
+     * @param id
+     * @param type
+     * @return
+     */
+    @RequestMapping("/contest/ContestTMList")
+    public ModelAndView toContestTeamInfoList(@RequestParam("id") Integer id,
+                                              @RequestParam("type") String type){
+
+        logger.debug("获得某个比赛的已报名队伍列表 id: "+ id +"  type = "+type);
+        ModelAndView mav = new ModelAndView("production/Contest/cdteammemberList");
+
+        // 赛事信息
+        Contest contest = contestService.getContest(id);
+        mav.addObject("contest",contest);
+        if(type.equals( contestalonetype)){
+
+            // 个人赛 参赛成员列表
+            mav.addObject("type",type);
+            List<MemberVO> memberVOByCid = memberService.getMemberVOByCid(id);
+            mav.addObject("MemberList",memberVOByCid);
+
+        }else if(type.equals( contestteamtype)){
+
+
+            // 组队赛 参赛组队列表
+            List<TeamVO> contestTeamVOByCid = teamService.getContestTeamVOByCid(id);
+
+            mav.addObject("type",type);
+            for (TeamVO teamVO : contestTeamVOByCid) {
+                List<MemberVO> teamMember = teamVO.getTeamMember();
+                List<MemberVO> newTeamMember = new ArrayList<>();
+                for (MemberVO memberVO : teamMember) {
+                    // 教练
+                    if(memberVO.getId() == teamVO.getCaptainId()){
+                        teamVO.setTeacherMember(memberVO);
+                    }else{
+                        // 其他队员
+                        newTeamMember.add(memberVO);
+                    }
+                }
+                teamVO.setTeamMember(newTeamMember);
+            }
+            mav.addObject("TeamList",contestTeamVOByCid);
         }
-        return  null;
+        return mav;
+    }
+
+    /**
+     *  根据赛事ID  得到获奖名单
+     * @param id
+     * @param type
+     * @return
+     */
+    @RequestMapping("/contest/ContestRankList")
+    public ModelAndView toContestRankList(@RequestParam("id") Integer id,
+                                              @RequestParam("type") String type){
+
+        logger.debug("获得某个比赛的获奖名单 id: "+ id +"  type = "+type);
+        ModelAndView mav = new ModelAndView("production/Contest/cdteammemberList2");
+
+        // 赛事信息
+        Contest contest = contestService.getContest(id);
+        mav.addObject("contest",contest);
+        if(type.equals( contestalonetype)){
+
+            // 个人赛 参赛成员列表
+            mav.addObject("type",type);
+            List<MemberVO> memberVOByCid = memberService.getMemberVOByCid(id);
+            mav.addObject("MemberList",memberVOByCid);
+
+        }else if(type.equals( contestteamtype)){
+
+
+            // 组队赛 参赛组队列表
+            List<TeamVO> contestTeamVOByCid = teamService.getContestTeamVOByCid(id);
+
+            mav.addObject("type",type);
+            for (TeamVO teamVO : contestTeamVOByCid) {
+                List<MemberVO> teamMember = teamVO.getTeamMember();
+                List<MemberVO> newTeamMember = new ArrayList<>();
+                for (MemberVO memberVO : teamMember) {
+                    // 教练
+                    if(memberVO.getId() == teamVO.getCaptainId()){
+                        teamVO.setTeacherMember(memberVO);
+                    }else{
+                        // 其他队员
+                        newTeamMember.add(memberVO);
+                    }
+                }
+                teamVO.setTeamMember(newTeamMember);
+            }
+            mav.addObject("TeamList",contestTeamVOByCid);
+        }
+        return mav;
     }
 
 

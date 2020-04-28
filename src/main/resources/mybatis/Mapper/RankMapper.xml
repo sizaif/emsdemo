@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sizaif.emsdemo.mapper.Rank.RankMapper">
+
+
+    <!--个人赛 Rank 映射表-->
+    <resultMap id="AloneRankVoMap" type="com.sizaif.emsdemo.dto.RankVO">
+        <id column="m_id" property="mid"  />
+        <result column="m_truename" property="mtruename"  />
+        <result column="m_school" property="mschool"  />
+        <result column="c_titile" property="ctitile"  />
+        <result column="r_time_acount" property="time_count"  />
+        <result column="r_ac_count" property="ac_count"  />
+    </resultMap>
+    <!--组队赛Rank 映射表-->
+    <resultMap id="TeamRankVoMap" type="com.sizaif.emsdemo.dto.RankVO">
+        <id column="t_id" property="tid"  />
+        <result column="t_name" property="tname"  />
+        <result column="t_school" property="tschool"  />
+        <result column="t_captain_id" property="tteacherid"  />
+        <result column="c_titile" property="ctitile"  />
+        <result column="r_time_acount" property="time_count"  />
+        <result column="r_ac_count" property="ac_count"  />
+        <collection property="tmemberList" ofType="com.sizaif.emsdemo.dto.MemberVO"  >
+            <id column="m_id" property="id"/>
+            <result column="m_truename" property="truename"/>
+            <result column="m_school" property="school"/>
+        </collection>
+    </resultMap>
+
+    <select id="getAloneRankListByCId" resultMap="AloneRankVoMap" parameterType="int">
+        SELECT
+        c.title c_titile,
+        m.id m_id,
+        m.truename m_truename,
+        m.school m_school,
+        r.ac_count r_ac_count,
+        r.time_count r_time_acount
+        FROM contest c
+        LEFT JOIN contest_member cm ON cm.contest_id = c.cid
+        LEFT JOIN member m ON cm.member_id = m.id
+        LEFT JOIN rank_contest_member rcm ON rcm.contest_id = c.cid AND rcm.member_id = m.id
+        LEFT JOIN rank  r ON rcm.rank_id = r.id
+        WHERE c.cid = #{cid}
+        ORDER BY ac_count DESC,time_count ASC
+    </select>
+    <select id="getTeamRankListByCId" resultMap="TeamRankVoMap" parameterType="int">
+        SELECT
+        c.title c_titile,
+        m.id m_id,
+        m.truename m_truename,
+        m.school m_school,
+        t.id t_id,
+        t.name t_name,
+        t.school t_school,
+        t.captain_id t_captain_id,
+        r.ac_count r_ac_count,
+        r.time_count r_time_acount
+        FROM contest c
+        LEFT JOIN contest_team cT ON cT.contest_id = c.cid
+        LEFT JOIN team t ON ct.team_id = t.id
+        LEFT JOIN team_member tm ON tm.team_id = t.id
+        LEFT JOIN member m ON m.id = tm.member_id
+        LEFT JOIN rank_contest_team rct ON rct.contest_id = c.cid AND rct.team_id = t.id
+        LEFT JOIN rank  r ON rct.rank_id = r.id
+        WHERE c.cid = #{cid}
+        ORDER BY ac_count DESC,time_count ASC
+    </select>
+</mapper>

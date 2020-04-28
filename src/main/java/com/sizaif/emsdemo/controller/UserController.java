@@ -138,7 +138,7 @@ public class UserController {
                 logger.debug("得到的主键userId --> " + key);
                 // 开始插入 member  必须做
                 member.setId(key);
-                member.setMemberRankId(1);
+
                 logger.debug("memberMap --> " + member);
                 logger.debug("开始添加一个member");
                 SystemResult systemResult1 = memberService.AddOneMember(member);
@@ -247,18 +247,16 @@ public class UserController {
 
     /**
      *  更新个人账户 信息
-     * @param httpServletRequest
-     * @param httpServletResponse
+     * @param member
      * @return
      */
     @RequestMapping("/toUpdateMemberInfo")
-    public String UpdateMemberInfo2(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+    public String UpdateMemberInfo2(Member member){
 
-        int id = Integer.parseInt(httpServletRequest.getParameter("uid"));
+        logger.debug(" 更新 个人信息 member"+ member.toString());
         try {
 
-            System.out.println("进行了member Update");
-            Member member = UsersServiceAppoint.MemberHttpWriteToMap(httpServletRequest, httpServletResponse);
+
             SystemResult UpdateMemberResult = memberService.UpdateMember(member);
             if(UpdateMemberResult.getStatus() == 200){
 
@@ -272,7 +270,7 @@ public class UserController {
         }catch(Exception e){
             e.printStackTrace();
         }finally{
-            return "redirect:/users/toProfilesPage/"+ id ;
+            return "redirect:/users/toProfilesPage/"+ member.getId() ;
         }
     }
 

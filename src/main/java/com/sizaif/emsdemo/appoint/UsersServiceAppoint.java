@@ -51,6 +51,9 @@ public class UsersServiceAppoint {
     public static Member MemberHttpWriteToMap(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
         Member member = new Member();
         member.setAddress(httpServletRequest.getParameter("address"));
+        member.setAddress(httpServletRequest.getParameter("age"));
+        member.setAddress(httpServletRequest.getParameter("weight"));
+        member.setAddress(httpServletRequest.getParameter("height"));
         member.setEmail(httpServletRequest.getParameter("email"));
         member.setBirth(httpServletRequest.getParameter("birth"));
         member.setTruename(httpServletRequest.getParameter("truename"));

@@ -22,7 +22,6 @@ public interface TeamMapper {
 
     int updateByPrimaryKeySelective(Team record);
 
-    int updateByPrimaryKey(Team record);
 
     /**
      *  查询所有队伍列表
@@ -36,5 +35,8 @@ public interface TeamMapper {
      * @param teamid
      * @return
      */
-    List<TeamVO> findTeamInfo(Integer teamid);
+    List<TeamVO> getTeamMemberInfo(Integer teamid);
+
+
+    List<TeamVO> getContestTeamVOListByCid(Integer cid);
 }

@@ -5,9 +5,12 @@
 <mapper namespace="com.sizaif.emsdemo.mapper.User.MemberMapper">
 
     <!--映射表-->
-    <resultMap id="MemberMap" type="Member">
+    <resultMap id="MemberBaseMap" type="Member">
         <result column="id" property="id"/>
-        <result column="memberRank_id" property="memberRankId"/>
+        <result column="age" property="age"/>
+        <result column="height" property="height"/>
+        <result column="weight" property="weight"/>
+        <result column="isEnabled" property="isEnabled"/>
         <result column="address" property="address"/>
         <result column="birth" property="birth"/>
         <result column="email" property="email"/>
@@ -24,8 +27,14 @@
             <if test="id != null">
                 id,
             </if>
-            <if test="memberRankId != null">
-                memberRank_id,
+            <if test="age != null">
+                age,
+            </if>
+            <if test="height != null">
+                height,
+            </if>
+            <if test="weight != null">
+                weight,
             </if>
             <if test="address != null">
                 address,
@@ -51,13 +60,22 @@
             <if test="image != null">
                 image,
             </if>
+            <if test="isEnabled != null">
+                isEnabled,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id},
             </if>
-            <if test="memberRankId != null">
-                #{memberRankId},
+            <if test="age != null">
+                #{age},
+            </if>
+            <if test="height != null">
+                #{height},
+            </if>
+            <if test="weight != null">
+                #{weight},
             </if>
             <if test="address != null">
                 #{address},
@@ -83,14 +101,17 @@
             <if test="image != null">
                 #{image},
             </if>
+            <if test="isEnabled != null">
+                #{isEnabled},
+            </if>
         </trim>
     </insert>
 
-    <select id="QueryAllMemberInfo" resultMap="MemberMap">
+    <select id="QueryAllMemberInfo" resultMap="MemberBaseMap">
         SELECT saishiguanli.member.* FROM saishiguanli.member
     </select>
 
-    <select id="QueryOneMemberInfoByID" resultMap="MemberMap" parameterType="int">
+    <select id="QueryOneMemberInfoByID" resultMap="MemberBaseMap" parameterType="int">
         SELECT saishiguanli.member.* FROM  saishiguanli.member
         WHERE
         <if test ="id !=null">
@@ -99,7 +120,7 @@
 
     </select>
 
-    <select id="QueryMemberInfoByEmailOrPhone" resultMap="MemberMap" parameterType="com.sizaif.emsdemo.pojo.User.Member">
+    <select id="QueryMemberInfoByEmailOrPhone" resultMap="MemberBaseMap" parameterType="com.sizaif.emsdemo.pojo.User.Member">
         SELECT saishiguanli.member.* FROM  saishiguanli.member
         WHERE
             <if test ="email !=null">
@@ -110,21 +131,22 @@
             </if>
     </select>
 
-
-
     <!--动态SQL更新-->
     <update id="UpdateMemberSelective" parameterType="com.sizaif.emsdemo.pojo.User.Member" >
         update saishiguanli.member
         <trim prefix="set" suffixOverrides=",">
-            <if test="memberRankId!=null">memberRank_id=#{memberRankId},</if>
-            <if test="address!=null">address=#{address},</if>
-            <if test="birth!=null">birth=#{birth},</if>
-            <if test="email!=null">email=#{email},</if>
-            <if test="gender!=null">gender=#{gender},</if>
-            <if test="truename!=null">truename=#{truename},</if>
-            <if test="phone!=null">phone=#{phone},</if>
-            <if test="school!=null"> school=#{school},</if>
-            <if test="image!=null">image=#{image},</if>
+            <if test="age!=null and age !='' ">age=#{age},</if>
+            <if test="weight!=null and weight !='' ">weight=#{weight},</if>
+            <if test="height!=null and height !='' ">height=#{height},</if>
+            <if test="isEnabled!=null and isEnabled !=''" >isEnabled=#{isEnabled},</if>
+            <if test="address!=null and address !=''">address=#{address},</if>
+            <if test="birth!=null and birth !=''">birth=#{birth},</if>
+            <if test="email!=null and email !=''">email=#{email},</if>
+            <if test="gender!=null and gender !=''">gender=#{gender},</if>
+            <if test="truename!=null and truename !=''">truename=#{truename},</if>
+            <if test="phone!=null and phone !=''">phone=#{phone},</if>
+            <if test="school!=null and school !=''"> school=#{school},</if>
+            <if test="image!=null and image !=''">image=#{image},</if>
         </trim>
         where id = #{id}
     </update>
@@ -132,4 +154,64 @@
     <delete id="DeleteOneMemberById" parameterType="int">
         DELETE FROM saishiguanli.member WHERE id = #{id}
     </delete>
+
+    <!--映射表-->
+    <resultMap id="MemberUserMap" type="com.sizaif.emsdemo.dto.MemberVO">
+        <!--column数据库中的字段，property实体类中的属性-->
+        <id column="m_id" property="id"/>
+        <result column="m_age" property="age"/>
+        <result column="m_weight" property="weight"/>
+        <result column="m_height" property="height"/>
+        <result column="m_address" property="address"/>
+        <result column="m_birth" property="birth"/>
+        <result column="m_email" property="email"/>
+        <result column="m_gender" property="gender"/>
+        <result column="m_phone" property="phone"/>
+        <result column="m_truename" property="truename"/>
+        <result column="m_school" property="school"/>
+        <result column="m_image" property="image"/>
+        <result column="m_isEnabled" property="isEnabled"/>
+
+        <!--关联查询 property users对应数据库中表明 javaType对应到实体类名字-->
+        <!--association-->
+        <collection property="users" javaType="com.sizaif.emsdemo.dto.UserVO">
+            <id column="u_id" property="id"/>
+            <result column="u_createDate" property="createDate"/>
+            <result column="u_modifyDate" property="modifyDate"/>
+            <result column="u_isEnabled" property="isEnabled"/>
+            <result column="u_isLocked" property="isLocked"/>
+            <result column="u_lastLoginDate" property="lastLoginDate"/>
+            <result column="u_lastLoginIp" property="lastLoginIp"/>
+            <result column="u_lockDate" property="lockDate"/>
+            <result column="u_uname" property="name"/>
+            <result column="u_encodePassword" property="password"/>
+            <result column="u_role" property="role"/>
+            <result column="u_type" property="type"/>
+            <collection property="userRoles" javaType="com.sizaif.emsdemo.pojo.User.UserRoleKey">
+                <result column="user_id" property="userId" javaType="java.lang.Integer"/>
+                <result column="role_id" property="roleId" javaType="java.lang.Integer"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="getMemberVOByCid" parameterType="int" resultMap="MemberUserMap">
+        select
+        m.id m_id,
+        m.age m_age,
+        m.weight m_weight,
+        m.height m_height,
+        m.address m_address,
+        m.birth m_birth,
+        m.email m_email,
+        m.gender m_gender,
+        m.phone m_phone,
+        m.truename m_truename,
+        m.school m_school,
+        m.image m_image,
+        m.isEnabled m_isEnabled
+        FROM member m
+        LEFT JOIN contest_member cm ON cm.member_id = m.id
+        LEFT JOIN contest c ON c.cid = cm.contest_id
+        WHERE c.cid = #{cid} AND cm.isEnabled = 1
+    </select>
 </mapper>

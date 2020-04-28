@@ -1,5 +1,6 @@
 package com.sizaif.emsdemo.mapper.User;
 
+import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.pojo.User.Member;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -57,4 +58,6 @@ public interface MemberMapper {
      */
     List<Member> QueryMemberInfoByEmailOrPhone(Member member);
 
+
+    List<MemberVO> getMemberVOByCid(Integer cid);
 }

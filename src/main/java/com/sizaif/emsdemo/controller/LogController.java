@@ -198,7 +198,6 @@ public class LogController {
                     logger.debug("得到的主键userId --> " + key);
                     // 开始插入 member  必须做
                     memberMap.setId(key);
-                    memberMap.setMemberRankId(1);
                     logger.debug("memberMap --> " + memberMap);
                     logger.debug("开始添加一个member");
                     SystemResult systemResult1 = memberService.AddOneMember(memberMap);

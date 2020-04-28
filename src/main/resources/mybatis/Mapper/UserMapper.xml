@@ -9,57 +9,43 @@
     <!--映射表-->
     <resultMap id="MemberUserMap" type="com.sizaif.emsdemo.dto.MemberVO">
         <!--column数据库中的字段，property实体类中的属性-->
-        <id column="id" property="id"/>
-        <result column="memberRank_id" property="memberRankId"/>
-        <result column="address" property="address"/>
-        <result column="birth" property="birth"/>
-        <result column="email" property="email"/>
-        <result column="gender" property="gender"/>
-        <result column="phone" property="phone"/>
-        <result column="truename" property="truename"/>
-        <result column="school" property="school"/>
-        <result column="image" property="image"/>
+        <id column="m_id" property="id"/>
+        <result column="m_age" property="age"/>
+        <result column="m_weight" property="weight"/>
+        <result column="m_height" property="height"/>
+        <result column="m_address" property="address"/>
+        <result column="m_birth" property="birth"/>
+        <result column="m_email" property="email"/>
+        <result column="m_gender" property="gender"/>
+        <result column="m_phone" property="phone"/>
+        <result column="m_truename" property="truename"/>
+        <result column="m_school" property="school"/>
+        <result column="m_image" property="image"/>
+        <result column="m_isEnabled" property="isEnabled"/>
 
         <!--关联查询 property users对应数据库中表明 javaType对应到实体类名字-->
         <!--association-->
         <collection property="users" javaType="com.sizaif.emsdemo.dto.UserVO">
-            <id column="id" property="id"/>
-            <result column="createDate" property="createDate"/>
-            <result column="modifyDate" property="modifyDate"/>
-            <result column="isEnabled" property="isEnabled"/>
-            <result column="isLocked" property="isLocked"/>
-            <result column="lastLoginDate" property="lastLoginDate"/>
-            <result column="lastLoginIp" property="lastLoginIp"/>
-            <result column="lockDate" property="lockDate"/>
-            <result column="uname" property="name"/>
-            <result column="encodePassword" property="password"/>
-            <result column="role" property="role"/>
-            <result column="type" property="type"/>
+            <id column="u_id" property="id"/>
+            <result column="u_createDate" property="createDate"/>
+            <result column="u_modifyDate" property="modifyDate"/>
+            <result column="u_isEnabled" property="isEnabled"/>
+            <result column="u_isLocked" property="isLocked"/>
+            <result column="u_lastLoginDate" property="lastLoginDate"/>
+            <result column="u_lastLoginIp" property="lastLoginIp"/>
+            <result column="u_lockDate" property="lockDate"/>
+            <result column="u_uname" property="name"/>
+            <result column="u_encodePassword" property="password"/>
+            <result column="u_role" property="role"/>
+            <result column="u_type" property="type"/>
             <collection property="userRoles" javaType="com.sizaif.emsdemo.pojo.User.UserRoleKey">
                 <result column="user_id" property="userId" javaType="java.lang.Integer"/>
                 <result column="role_id" property="roleId" javaType="java.lang.Integer"/>
             </collection>
         </collection>
     </resultMap>
-    
-    <!--<resultMap id="UsersRoleMap" type="Users">-->
-        <!--<id column="id" property="id"/>-->
-        <!--<result column="createDate" property="creatDate"/>-->
-        <!--<result column="modifyDate" property="modifyDate"/>-->
-        <!--<result column="isEnabled" property="isEnabled"/>-->
-        <!--<result column="isLocked" property="isLocked"/>-->
-        <!--<result column="lastLoginDate" property="lastLoginDate"/>-->
-        <!--<result column="lastLoginIp" property="lastLogIp"/>-->
-        <!--<result column="lockDate" property="lockDate"/>-->
-        <!--<result column="name" property="name"/>-->
-        <!--<result column="encodePassword" property="password"/>-->
-        <!--<association property="role" javaType="Role">-->
-            <!--<id column="id" property="id"/>-->
 
-        <!--</association>-->
-    <!--</resultMap>-->
-
-    <!--映射表-->
+    <!--user映射表-->
     <resultMap id="UsersMap" type="com.sizaif.emsdemo.pojo.User.Users">
         <!--column数据库中的字段，property实体类中的属性-->
         <result column="id" property="id" jdbcType="INTEGER"/>
@@ -77,12 +63,37 @@
     </resultMap>
 
     <sql id="User_No_Password_List" >
-        users.id,users.createDate,users.modifyDate,users.isEnabled,users.isLocked,users.lastLoginDate,users.lastLoginIp,users.lockDate,users.uname,users.role,users.type
+        users.id u_id,
+        users.createDate u_createDate,
+        users.modifyDate u_modifyDate,
+        users.isEnabled u_isEnabled,
+        users.isLocked u_isLocked,
+        users.lastLoginDate u_lastLoginDate,
+        users.lastLoginIp u_lastLoginIp,
+        users.lockDate u_lockDate,
+        users.uname u_uname,
+        users.role u_role,
+        users.type u_type
     </sql>
 
     <!--关联表查询-->
     <select id="queryAllUserMemberRoleList" resultMap="MemberUserMap">
-        SELECT m.*,ur.*,<include refid="User_No_Password_List" />
+        SELECT
+        m.id m_id,
+        m.age m_age,
+        m.weight m_weight,
+        m.height m_height,
+        m.address m_address,
+        m.birth m_birth,
+        m.email m_email,
+        m.gender m_gender,
+        m.phone m_phone,
+        m.truename m_truename,
+        m.school m_school,
+        m.image m_image,
+        m.isEnabled m_isEnabled,
+        ur.*,
+        <include refid="User_No_Password_List" />
         FROM member m, users,role r
         LEFT JOIN users_role ur ON ur.role_id = r.id
         WHERE m.id = users.id AND ur.user_id= users.id
@@ -98,7 +109,22 @@
     </select>
 
     <select id="queryOneUserMemberById" resultMap="MemberUserMap" parameterType="int">
-        SELECT m.*,ur.*,<include refid="User_No_Password_List" />
+        SELECT
+        m.id m_id,
+        m.age m_age,
+        m.weight m_weight,
+        m.height m_height,
+        m.address m_address,
+        m.birth m_birth,
+        m.email m_email,
+        m.gender m_gender,
+        m.phone m_phone,
+        m.truename m_truename,
+        m.school m_school,
+        m.image m_image,
+        m.isEnabled m_isEnabled,
+        ur.*,
+        <include refid="User_No_Password_List" />
         FROM member m, users,role r
         LEFT JOIN users_role ur ON ur.role_id = r.id
         WHERE m.id = users.id AND ur.user_id= users.id AND users.id = #{id}

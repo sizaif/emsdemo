@@ -2,6 +2,8 @@ package com.sizaif.emsdemo.TestController;
 
 import com.github.pagehelper.PageInfo;
 import com.sizaif.emsdemo.dto.ContestVO;
+import com.sizaif.emsdemo.dto.MemberVO;
+import com.sizaif.emsdemo.dto.RankVO;
 import com.sizaif.emsdemo.dto.TeamVO;
 import com.sizaif.emsdemo.mapper.Contest.ContestMapper;
 import com.sizaif.emsdemo.mapper.User.MemberMapper;
@@ -13,6 +15,8 @@ import com.sizaif.emsdemo.pojo.User.Users;
 import com.sizaif.emsdemo.service.Announce.AnnounceService;
 import com.sizaif.emsdemo.service.Auth.AuthService;
 import com.sizaif.emsdemo.service.Contest.ContestService;
+import com.sizaif.emsdemo.service.Rank.RankService;
+import com.sizaif.emsdemo.service.Team.TeamService;
 import com.sizaif.emsdemo.service.User.MemberService;
 import com.sizaif.emsdemo.service.User.UsersService;
 import org.junit.jupiter.api.Test;
@@ -51,6 +55,12 @@ public class TestUserMapper {
     private RoleMapper roleMapper;
     @Autowired
     private AnnounceService announceService;
+
+    @Autowired
+    private RankService rankService;
+
+    @Autowired
+    private TeamService teamService;
 
     private MockMvc mockMvc;
 
@@ -115,9 +125,30 @@ public class TestUserMapper {
 
     @Test
     public void Test() throws Exception{
-        List<ContestVO> contestByMember = contestService.getContestByMember(1);
 
-        System.out.println(contestByMember.size());
+//        List<RankVO> aloneRankByCid = rankService.getAloneRankByCid(1);
+//        System.out.println(aloneRankByCid.size());
+//        for (RankVO rankVO : aloneRankByCid) {
+//            System.out.println(rankVO.toString());
+//        }
+
+        List<RankVO> teamRankByCid = rankService.getTeamRankByCid(5);
+        System.out.println(teamRankByCid.size());
+
+        for (RankVO rankVO : teamRankByCid) {
+            List<MemberVO> newMemberList = new ArrayList<>();
+            if( rankVO.getTid() >= 1030){
+                for (MemberVO memberVO : rankVO.getTmemberList()) {
+                    if( memberVO.getId().equals(rankVO.getTteacherid())){
+                        rankVO.setTteacherVO(memberVO);
+                    }else{
+                        newMemberList.add(memberVO);
+                    }
+                }
+                rankVO.setTmemberList(newMemberList);
+            }
+            System.out.println(rankVO.toString());
+        }
 
     }
 

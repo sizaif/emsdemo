@@ -4,12 +4,18 @@ import com.sizaif.emsdemo.dto.UserVO;
 
 public class Member {
 
-    private int id;
-    private int memberRankId;
+    private Integer id;
+    private Integer gender;
+    private Integer age;
+
+    private Integer isEnabled;
+
+    private String height;
+    private String weight;
+
     private String address;
     private String birth;
     private String email;
-    private int gender;
     private String phone;
     private String truename;
     private String school;
@@ -18,50 +24,68 @@ public class Member {
     public Member() {
     }
 
-
-    public Member(int id, int memberRankId, String address, String birth, String email, int gender, String phone, String truename, String school, String image) {
+    public Member(Integer id, Integer gender, Integer age, Integer isEnabled, String height, String weight, String address, String birth, String email, String phone, String truename, String school, String image) {
         this.id = id;
-        this.memberRankId = memberRankId;
+        this.gender = gender;
+        this.age = age;
+        this.isEnabled = isEnabled;
+        this.height = height;
+        this.weight = weight;
         this.address = address;
         this.birth = birth;
         this.email = email;
-        this.gender = gender;
         this.phone = phone;
         this.truename = truename;
         this.school = school;
         this.image = image;
     }
 
-    @Override
-    public String toString() {
-        return "Member{" +
-                "id=" + id +
-                ", memberRankId=" + memberRankId +
-                ", address='" + address + '\'' +
-                ", birth='" + birth + '\'' +
-                ", email='" + email + '\'' +
-                ", gender=" + gender +
-                ", phone='" + phone + '\'' +
-                ", truename='" + truename + '\'' +
-                ", school='" + school + '\'' +
-                ", image='" + image + '\'' +
-                '}';
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getMemberRankId() {
-        return memberRankId;
+    public Integer getGender() {
+        return gender;
     }
 
-    public void setMemberRankId(int memberRankId) {
-        this.memberRankId = memberRankId;
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public Integer getIsEnabled() {
+        return isEnabled;
+    }
+
+    public void setIsEnabled(Integer isEnabled) {
+        this.isEnabled = isEnabled;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
     }
 
     public String getAddress() {
@@ -86,14 +110,6 @@ public class Member {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public int getGender() {
-        return gender;
-    }
-
-    public void setGender(int gender) {
-        this.gender = gender;
     }
 
     public String getPhone() {
@@ -128,5 +144,22 @@ public class Member {
         this.image = image;
     }
 
-
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", gender=" + gender +
+                ", age=" + age +
+                ", isEnabled=" + isEnabled +
+                ", height='" + height + '\'' +
+                ", weight='" + weight + '\'' +
+                ", address='" + address + '\'' +
+                ", birth='" + birth + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", truename='" + truename + '\'' +
+                ", school='" + school + '\'' +
+                ", image='" + image + '\'' +
+                '}';
+    }
 }

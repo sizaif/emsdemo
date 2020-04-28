@@ -29,6 +29,7 @@ public class TeamVO {
 
     // 队伍下的成员信息
     private List<MemberVO> teamMember;
+    private MemberVO teacherMember;
 
     public Integer getId() {
         return id;
@@ -94,6 +95,14 @@ public class TeamVO {
         this.teamMember = teamMember;
     }
 
+    public MemberVO getTeacherMember() {
+        return teacherMember;
+    }
+
+    public void setTeacherMember(MemberVO teacherMember) {
+        this.teacherMember = teacherMember;
+    }
+
     @Override
     public String toString() {
         return "TeamVO{" +
@@ -105,6 +114,7 @@ public class TeamVO {
                 ", modifyDate='" + modifyDate + '\'' +
                 ", isEnabled=" + isEnabled +
                 ", teamMember=" + teamMember +
+                ", teacherMember=" + teacherMember +
                 '}';
     }
 }

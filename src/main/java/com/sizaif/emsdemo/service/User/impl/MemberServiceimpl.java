@@ -1,6 +1,7 @@
 package com.sizaif.emsdemo.service.User.impl;
 
 import com.sizaif.emsdemo.Result.SystemResult;
+import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.mapper.User.MemberMapper;
 import com.sizaif.emsdemo.pojo.User.Member;
 import com.sizaif.emsdemo.service.User.MemberService;
@@ -83,5 +84,10 @@ public class MemberServiceimpl implements MemberService {
     public Member QueryOneMemberInfoByID(int id) {
         Member member = memberMapper.QueryOneMemberInfoByID(id);
         return member;
+    }
+
+    @Override
+    public List<MemberVO> getMemberVOByCid(Integer cid) {
+        return memberMapper.getMemberVOByCid(cid);
     }
 }

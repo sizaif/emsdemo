@@ -1,6 +1,7 @@
 package com.sizaif.emsdemo.service.User;
 
 import com.sizaif.emsdemo.Result.SystemResult;
+import com.sizaif.emsdemo.dto.MemberVO;
 import com.sizaif.emsdemo.pojo.User.Member;
 
 import java.util.HashMap;
@@ -27,6 +28,6 @@ public interface MemberService {
      */
     Member QueryOneMemberInfoByID(int id);
 
-
+    List<MemberVO> getMemberVOByCid(Integer cid);
 
 }

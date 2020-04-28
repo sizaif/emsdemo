@@ -115,35 +115,76 @@
         where id = #{id}
     </delete>
 
-
+    <select id="getContestTeamVOListByCid" parameterType="int" resultMap="TeamInfoResultMap">
+        SELECT
+        t.id t_id,
+        t.name t_name,
+        t.school t_school,
+        t.captain_id t_captain_id,
+        m.id m_id,
+        m.age m_age,
+        m.weight m_weight,
+        m.height m_height,
+        m.address m_address,
+        m.birth m_birth,
+        m.gender m_gender,
+        m.phone m_phone,
+        m.truename m_truename,
+        m.school m_school,
+        m.image m_image
+        FROM team t
+        LEFT JOIN team_member tm ON tm.team_id = t.id
+        LEFT JOIN member m ON tm.member_id = m.id
+        LEFT JOIN contest_team ct ON ct.team_id = t.id
+        LEFT JOIN contest c ON c.cid = ct.contest_id
+        WHERE c.cid = #{cid} AND ct.isEnabled = 1
+    </select>
 
     <!--队伍成员信息映射表-->
     <resultMap id="TeamInfoResultMap" type="com.sizaif.emsdemo.dto.TeamVO" >
-        <id column="id" property="id"/>
-        <result column="name" property="name"/>
-        <result column="school" property="school"/>
-        <result column="captain_id" property="captainId"/>
-        <result column="createDate" property="createDate"/>
-        <result column="modifyDate" property="modifyDate"/>
-        <result column="isEnabled" property="isEnabled"/>
-        <collection property="teamMember" ofType="com.sizaif.emsdemo.pojo.User.Member">
-            <result column="id" property="id"/>
-            <result column="memberRank_id" property="memberRankId"/>
-            <result column="address" property="address"/>
-            <result column="birth" property="birth"/>
-            <result column="email" property="email"/>
-            <result column="gender" property="gender"/>
-            <result column="phone" property="phone"/>
-            <result column="truename" property="truename"/>
-            <result column="school" property="school"/>
-            <result column="image" property="image"/>
+        <id column="t_id" property="id"/>
+        <result column="t_name" property="name"/>
+        <result column="t_school" property="school"/>
+        <result column="t_captain_id" property="captainId"/>
+        <result column="t_createDate" property="createDate"/>
+        <result column="t_modifyDate" property="modifyDate"/>
+        <result column="t_isEnabled" property="isEnabled"/>
+        <collection property="teamMember" ofType="com.sizaif.emsdemo.dto.MemberVO">
+            <result column="m_id" property="id"/>
+            <result column="m_age" property="age"/>
+            <result column="m_weight" property="weight"/>
+            <result column="m_height" property="height"/>
+            <result column="m_address" property="address"/>
+            <result column="m_birth" property="birth"/>
+            <result column="m_gender" property="gender"/>
+            <result column="m_phone" property="phone"/>
+            <result column="m_truename" property="truename"/>
+            <result column="m_school" property="school"/>
+            <result column="m_image" property="image"/>
         </collection>
     </resultMap>
 
     <!--=Start getUserPerms 根据用户ID查找权限树列表-->
-    <select id="findTeamInfo" resultMap="TeamInfoResultMap">
+    <select id="getTeamMemberInfo" resultMap="TeamInfoResultMap" parameterType="int">
         SELECT
-        t.*,m.*
+        t.id t_id,
+        t.name t_name,
+        t.school t_school,
+        t.captain_id t_captain_id,
+        t.createDate t_createDate,
+        t.modifyDate t_modifyDate,
+        t.isEnabled t_isEnabled,
+        m.id m_id,
+        m.age m_age,
+        m.weight m_weight,
+        m.height m_height,
+        m.address m_address,
+        m.birth m_birth,
+        m.gender m_gender,
+        m.phone m_phone,
+        m.truename m_truename,
+        m.school m_school,
+        m.image m_image
         FROM saishiguanli.team t
         LEFT JOIN saishiguanli.team_member tm ON tm.team_id = t.id
         LEFT JOIN saishiguanli.member m ON m.id = tm.member_id
